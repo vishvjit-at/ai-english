@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
-import { ArrowLeft, Clock, MessageSquare, Star, Sparkles, AlertTriangle, BookOpen, Lightbulb, Trash2, Loader2 } from 'lucide-react'
+import { ArrowLeft, Clock, MessageSquare, Sparkles, AlertTriangle, BookOpen, Lightbulb, Trash2, Loader2, Download } from 'lucide-react'
 import { fetchSession, generateSummary, deleteSession, fetchDifficultyRecommendation } from '@/lib/api'
 import { LevelRecommendation } from '@/components/ui/LevelRecommendation'
 import type { SessionDetail, FeedbackData, DifficultyRecommendation } from '@/lib/types'
@@ -51,17 +51,17 @@ export function SessionDetailPage() {
 
   if (loading) {
     return (
-      <div className="h-full flex items-center justify-center bg-surface">
-        <div className="w-8 h-8 border-3 border-primary-200 border-t-primary-500 rounded-full animate-spin" />
+      <div className="h-full flex items-center justify-center bg-slate-50">
+        <div className="w-8 h-8 border-2 border-green-200 border-t-green-500 rounded-full animate-spin" />
       </div>
     )
   }
 
   if (!session) {
     return (
-      <div className="h-full flex flex-col items-center justify-center bg-surface gap-4">
-        <p className="text-neutral-400 font-body">Session not found</p>
-        <Link to="/history" className="text-primary-500 font-heading font-semibold text-sm hover:underline">Back to History</Link>
+      <div className="h-full flex flex-col items-center justify-center bg-slate-50 gap-4">
+        <p className="text-slate-400">Session not found</p>
+        <Link to="/history" className="text-green-600 font-semibold text-sm hover:underline">Back to History</Link>
       </div>
     )
   }
@@ -69,166 +69,184 @@ export function SessionDetailPage() {
   const summary = session.summary
 
   return (
-    <div className="h-full overflow-y-auto bg-surface">
-      <div className="max-w-2xl mx-auto px-5 py-8 sm:py-12">
-        {/* Back + Actions */}
-        <div className="flex items-center justify-between mb-6 animate-fade-in-up">
-          <Link to="/history" className="flex items-center gap-1.5 text-sm text-neutral-400 hover:text-neutral-600 font-heading transition-colors">
+    <div className="h-full overflow-y-auto bg-slate-50">
+      <div className="max-w-4xl mx-auto px-6 py-8">
+        {/* Back + title + delete */}
+        <div className="flex items-center justify-between mb-6">
+          <Link to="/history" className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700 transition-colors">
             <ArrowLeft className="w-4 h-4" /> History
           </Link>
-          <button onClick={handleDelete} className="text-neutral-300 hover:text-red-400 transition-colors cursor-pointer" title="Delete session">
+          <button onClick={handleDelete} className="text-slate-300 hover:text-red-500 transition-colors cursor-pointer p-2 rounded-lg hover:bg-red-50" title="Delete session">
             <Trash2 className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Session Header */}
-        <div className="mb-6 animate-fade-in-up" style={{ animationDelay: '0.05s' }}>
-          <h1 className="font-heading font-extrabold text-neutral-800 text-xl mb-2">{session.scenarioName}</h1>
-          <div className="flex items-center gap-4 text-xs text-neutral-400 font-body">
-            <span>{new Date(session.startedAt).toLocaleDateString('en-IN', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
-            <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {formatDuration(session.durationSecs)}</span>
-            <span className="flex items-center gap-1"><MessageSquare className="w-3 h-3" /> {session.messageCount} messages</span>
-          </div>
+        <h1 className="text-2xl font-bold text-slate-900 mb-2">{session.scenarioName}</h1>
+        <div className="flex items-center gap-4 text-sm text-slate-500 mb-8">
+          <span>{new Date(session.startedAt).toLocaleDateString('en-IN', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+          <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> {formatDuration(session.durationSecs)}</span>
+          <span className="flex items-center gap-1"><MessageSquare className="w-3.5 h-3.5" /> {session.messageCount} messages</span>
         </div>
 
-        {/* Summary Card */}
+        {/* Summary section */}
         {summary ? (
-          <div className="bg-white rounded-2xl border border-neutral-100 p-5 mb-6 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-primary-500" />
-                <h2 className="font-heading font-bold text-neutral-700 text-sm">Session Summary</h2>
+          <div className="grid grid-cols-3 gap-6 mb-6">
+            {/* Score circle card */}
+            <div className="bg-white rounded-2xl border border-slate-100 p-6 flex flex-col items-center">
+              <div className="w-28 h-28 rounded-full border-4 border-green-500 flex items-center justify-center mb-3">
+                <div className="text-center">
+                  <span className="text-4xl font-bold text-green-600">{summary.overallScore}</span>
+                  <span className="text-lg text-slate-400">/10</span>
+                </div>
               </div>
-              <div className="flex items-center gap-1.5">
-                <Star className="w-5 h-5 text-amber-400 fill-amber-400" />
-                <span className="font-heading font-extrabold text-neutral-800 text-lg">{summary.overallScore}</span>
-                <span className="text-xs text-neutral-400 font-body">/10</span>
+              <p className="font-semibold text-slate-900">Great Progress!</p>
+              <p className="text-slate-500 text-sm mt-1 text-center">{session.scenarioName}</p>
+            </div>
+
+            {/* Fluency card */}
+            <div className="bg-white rounded-2xl border border-slate-100 p-6">
+              <p className="font-semibold text-slate-900 mb-4">Fluency Assessment</p>
+              <div className="space-y-3">
+                <div>
+                  <div className="flex justify-between text-sm mb-1">
+                    <span className="text-slate-600">Fluency</span>
+                    <span className="text-slate-500 text-xs truncate max-w-[120px]">{summary.fluencyAssessment?.slice(0, 30)}...</span>
+                  </div>
+                  <div className="w-full h-1.5 bg-slate-100 rounded-full">
+                    <div className="h-full bg-green-500 rounded-full" style={{ width: `${Math.min(100, (summary.overallScore / 10) * 100)}%` }} />
+                  </div>
+                </div>
+                <div>
+                  <div className="flex justify-between text-sm mb-1">
+                    <span className="text-slate-600">Grammar</span>
+                    <span className="text-slate-500 text-xs truncate max-w-[120px]">{summary.grammarSummary?.slice(0, 30)}...</span>
+                  </div>
+                  <div className="w-full h-1.5 bg-slate-100 rounded-full">
+                    <div className="h-full bg-blue-500 rounded-full" style={{ width: `${Math.min(100, (summary.overallScore / 10) * 90)}%` }} />
+                  </div>
+                </div>
+                <div>
+                  <div className="flex justify-between text-sm mb-1">
+                    <span className="text-slate-600">Vocabulary</span>
+                    <span className="text-slate-500 text-xs">{summary.vocabHighlights?.length || 0} words</span>
+                  </div>
+                  <div className="w-full h-1.5 bg-slate-100 rounded-full">
+                    <div className="h-full bg-purple-500 rounded-full" style={{ width: `${Math.min(100, (summary.vocabHighlights?.length || 0) * 10)}%` }} />
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div className="flex flex-col gap-4">
-              {/* Fluency */}
-              <div>
-                <div className="flex items-center gap-1.5 mb-1">
-                  <MessageSquare className="w-3.5 h-3.5 text-blue-400" />
-                  <p className="text-xs font-heading font-semibold text-neutral-600">Fluency</p>
-                </div>
-                <p className="text-sm text-neutral-500 font-body leading-relaxed">{summary.fluencyAssessment}</p>
-              </div>
-
-              {/* Grammar */}
-              <div>
-                <div className="flex items-center gap-1.5 mb-1">
-                  <BookOpen className="w-3.5 h-3.5 text-green-400" />
-                  <p className="text-xs font-heading font-semibold text-neutral-600">Grammar</p>
-                </div>
-                <p className="text-sm text-neutral-500 font-body leading-relaxed">{summary.grammarSummary}</p>
-              </div>
-
-              {/* Vocabulary Highlights */}
-              {summary.vocabHighlights.length > 0 && (
-                <div>
-                  <div className="flex items-center gap-1.5 mb-2">
-                    <Sparkles className="w-3.5 h-3.5 text-purple-400" />
-                    <p className="text-xs font-heading font-semibold text-neutral-600">Good Vocabulary</p>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {summary.vocabHighlights.map((word) => (
-                      <span key={word} className="text-xs font-body bg-purple-50 text-purple-600 px-2.5 py-1 rounded-full border border-purple-100">
-                        {word}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Areas to Improve */}
-              {summary.areasToImprove.length > 0 && (
-                <div>
-                  <div className="flex items-center gap-1.5 mb-2">
-                    <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
-                    <p className="text-xs font-heading font-semibold text-neutral-600">Areas to Improve</p>
-                  </div>
-                  <ul className="flex flex-col gap-1.5">
-                    {summary.areasToImprove.map((area) => (
-                      <li key={area} className="text-sm text-neutral-500 font-body flex items-start gap-2">
-                        <span className="w-1.5 h-1.5 bg-amber-300 rounded-full mt-1.5 shrink-0" />
-                        {area}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {/* Encouragement */}
-              <div className="bg-primary-50 rounded-xl p-3 border border-primary-100">
-                <p className="text-sm text-primary-700 font-body leading-relaxed">{summary.encouragement}</p>
+            {/* Aria's note */}
+            <div className="bg-slate-50 rounded-2xl border border-slate-100 p-6">
+              <p className="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-1.5">
+                <Sparkles className="w-4 h-4 text-green-600" /> Aria's Note
+              </p>
+              <p className="text-slate-600 text-sm italic leading-relaxed">"{summary.encouragement}"</p>
+              <div className="flex items-center gap-2 mt-4 pt-4 border-t border-slate-200">
+                <div className="w-7 h-7 bg-green-600 rounded-full text-white text-xs font-bold flex items-center justify-center">A</div>
+                <span className="text-xs text-slate-500">Aria, your English partner</span>
               </div>
             </div>
           </div>
         ) : (
-          <div className="bg-white rounded-2xl border border-neutral-100 p-5 mb-6 text-center animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-            <Sparkles className="w-8 h-8 text-primary-300 mx-auto mb-3" />
-            <p className="text-sm text-neutral-500 font-body mb-3">No summary generated yet</p>
+          <div className="bg-white rounded-2xl border border-slate-100 p-8 mb-6 text-center">
+            <Sparkles className="w-8 h-8 text-green-400 mx-auto mb-3" />
+            <p className="text-sm text-slate-500 mb-4">No summary generated yet</p>
             <button
               onClick={handleGenerateSummary}
               disabled={generatingSummary}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-br from-primary-400 to-primary-500 text-white rounded-xl font-heading font-semibold text-sm hover:shadow-md disabled:opacity-50 transition-all cursor-pointer"
+              className="inline-flex items-center gap-2 px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-xl font-semibold text-sm transition-colors disabled:opacity-50 cursor-pointer"
             >
               {generatingSummary ? <><Loader2 className="w-4 h-4 animate-spin" /> Generating...</> : 'Generate Summary'}
             </button>
           </div>
         )}
 
+        {/* Vocabulary highlights */}
+        {summary?.vocabHighlights && summary.vocabHighlights.length > 0 && (
+          <div className="bg-white rounded-2xl border border-slate-100 p-6 mb-6">
+            <div className="flex items-center gap-2 mb-4">
+              <BookOpen className="w-4 h-4 text-green-600" />
+              <h2 className="font-semibold text-slate-900">Good Vocabulary</h2>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {summary.vocabHighlights.map((word) => (
+                <span key={word} className="bg-green-50 text-green-700 text-sm font-medium px-3 py-1.5 rounded-full">
+                  {word}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Areas to improve */}
+        {summary?.areasToImprove && summary.areasToImprove.length > 0 && (
+          <div className="bg-white rounded-2xl border border-slate-100 p-6 mb-6">
+            <div className="flex items-center gap-2 mb-4">
+              <AlertTriangle className="w-4 h-4 text-amber-500" />
+              <h2 className="font-semibold text-slate-900">Areas to Improve</h2>
+            </div>
+            <ul className="space-y-2">
+              {summary.areasToImprove.map((area) => (
+                <li key={area} className="text-sm text-slate-600 flex items-start gap-2">
+                  <span className="w-1.5 h-1.5 bg-amber-400 rounded-full mt-1.5 shrink-0" />
+                  {area}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
         {/* Level Recommendation */}
         {recommendation?.shouldShow && (
-          <div className="mb-6 animate-fade-in-up" style={{ animationDelay: '0.12s' }}>
+          <div className="mb-6">
             <LevelRecommendation recommendation={recommendation} compact />
           </div>
         )}
 
         {/* Transcript */}
-        <div className="animate-fade-in-up" style={{ animationDelay: '0.15s' }}>
-          <div className="flex items-center gap-2 mb-4">
-            <MessageSquare className="w-4 h-4 text-primary-500" />
-            <h2 className="font-heading font-bold text-neutral-700 text-sm">Conversation</h2>
+        <div className="bg-white rounded-2xl border border-slate-100 p-6">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-2">
+              <MessageSquare className="w-4 h-4 text-green-600" />
+              <h2 className="font-semibold text-slate-900">Transcript</h2>
+            </div>
+            <button className="flex items-center gap-2 border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-xl px-4 py-2 text-sm transition-colors cursor-pointer">
+              <Download className="w-3.5 h-3.5" /> Export PDF
+            </button>
           </div>
 
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-4">
             {session.messages.map((msg) => {
               const isUser = msg.role === 'user'
               const feedback = msg.feedback as FeedbackData | null
               return (
                 <div key={msg.id} className={`flex flex-col ${isUser ? 'items-end' : 'items-start'}`}>
-                  <div
-                    className={`max-w-[80%] px-4 py-3 text-[15px] leading-relaxed font-body ${
-                      isUser
-                        ? 'bg-primary-100 text-neutral-700 rounded-2xl rounded-br-md'
-                        : 'bg-white text-neutral-600 rounded-2xl rounded-bl-md shadow-sm border border-neutral-100'
-                    }`}
-                  >
-                    {!isUser && (
-                      <div className="flex items-center gap-1.5 mb-1.5">
-                        <div className="w-5 h-5 rounded-full bg-gradient-to-br from-primary-300 to-primary-500 flex items-center justify-center">
-                          <span className="text-[8px] font-bold text-white">A</span>
-                        </div>
-                        <span className="text-xs font-heading font-semibold text-primary-600">Aria</span>
+                  {isUser ? (
+                    <div className="bg-green-600 text-white rounded-2xl rounded-br-sm px-4 py-2.5 max-w-[75%] text-sm leading-relaxed">
+                      {msg.content}
+                    </div>
+                  ) : (
+                    <div className="flex items-start gap-2.5">
+                      <div className="w-7 h-7 bg-green-600 rounded-full text-white text-xs flex items-center justify-center font-bold flex-shrink-0">A</div>
+                      <div className="bg-slate-100 text-slate-800 rounded-2xl rounded-bl-sm px-4 py-2.5 max-w-[75%] text-sm leading-relaxed">
+                        {msg.content}
                       </div>
-                    )}
-                    {msg.content}
-                  </div>
+                    </div>
+                  )}
                   {feedback?.show && (
-                    <div className="mt-1.5 max-w-[80%] bg-accent-50 border border-accent-100 rounded-xl px-3 py-2">
+                    <div className="mt-1.5 max-w-[75%] bg-amber-50 border border-amber-200 rounded-xl px-4 py-3">
                       <div className="flex items-center gap-1.5 mb-1">
-                        <Lightbulb className="w-3 h-3 text-accent-500" />
-                        <span className="text-[10px] font-heading font-semibold text-accent-600">Tip</span>
+                        <Lightbulb className="w-3.5 h-3.5 text-amber-500" />
+                        <span className="text-xs font-semibold text-amber-800">Grammar Feedback</span>
                       </div>
-                      <p className="text-xs text-neutral-500 font-body">
-                        <span className="line-through text-neutral-400">{feedback.original}</span>
+                      <p className="text-xs text-slate-600">
+                        <span className="line-through text-slate-400">{feedback.original}</span>
                         {' → '}
-                        <span className="text-primary-600 font-semibold">{feedback.improved}</span>
+                        <span className="text-green-700 font-medium">{feedback.improved}</span>
                       </p>
-                      <p className="text-[11px] text-neutral-400 font-body mt-1">{feedback.tip}</p>
+                      <p className="text-xs text-slate-500 mt-1">{feedback.tip}</p>
                     </div>
                   )}
                 </div>

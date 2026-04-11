@@ -11,13 +11,6 @@ const TOPIC_LABELS: Record<string, string> = {
   custom: 'Custom',
 }
 
-const TOPIC_COLORS: Record<string, string> = {
-  job_interview: 'bg-blue-400',
-  daily_life: 'bg-green-400',
-  college: 'bg-purple-400',
-  custom: 'bg-amber-400',
-}
-
 export function ProgressPage() {
   const [data, setData] = useState<ProgressData | null>(null)
   const [recommendation, setRecommendation] = useState<DifficultyRecommendation | null>(null)
@@ -32,31 +25,24 @@ export function ProgressPage() {
 
   if (loading) {
     return (
-      <div className="h-full flex items-center justify-center bg-surface">
-        <div className="w-8 h-8 border-3 border-primary-200 border-t-primary-500 rounded-full animate-spin" />
+      <div className="h-full flex items-center justify-center bg-slate-50">
+        <div className="w-8 h-8 border-2 border-green-200 border-t-green-500 rounded-full animate-spin" />
       </div>
     )
   }
 
   if (!data || data.totalSessions === 0) {
     return (
-      <div className="h-full overflow-y-auto bg-surface">
-        <div className="max-w-2xl mx-auto px-5 py-8 sm:py-12">
-          <div className="flex items-center gap-3 mb-8 animate-fade-in-up">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-primary-400 to-primary-500 flex items-center justify-center shadow-sm">
-              <TrendingUp className="w-5 h-5 text-white" />
+      <div className="h-full overflow-y-auto bg-slate-50">
+        <div className="max-w-5xl mx-auto px-6 py-8">
+          <h1 className="text-2xl font-bold text-slate-900 mb-1">Progress</h1>
+          <p className="text-slate-500 text-sm mb-8">Track your improvement over time</p>
+          <div className="text-center py-16">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-3xl bg-green-50 flex items-center justify-center">
+              <TrendingUp className="w-8 h-8 text-green-400" />
             </div>
-            <div>
-              <h1 className="font-heading font-extrabold text-neutral-800 text-xl">Progress</h1>
-              <p className="text-xs text-neutral-400 font-body">Track your improvement</p>
-            </div>
-          </div>
-          <div className="text-center py-16 animate-fade-in-up">
-            <div className="w-16 h-16 mx-auto mb-4 rounded-3xl bg-primary-50 flex items-center justify-center">
-              <TrendingUp className="w-8 h-8 text-primary-300" />
-            </div>
-            <h2 className="font-heading font-bold text-neutral-600 text-lg mb-2">No data yet</h2>
-            <p className="text-sm text-neutral-400 font-body">Complete some conversations to see your progress.</p>
+            <h2 className="font-bold text-slate-600 text-lg mb-2">No data yet</h2>
+            <p className="text-sm text-slate-400">Complete some conversations to see your progress.</p>
           </div>
         </div>
       </div>
@@ -66,140 +52,165 @@ export function ProgressPage() {
   const maxScore = Math.max(...data.scoreHistory.map((s) => s.score), 10)
 
   return (
-    <div className="h-full overflow-y-auto bg-surface">
-      <div className="max-w-2xl mx-auto px-5 py-8 sm:py-12">
-        {/* Header */}
-        <div className="flex items-center gap-3 mb-8 animate-fade-in-up">
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-primary-400 to-primary-500 flex items-center justify-center shadow-sm">
-            <TrendingUp className="w-5 h-5 text-white" />
-          </div>
-          <div>
-            <h1 className="font-heading font-extrabold text-neutral-800 text-xl">Progress</h1>
-            <p className="text-xs text-neutral-400 font-body">Track your improvement</p>
-          </div>
-        </div>
+    <div className="h-full overflow-y-auto bg-slate-50">
+      <div className="max-w-5xl mx-auto px-6 py-8">
+        <h1 className="text-2xl font-bold text-slate-900 mb-1">Progress</h1>
+        <p className="text-slate-500 text-sm mb-8">Track your improvement over time</p>
 
         {/* Level Recommendation */}
         {recommendation?.shouldShow && (
-          <div className="mb-6 animate-fade-in-up" style={{ animationDelay: '0.04s' }}>
+          <div className="mb-6">
             <LevelRecommendation recommendation={recommendation} />
           </div>
         )}
 
-        {/* Stat Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8 animate-fade-in-up" style={{ animationDelay: '0.05s' }}>
-          <StatCard icon={<MessageSquare className="w-4 h-4" />} label="Sessions" value={String(data.totalSessions)} color="text-blue-500 bg-blue-50" />
-          <StatCard icon={<Clock className="w-4 h-4" />} label="Minutes" value={String(data.totalMinutes)} color="text-green-500 bg-green-50" />
-          <StatCard icon={<Star className="w-4 h-4" />} label="Avg Score" value={data.averageScore != null ? String(data.averageScore) : '--'} color="text-amber-500 bg-amber-50" />
-          <StatCard icon={<Flame className="w-4 h-4" />} label="Streak" value={`${data.currentStreak}d`} color="text-red-500 bg-red-50" />
+        {/* 4 stat cards */}
+        <div className="grid grid-cols-4 gap-4 mb-8">
+          <div className="bg-white rounded-2xl border border-slate-100 p-5">
+            <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center mb-3 text-blue-500">
+              <MessageSquare className="w-5 h-5" />
+            </div>
+            <p className="text-3xl font-bold text-slate-900">{data.totalSessions}</p>
+            <p className="text-xs text-slate-400 mt-0.5">Total Sessions</p>
+          </div>
+          <div className="bg-white rounded-2xl border border-slate-100 p-5">
+            <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center mb-3 text-green-500">
+              <Clock className="w-5 h-5" />
+            </div>
+            <p className="text-3xl font-bold text-slate-900">{data.totalMinutes}</p>
+            <p className="text-xs text-slate-400 mt-0.5">Minutes Practiced</p>
+            <span className="bg-green-50 text-green-600 text-xs px-2 py-0.5 rounded-full mt-1 inline-block">
+              {data.totalMinutes > 60 ? `${Math.floor(data.totalMinutes / 60)}h` : 'Keep going!'}
+            </span>
+          </div>
+          <div className="bg-white rounded-2xl border border-slate-100 p-5">
+            <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center mb-3 text-amber-500">
+              <Star className="w-5 h-5" />
+            </div>
+            <p className="text-3xl font-bold text-slate-900">{data.averageScore ?? '--'}</p>
+            <p className="text-xs text-slate-400 mt-0.5">Avg Score /10</p>
+          </div>
+          <div className="bg-white rounded-2xl border border-slate-100 p-5">
+            <div className="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center mb-3 text-red-500">
+              <Flame className="w-5 h-5" />
+            </div>
+            <p className="text-3xl font-bold text-slate-900">{data.currentStreak}</p>
+            <p className="text-xs text-slate-400 mt-0.5">Day Streak</p>
+          </div>
         </div>
 
-        {/* Score Trend */}
-        {data.scoreHistory.length > 0 && (
-          <section className="bg-white rounded-2xl border border-neutral-100 p-5 mb-6 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-            <div className="flex items-center gap-2 mb-4">
-              <TrendingUp className="w-4 h-4 text-primary-500" />
-              <h2 className="font-heading font-bold text-neutral-700 text-sm">Score Trend</h2>
-            </div>
-            <div className="flex items-end gap-1.5 h-32">
-              {data.scoreHistory.map((entry, i) => (
-                <div key={i} className="flex-1 flex flex-col items-center gap-1 group relative">
-                  <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-neutral-800 text-white text-[10px] px-2 py-1 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10">
-                    {entry.scenarioName}: {entry.score}/10
-                  </div>
-                  <div
-                    className="w-full bg-gradient-to-t from-primary-400 to-primary-300 rounded-t-md transition-all hover:from-primary-500 hover:to-primary-400"
-                    style={{ height: `${(entry.score / maxScore) * 100}%`, minHeight: '8px' }}
-                  />
+        {/* Main content grid */}
+        <div className="grid grid-cols-3 gap-6 mb-6">
+          {/* Score trend (col-span-2) */}
+          {data.scoreHistory.length > 0 && (
+            <section className="col-span-2 bg-white rounded-2xl border border-slate-100 p-6">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <TrendingUp className="w-4 h-4 text-green-600" />
+                  <h2 className="font-semibold text-slate-900">Score Trend</h2>
                 </div>
-              ))}
-            </div>
-            <div className="flex justify-between mt-2">
-              <span className="text-[10px] text-neutral-300 font-body">Oldest</span>
-              <span className="text-[10px] text-neutral-300 font-body">Latest</span>
-            </div>
-          </section>
-        )}
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {/* Topic Breakdown */}
-          <section className="bg-white rounded-2xl border border-neutral-100 p-5 animate-fade-in-up" style={{ animationDelay: '0.15s' }}>
-            <div className="flex items-center gap-2 mb-4">
-              <Target className="w-4 h-4 text-primary-500" />
-              <h2 className="font-heading font-bold text-neutral-700 text-sm">Topics Practiced</h2>
-            </div>
-            <div className="flex flex-col gap-2.5">
-              {Object.entries(data.topicBreakdown).map(([topic, count]) => {
-                const pct = Math.round((count / data.totalSessions) * 100)
-                return (
-                  <div key={topic}>
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-xs font-body text-neutral-600">{TOPIC_LABELS[topic] || topic}</span>
-                      <span className="text-[11px] font-heading font-semibold text-neutral-400">{count}</span>
+                <div className="flex gap-1">
+                  <button className="text-xs px-3 py-1 rounded-lg bg-green-50 text-green-600 font-medium">Weekly</button>
+                  <button className="text-xs px-3 py-1 rounded-lg text-slate-500 hover:bg-slate-50">Daily</button>
+                </div>
+              </div>
+              <div className="flex items-end gap-1.5 h-32">
+                {data.scoreHistory.map((entry, i) => (
+                  <div key={i} className="flex-1 flex flex-col items-center gap-1 group relative">
+                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] px-2 py-1 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10">
+                      {entry.scenarioName}: {entry.score}/10
                     </div>
-                    <div className="w-full h-2 bg-neutral-100 rounded-full overflow-hidden">
-                      <div className={`h-full rounded-full ${TOPIC_COLORS[topic] || 'bg-neutral-400'}`} style={{ width: `${pct}%` }} />
-                    </div>
+                    <div
+                      className="w-full bg-green-500 rounded-t-md transition-all hover:bg-green-600"
+                      style={{ height: `${(entry.score / maxScore) * 100}%`, minHeight: '8px' }}
+                    />
                   </div>
-                )
-              })}
-            </div>
-          </section>
+                ))}
+              </div>
+              <div className="flex justify-between mt-2">
+                <span className="text-[10px] text-slate-400">Oldest</span>
+                <span className="text-[10px] text-slate-400">Latest</span>
+              </div>
+            </section>
+          )}
 
-          {/* Weak Areas */}
-          <section className="bg-white rounded-2xl border border-neutral-100 p-5 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+          {/* Areas to Focus (col-span-1) */}
+          <section className="bg-white rounded-2xl border border-slate-100 p-6">
             <div className="flex items-center gap-2 mb-4">
-              <BookOpen className="w-4 h-4 text-primary-500" />
-              <h2 className="font-heading font-bold text-neutral-700 text-sm">Areas to Focus</h2>
+              <BookOpen className="w-4 h-4 text-green-600" />
+              <h2 className="font-semibold text-slate-900">Areas to Focus</h2>
             </div>
             {data.recentWeakAreas.length > 0 ? (
               <div className="flex flex-col gap-2">
                 {data.recentWeakAreas.map((item) => (
                   <div key={item.area} className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 bg-amber-300 rounded-full mt-1.5 shrink-0" />
-                    <span className="text-sm text-neutral-500 font-body">{item.area}</span>
+                    <span className="w-2 h-2 bg-amber-400 rounded-full mt-1.5 shrink-0" />
+                    <span className="text-sm text-slate-600">{item.area}</span>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="text-sm text-neutral-400 font-body">No data yet. Complete more sessions to see insights.</p>
+              <p className="text-sm text-slate-400">Complete more sessions to see insights.</p>
             )}
           </section>
         </div>
 
-        {/* Grammar Stats */}
-        <section className="bg-white rounded-2xl border border-neutral-100 p-5 mt-4 animate-fade-in-up" style={{ animationDelay: '0.25s' }}>
+        {/* Topics Practiced */}
+        <section className="bg-white rounded-2xl border border-slate-100 p-6 mb-6">
+          <div className="flex items-center gap-2 mb-4">
+            <Target className="w-4 h-4 text-green-600" />
+            <h2 className="font-semibold text-slate-900">Topics Practiced</h2>
+          </div>
+          <div className="flex flex-col gap-4">
+            {Object.entries(data.topicBreakdown).map(([topic, count]) => {
+              const pct = Math.round((count / data.totalSessions) * 100)
+              return (
+                <div key={topic}>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-sm text-slate-600">{TOPIC_LABELS[topic] || topic}</span>
+                    <span className="text-sm font-semibold text-slate-500">{pct}%</span>
+                  </div>
+                  <div className="w-full h-2 bg-slate-100 rounded-full">
+                    <div className="h-full bg-green-500 rounded-full transition-all" style={{ width: `${pct}%` }} />
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </section>
+
+        {/* Smart Recommendation */}
+        <section className="bg-gradient-to-br from-green-900 to-green-700 rounded-2xl p-8 text-white">
+          <p className="text-xs tracking-wider text-green-300 mb-2">SMART RECOMMENDATION</p>
+          <h3 className="text-2xl font-bold mb-2">Level up your practice</h3>
+          <p className="text-green-200 text-sm mb-4">
+            Based on your {data.totalSessions} sessions, Aria recommends focusing on more advanced scenarios.
+          </p>
+          <button className="bg-white text-green-900 font-semibold px-6 py-3 rounded-xl text-sm inline-flex items-center gap-2 hover:bg-green-50 transition-colors cursor-pointer">
+            Upgrade My Curriculum →
+          </button>
+        </section>
+
+        {/* Grammar stats */}
+        <section className="bg-white rounded-2xl border border-slate-100 p-5 mt-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs font-heading font-semibold text-neutral-600 mb-1">Grammar Correction Rate</p>
-              <p className="text-sm text-neutral-400 font-body">Percentage of messages needing corrections</p>
+              <p className="text-sm font-semibold text-slate-700 mb-1">Grammar Correction Rate</p>
+              <p className="text-sm text-slate-400">Percentage of messages needing corrections</p>
             </div>
             <div className="text-right">
-              <p className="font-heading font-extrabold text-2xl text-neutral-800">{data.grammarCorrectionRate}%</p>
-              <p className="text-[10px] text-neutral-400 font-body">{data.grammarCorrectionRate < 30 ? 'Great!' : data.grammarCorrectionRate < 60 ? 'Getting better' : 'Keep practicing'}</p>
+              <p className="font-bold text-2xl text-slate-900">{data.grammarCorrectionRate}%</p>
+              <p className="text-xs text-slate-400">{data.grammarCorrectionRate < 30 ? 'Great!' : data.grammarCorrectionRate < 60 ? 'Getting better' : 'Keep practicing'}</p>
             </div>
           </div>
         </section>
 
-        {/* Streak Info */}
         {data.longestStreak > 0 && (
-          <div className="mt-4 text-center animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-            <p className="text-xs text-neutral-400 font-body">
-              Longest streak: <span className="font-heading font-semibold text-neutral-500">{data.longestStreak} days</span>
-            </p>
-          </div>
+          <p className="mt-4 text-center text-xs text-slate-400">
+            Longest streak: <span className="font-semibold text-slate-600">{data.longestStreak} days</span>
+          </p>
         )}
       </div>
-    </div>
-  )
-}
-
-function StatCard({ icon, label, value, color }: { icon: React.ReactNode; label: string; value: string; color: string }) {
-  return (
-    <div className="bg-white rounded-2xl border border-neutral-100 p-4 flex flex-col items-center gap-2">
-      <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${color}`}>{icon}</div>
-      <p className="font-heading font-extrabold text-neutral-800 text-lg">{value}</p>
-      <p className="text-[10px] text-neutral-400 font-heading uppercase tracking-wider">{label}</p>
     </div>
   )
 }

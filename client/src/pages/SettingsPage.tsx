@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Settings, Palette, Type, Layout, Zap, Volume2, Play, Check, AlertTriangle } from 'lucide-react'
+import { Settings, Palette, Zap, Volume2, Play, AlertTriangle } from 'lucide-react'
 import { useSettings, themes, type VoiceProvider, type VoiceOption } from '@/hooks/useSettings'
 import { supabase } from '@/lib/supabase'
 
@@ -146,105 +146,62 @@ export function SettingsPage() {
     : serverVoices.map((v) => ({ id: v.id, name: v.name, lang: v.lang, type: v.type }))
 
   return (
-    <div className="h-full overflow-y-auto bg-surface">
-      <div className="max-w-2xl mx-auto px-5 py-8 sm:py-12">
+    <div className="h-full overflow-y-auto bg-slate-50">
+      <div className="max-w-4xl mx-auto px-6 py-8">
         {/* Header */}
-        <div className="flex items-center gap-3 mb-8 animate-fade-in-up">
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-primary-400 to-primary-500 flex items-center justify-center shadow-sm">
-            <Settings className="w-5 h-5 text-white" />
-          </div>
-          <div>
-            <h1 className="font-heading font-extrabold text-neutral-800 text-xl">Settings</h1>
-            <p className="text-xs text-neutral-400 font-body">Customize your experience</p>
-          </div>
-        </div>
+        <h1 className="text-2xl font-bold text-slate-900 mb-1">Settings</h1>
+        <p className="text-slate-500 text-sm mb-8">Personalise your sanctuary with Aria</p>
 
-        <div className="flex flex-col gap-8">
-          {/* ── Section: Color Theme ── */}
-          <section className="animate-fade-in-up" style={{ animationDelay: '0.05s' }}>
-            <div className="flex items-center gap-2 mb-4">
-              <Palette className="w-4 h-4 text-primary-500" />
-              <h2 className="font-heading font-bold text-neutral-700 text-sm">Color Theme</h2>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {themes.map((t) => (
-                <button
-                  key={t.id}
-                  onClick={() => updateSettings({ theme: t.id })}
-                  className={`
-                    relative flex items-center gap-3 p-4 rounded-2xl border transition-all cursor-pointer text-left
-                    ${settings.theme === t.id
-                      ? 'border-primary-400 bg-primary-50 shadow-sm'
-                      : 'border-neutral-100 bg-white hover:border-neutral-200 hover:shadow-sm'
-                    }
-                  `}
-                >
-                  <div
-                    className="w-10 h-10 rounded-xl shadow-inner shrink-0"
-                    style={{ background: `linear-gradient(135deg, ${t.swatch}, ${t.swatch}dd)` }}
-                  />
-                  <div className="flex-1 min-w-0">
-                    <p className="font-heading font-semibold text-neutral-700 text-sm">{t.label}</p>
-                    <p className="text-[11px] text-neutral-400">{
-                      t.id === 'calm-garden' ? 'Soft sage & peach' :
-                      t.id === 'ocean-breeze' ? 'Cool blue & coral' :
-                      t.id === 'sunset-glow' ? 'Warm amber & rose' :
-                      t.id === 'lavender-dream' ? 'Purple & mint' :
-                      'Dark teal & gold'
-                    }</p>
-                  </div>
-                  {settings.theme === t.id && (
-                    <div className="w-6 h-6 rounded-full bg-primary-400 flex items-center justify-center shrink-0">
-                      <Check className="w-3.5 h-3.5 text-white" />
-                    </div>
-                  )}
-                </button>
-              ))}
-            </div>
-          </section>
+        <div className="grid grid-cols-3 gap-6">
+          {/* Left: Appearance + Voice (col-span-2) */}
+          <div className="col-span-2">
+            {/* Appearance section */}
+            <div className="bg-white rounded-2xl border border-slate-100 p-6 mb-6">
+              <div className="flex items-center gap-2 text-sm font-semibold text-slate-900 mb-4">
+                <Palette className="w-4 h-4 text-green-600" /> Appearance
+              </div>
 
-          {/* ── Section: UI Design ── */}
-          <section className="animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-            <div className="flex items-center gap-2 mb-4">
-              <Layout className="w-4 h-4 text-primary-500" />
-              <h2 className="font-heading font-bold text-neutral-700 text-sm">UI Design</h2>
-            </div>
-
-            <div className="bg-white rounded-2xl border border-neutral-100 divide-y divide-neutral-50">
-              {/* Font Size */}
-              <div className="p-4">
-                <div className="flex items-center gap-2 mb-3">
-                  <Type className="w-3.5 h-3.5 text-neutral-400" />
-                  <p className="text-sm font-heading font-semibold text-neutral-600">Font Size</p>
+              {/* Color Theme */}
+              <div className="mb-6">
+                <p className="text-xs text-slate-500 uppercase tracking-wider mb-3">Color Theme</p>
+                <div className="flex gap-3 flex-wrap">
+                  {themes.map((t) => (
+                    <button
+                      key={t.id}
+                      onClick={() => updateSettings({ theme: t.id })}
+                      className={`w-8 h-8 rounded-full cursor-pointer transition-all ${settings.theme === t.id ? 'ring-2 ring-offset-2 ring-green-600' : 'hover:scale-110'}`}
+                      style={{ background: `linear-gradient(135deg, ${t.swatch}, ${t.swatch}dd)` }}
+                      title={t.label}
+                    />
+                  ))}
                 </div>
-                <div className="grid grid-cols-3 gap-2">
+              </div>
+
+              {/* Font Size */}
+              <div className="mb-6">
+                <p className="text-xs text-slate-500 uppercase tracking-wider mb-3">Font Size</p>
+                <div className="flex gap-2">
                   {([
-                    { value: 'small', label: 'Small', preview: 'Aa' },
-                    { value: 'medium', label: 'Medium', preview: 'Aa' },
-                    { value: 'large', label: 'Large', preview: 'Aa' },
+                    { value: 'small', label: 'A', size: 'text-sm' },
+                    { value: 'medium', label: 'A', size: 'text-base' },
+                    { value: 'large', label: 'A', size: 'text-xl' },
                   ] as const).map((opt) => (
                     <button
                       key={opt.value}
                       onClick={() => updateSettings({ fontSize: opt.value })}
-                      className={`flex flex-col items-center gap-1 py-3 rounded-xl border transition-all cursor-pointer
-                        ${settings.fontSize === opt.value ? 'border-primary-300 bg-primary-50' : 'border-neutral-100 hover:border-neutral-200'}`}
+                      className={`flex items-center justify-center w-12 h-10 rounded-xl border font-bold transition-all cursor-pointer ${opt.size}
+                        ${settings.fontSize === opt.value ? 'bg-green-600 text-white border-green-600' : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200'}`}
                     >
-                      <span className={`font-heading font-bold text-neutral-700 ${opt.value === 'small' ? 'text-xs' : opt.value === 'medium' ? 'text-base' : 'text-xl'}`}>
-                        {opt.preview}
-                      </span>
-                      <span className="text-[10px] text-neutral-400 font-heading">{opt.label}</span>
+                      {opt.label}
                     </button>
                   ))}
                 </div>
               </div>
 
-              {/* Border Radius */}
-              <div className="p-4">
-                <div className="flex items-center gap-2 mb-3">
-                  <Layout className="w-3.5 h-3.5 text-neutral-400" />
-                  <p className="text-sm font-heading font-semibold text-neutral-600">Corner Style</p>
-                </div>
-                <div className="grid grid-cols-3 gap-2">
+              {/* Corner Style */}
+              <div>
+                <p className="text-xs text-slate-500 uppercase tracking-wider mb-3">Corner Style</p>
+                <div className="flex gap-2">
                   {([
                     { value: 'sharp', label: 'Sharp', radius: '4px' },
                     { value: 'rounded', label: 'Rounded', radius: '12px' },
@@ -253,158 +210,109 @@ export function SettingsPage() {
                     <button
                       key={opt.value}
                       onClick={() => updateSettings({ borderRadius: opt.value })}
-                      className={`flex flex-col items-center gap-2 py-3 rounded-xl border transition-all cursor-pointer
-                        ${settings.borderRadius === opt.value ? 'border-primary-300 bg-primary-50' : 'border-neutral-100 hover:border-neutral-200'}`}
+                      className={`flex flex-col items-center gap-2 px-4 py-2.5 rounded-xl border transition-all cursor-pointer
+                        ${settings.borderRadius === opt.value ? 'border-green-500 bg-green-50 text-green-700' : 'border-slate-200 text-slate-600 hover:bg-slate-50'}`}
                     >
-                      <div className="w-10 h-7 bg-primary-300 transition-all" style={{ borderRadius: opt.radius }} />
-                      <span className="text-[10px] text-neutral-400 font-heading">{opt.label}</span>
+                      <div className="w-10 h-6 bg-current opacity-20 border-2 border-current" style={{ borderRadius: opt.radius }} />
+                      <span className="text-xs font-medium">{opt.label}</span>
                     </button>
                   ))}
                 </div>
               </div>
-
-              {/* Chat Density */}
-              <div className="p-4">
-                <div className="flex items-center gap-2 mb-3">
-                  <Layout className="w-3.5 h-3.5 text-neutral-400" />
-                  <p className="text-sm font-heading font-semibold text-neutral-600">Chat Density</p>
-                </div>
-                <div className="grid grid-cols-3 gap-2">
-                  {([
-                    { value: 'compact', label: 'Compact' },
-                    { value: 'comfortable', label: 'Comfortable' },
-                    { value: 'spacious', label: 'Spacious' },
-                  ] as const).map((opt) => (
-                    <button
-                      key={opt.value}
-                      onClick={() => updateSettings({ chatDensity: opt.value })}
-                      className={`flex flex-col items-center gap-1.5 py-3 rounded-xl border transition-all cursor-pointer
-                        ${settings.chatDensity === opt.value ? 'border-primary-300 bg-primary-50' : 'border-neutral-100 hover:border-neutral-200'}`}
-                    >
-                      <div className="flex flex-col items-center w-8">
-                        <div className={`w-8 h-1.5 bg-primary-300 rounded-full`} />
-                        <div className={`w-6 h-1.5 bg-neutral-200 rounded-full ${opt.value === 'compact' ? 'mt-1' : opt.value === 'comfortable' ? 'mt-2' : 'mt-3'}`} />
-                        <div className={`w-7 h-1.5 bg-primary-200 rounded-full ${opt.value === 'compact' ? 'mt-1' : opt.value === 'comfortable' ? 'mt-2' : 'mt-3'}`} />
-                      </div>
-                      <span className="text-[10px] text-neutral-400 font-heading">{opt.label}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Animations */}
-              <div className="p-4 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Zap className="w-3.5 h-3.5 text-neutral-400" />
-                  <div>
-                    <p className="text-sm font-heading font-semibold text-neutral-600">Animations</p>
-                    <p className="text-[10px] text-neutral-400">Entrance effects & transitions</p>
-                  </div>
-                </div>
-                <button
-                  onClick={() => updateSettings({ animations: !settings.animations })}
-                  className={`w-11 h-6 rounded-full transition-all cursor-pointer flex items-center px-0.5
-                    ${settings.animations ? 'bg-primary-400' : 'bg-neutral-200'}`}
-                >
-                  <div className={`w-5 h-5 rounded-full bg-white shadow-sm transition-transform ${settings.animations ? 'translate-x-5' : 'translate-x-0'}`} />
-                </button>
-              </div>
-            </div>
-          </section>
-
-          {/* ── Section: Voice ── */}
-          <section className="animate-fade-in-up" style={{ animationDelay: '0.15s' }}>
-            <div className="flex items-center gap-2 mb-4">
-              <Volume2 className="w-4 h-4 text-primary-500" />
-              <h2 className="font-heading font-bold text-neutral-700 text-sm">Aria's Voice</h2>
             </div>
 
-            <div className="bg-white rounded-2xl border border-neutral-100 divide-y divide-neutral-50">
+            {/* Voice & Audio section */}
+            <div className="bg-white rounded-2xl border border-slate-100 p-6 mb-6">
+              <div className="flex items-center gap-2 text-sm font-semibold text-slate-900 mb-4">
+                <Volume2 className="w-4 h-4 text-green-600" /> Voice & Audio
+              </div>
+
               {/* Provider Selection */}
-              <div className="p-4">
-                <p className="text-sm font-heading font-semibold text-neutral-600 mb-3">Voice Provider</p>
+              <div className="mb-5">
+                <p className="text-xs text-slate-500 uppercase tracking-wider mb-3">Voice Provider</p>
                 <div className="grid grid-cols-2 gap-2">
                   {PROVIDER_OPTIONS.map((opt) => (
                     <button
                       key={opt.value}
-                      onClick={() => {
-                        updateSettings({ voiceProvider: opt.value, voiceName: '' })
-                      }}
+                      onClick={() => updateSettings({ voiceProvider: opt.value, voiceName: '' })}
                       className={`flex flex-col items-center gap-1 py-3 px-2 rounded-xl border transition-all cursor-pointer
-                        ${settings.voiceProvider === opt.value ? 'border-primary-300 bg-primary-50' : 'border-neutral-100 hover:border-neutral-200'}`}
+                        ${settings.voiceProvider === opt.value ? 'border-green-500 bg-green-50' : 'border-slate-200 hover:border-slate-300'}`}
                     >
-                      <span className="text-sm font-heading font-semibold text-neutral-700">{opt.label}</span>
-                      <span className="text-[10px] text-neutral-400 font-heading">{opt.desc}</span>
+                      <span className="text-sm font-semibold text-slate-700">{opt.label}</span>
+                      <span className="text-xs text-slate-400">{opt.desc}</span>
                     </button>
                   ))}
                 </div>
               </div>
 
-              {/* Usage Bar (for Google and ElevenLabs) */}
+              {/* Usage Bar */}
               {settings.voiceProvider !== 'browser' && usageInfo && (
-                <div className="p-4">
+                <div className="mb-5">
                   <div className="flex items-center justify-between mb-2">
-                    <p className="text-xs font-heading font-semibold text-neutral-500">Usage this month</p>
-                    <span className="text-xs text-neutral-400 font-heading">
-                      {formatNumber(usageInfo.used)} / {formatNumber(usageInfo.limit)} chars
-                    </span>
+                    <p className="text-xs font-semibold text-slate-500">Usage this month</p>
+                    <span className="text-xs text-slate-400">{formatNumber(usageInfo.used)} / {formatNumber(usageInfo.limit)} chars</span>
                   </div>
-                  <div className="w-full h-2 bg-neutral-100 rounded-full overflow-hidden">
+                  <div className="w-full h-2 bg-slate-100 rounded-full">
                     <div
-                      className={`h-full rounded-full transition-all ${isLimitExceeded ? 'bg-red-400' : 'bg-primary-400'}`}
+                      className={`h-full rounded-full transition-all ${isLimitExceeded ? 'bg-red-400' : 'bg-green-500'}`}
                       style={{ width: `${Math.min(100, (usageInfo.used / usageInfo.limit) * 100)}%` }}
                     />
                   </div>
                   {isLimitExceeded && (
                     <div className="flex items-center gap-1.5 mt-2 text-red-500">
                       <AlertTriangle className="w-3.5 h-3.5" />
-                      <span className="text-xs font-heading font-semibold">Free limit reached -- switch to Browser voice</span>
+                      <span className="text-xs font-semibold">Free limit reached — switch to Browser voice</span>
                     </div>
                   )}
                 </div>
               )}
 
               {/* Voice Selection */}
-              <div className="p-4">
-                <p className="text-sm font-heading font-semibold text-neutral-600 mb-3">Voice</p>
+              <div className="mb-5">
+                <p className="text-xs text-slate-500 uppercase tracking-wider mb-3">Aria Voice Library</p>
                 {loadingVoices ? (
-                  <p className="text-xs text-neutral-400 font-body">Loading voices...</p>
-                ) : voiceList.length === 0 && settings.voiceProvider === 'browser' ? (
-                  <p className="text-xs text-neutral-400 font-body">No English voices detected. Voices depend on your browser and OS.</p>
+                  <p className="text-xs text-slate-400">Loading voices...</p>
                 ) : voiceList.length === 0 ? (
-                  <p className="text-xs text-neutral-400 font-body">No voices available. Check API key configuration on the server.</p>
+                  <p className="text-xs text-slate-400">
+                    {settings.voiceProvider === 'browser'
+                      ? 'No English voices detected. Voices depend on your browser and OS.'
+                      : 'No voices available. Check API key configuration on the server.'}
+                  </p>
                 ) : (
-                  <div className="flex flex-col gap-1.5 max-h-48 overflow-y-auto">
+                  <div className="flex flex-col gap-2 max-h-48 overflow-y-auto">
                     {/* Auto option */}
                     <button
                       onClick={() => updateSettings({ voiceName: '' })}
-                      className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left transition-all cursor-pointer
-                        ${settings.voiceName === '' ? 'bg-primary-50 border border-primary-300' : 'border border-neutral-100 hover:border-neutral-200'}`}
+                      className={`border rounded-xl p-4 flex items-center gap-3 cursor-pointer transition-all
+                        ${settings.voiceName === '' ? 'border-green-500 bg-green-50' : 'border-slate-200 hover:border-slate-300'}`}
                     >
-                      <div className={`w-2 h-2 rounded-full ${settings.voiceName === '' ? 'bg-primary-400' : 'bg-neutral-200'}`} />
-                      <div>
-                        <p className="text-sm font-body text-neutral-700">Auto-select</p>
-                        <p className="text-[10px] text-neutral-400">
+                      <div className="w-10 h-10 bg-green-600 rounded-full text-white font-bold flex items-center justify-center">A</div>
+                      <div className="flex-1">
+                        <p className="font-semibold text-sm text-slate-900">Auto-select</p>
+                        <p className="text-xs text-slate-500">
                           {settings.voiceProvider === 'browser' ? 'Best voice for your device' : 'Default voice'}
                         </p>
                       </div>
+                      <div className={`w-4 h-4 rounded-full border-2 ${settings.voiceName === '' ? 'bg-green-500 border-green-500' : 'border-slate-300'}`} />
                     </button>
 
-                    {voiceList.map((v) => {
+                    {voiceList.slice(0, 2).map((v) => {
                       const voiceKey = settings.voiceProvider === 'browser' ? v.name : (v.id || v.name)
                       return (
                         <button
                           key={voiceKey}
                           onClick={() => updateSettings({ voiceName: voiceKey })}
-                          className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-left transition-all cursor-pointer
-                            ${settings.voiceName === voiceKey ? 'bg-primary-50 border border-primary-300' : 'border border-neutral-100 hover:border-neutral-200'}`}
+                          className={`border rounded-xl p-4 flex items-center gap-3 cursor-pointer transition-all
+                            ${settings.voiceName === voiceKey ? 'border-green-500 bg-green-50' : 'border-slate-200 hover:border-slate-300'}`}
                         >
-                          <div className={`w-2 h-2 rounded-full shrink-0 ${settings.voiceName === voiceKey ? 'bg-primary-400' : 'bg-neutral-200'}`} />
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-body text-neutral-700 truncate">{v.name}</p>
-                            <p className="text-[10px] text-neutral-400">{v.lang}{v.type ? ` - ${v.type}` : ''}</p>
+                          <div className="w-10 h-10 bg-green-600 rounded-full text-white font-bold flex items-center justify-center">
+                            {v.name[0]?.toUpperCase()}
                           </div>
-                          {settings.voiceName === voiceKey && <Check className="w-4 h-4 text-primary-400 shrink-0" />}
+                          <div className="flex-1 min-w-0">
+                            <p className="font-semibold text-sm text-slate-900 truncate">{v.name}</p>
+                            <p className="text-xs text-slate-500">{v.lang}{v.type ? ` - ${v.type}` : ''}</p>
+                          </div>
+                          <div className={`w-4 h-4 rounded-full border-2 shrink-0 ${settings.voiceName === voiceKey ? 'bg-green-500 border-green-500' : 'border-slate-300'}`} />
                         </button>
                       )
                     })}
@@ -412,11 +320,11 @@ export function SettingsPage() {
                 )}
               </div>
 
-              {/* Voice Speed */}
-              <div className="p-4">
+              {/* Speed slider */}
+              <div className="mb-5">
                 <div className="flex items-center justify-between mb-3">
-                  <p className="text-sm font-heading font-semibold text-neutral-600">Speed</p>
-                  <span className="text-xs text-neutral-400 font-heading">
+                  <p className="text-xs text-slate-500 uppercase tracking-wider">Speed</p>
+                  <span className="text-xs text-slate-500 font-medium">
                     {settings.voiceSpeed <= 0.8 ? 'Slow' : settings.voiceSpeed >= 1.1 ? 'Fast' : 'Normal'}
                   </span>
                 </div>
@@ -427,37 +335,121 @@ export function SettingsPage() {
                   step="0.05"
                   value={settings.voiceSpeed}
                   onChange={(e) => updateSettings({ voiceSpeed: parseFloat(e.target.value) })}
-                  className="w-full h-2 bg-neutral-100 rounded-full appearance-none cursor-pointer accent-primary-400"
+                  className="w-full h-2 bg-slate-100 rounded-full appearance-none cursor-pointer accent-green-500"
                 />
                 <div className="flex justify-between mt-1">
-                  <span className="text-[10px] text-neutral-300">Slow</span>
-                  <span className="text-[10px] text-neutral-300">Normal</span>
-                  <span className="text-[10px] text-neutral-300">Fast</span>
+                  <span className="text-[10px] text-slate-300">Slow</span>
+                  <span className="text-[10px] text-slate-300">Normal</span>
+                  <span className="text-[10px] text-slate-300">Fast</span>
                 </div>
               </div>
 
+              {/* Voice Pitch row */}
+              <div className="flex items-center justify-between mb-5">
+                <p className="text-sm text-slate-700">Voice Pitch</p>
+                <button className="border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-xl px-4 py-2 text-sm transition-colors cursor-pointer">
+                  Default
+                </button>
+              </div>
+
               {/* Preview */}
-              <div className="p-4">
+              <button
+                onClick={handlePreview}
+                disabled={isPreviewing || isLimitExceeded}
+                className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-xl font-semibold text-sm transition-colors cursor-pointer
+                  ${isLimitExceeded
+                    ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
+                    : 'bg-green-50 text-green-600 hover:bg-green-100'
+                  }`}
+              >
+                <Play className="w-4 h-4" />
+                {isPreviewing ? 'Playing...' : 'Preview Voice'}
+              </button>
+            </div>
+
+            {/* Animations toggle */}
+            <div className="bg-white rounded-2xl border border-slate-100 p-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Zap className="w-4 h-4 text-green-600" />
+                  <div>
+                    <p className="text-sm font-semibold text-slate-700">Animations</p>
+                    <p className="text-xs text-slate-400">Entrance effects & transitions</p>
+                  </div>
+                </div>
                 <button
-                  onClick={handlePreview}
-                  disabled={isPreviewing || isLimitExceeded}
-                  className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-xl font-heading font-semibold text-sm transition-colors cursor-pointer
-                    ${isLimitExceeded
-                      ? 'bg-neutral-100 text-neutral-400 cursor-not-allowed'
-                      : 'bg-primary-50 text-primary-600 hover:bg-primary-100'
-                    }`}
+                  onClick={() => updateSettings({ animations: !settings.animations })}
+                  className={`w-10 h-6 rounded-full transition-all cursor-pointer flex items-center px-0.5
+                    ${settings.animations ? 'bg-green-500' : 'bg-slate-200'}`}
                 >
-                  <Play className="w-4 h-4" />
-                  {isPreviewing ? 'Playing...' : 'Preview Voice'}
+                  <div className={`w-5 h-5 rounded-full bg-white shadow-sm transition-transform ${settings.animations ? 'translate-x-4' : 'translate-x-0'}`} />
                 </button>
               </div>
             </div>
-          </section>
+          </div>
+
+          {/* Right: Insights (col-span-1) */}
+          <div>
+            <div className="bg-white rounded-2xl border border-slate-100 p-6">
+              <div className="flex items-center gap-2 text-sm font-semibold text-slate-900 mb-4">
+                <Settings className="w-4 h-4 text-green-600" /> Insights
+              </div>
+
+              {/* Character Usage */}
+              <div className="mb-5">
+                <p className="text-xs text-slate-500 uppercase tracking-wider mb-2">Character Usage</p>
+                {usageInfo ? (
+                  <>
+                    <p className="text-3xl font-bold text-slate-900 mb-1">{formatNumber(usageInfo.used)}</p>
+                    <p className="text-xs text-slate-400 mb-2">of {formatNumber(usageInfo.limit)} chars</p>
+                    <div className="w-full h-2 bg-slate-100 rounded-full mb-2">
+                      <div
+                        className="h-full bg-green-500 rounded-full"
+                        style={{ width: `${Math.min(100, (usageInfo.used / usageInfo.limit) * 100)}%` }}
+                      />
+                    </div>
+                    <p className="text-xs text-slate-400">Upgrading offers unrestricted access to all voice features.</p>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-3xl font-bold text-slate-900 mb-1">∞</p>
+                    <p className="text-xs text-slate-400 mb-2">Browser voice is unlimited</p>
+                    <div className="w-full h-2 bg-slate-100 rounded-full mb-2" />
+                    <p className="text-xs text-slate-400">Upgrading offers unrestricted access to premium voices.</p>
+                  </>
+                )}
+              </div>
+
+              {/* Toggle rows */}
+              <div className="space-y-4 mb-5">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm text-slate-700">Chat Density: {settings.chatDensity}</p>
+                  <button
+                    onClick={() => {
+                      const options = ['compact', 'comfortable', 'spacious'] as const
+                      const idx = options.indexOf(settings.chatDensity)
+                      updateSettings({ chatDensity: options[(idx + 1) % options.length] })
+                    }}
+                    className={`w-10 h-6 rounded-full transition-all cursor-pointer flex items-center px-0.5
+                      ${settings.chatDensity !== 'compact' ? 'bg-green-500' : 'bg-slate-200'}`}
+                  >
+                    <div className={`w-5 h-5 rounded-full bg-white shadow-sm transition-transform ${settings.chatDensity !== 'compact' ? 'translate-x-4' : 'translate-x-0'}`} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Reset Defaults */}
+              <button
+                onClick={() => updateSettings({ theme: themes[0].id, fontSize: 'medium', borderRadius: 'rounded', chatDensity: 'comfortable', animations: true })}
+                className="w-full border border-red-200 text-red-500 hover:bg-red-50 rounded-xl py-2.5 text-sm font-medium transition-colors cursor-pointer mt-4"
+              >
+                Reset Defaults
+              </button>
+            </div>
+          </div>
         </div>
 
-        <p className="text-center text-[10px] text-neutral-300 font-heading mt-10">
-          Settings are saved automatically
-        </p>
+        <p className="text-center text-xs text-slate-400 mt-8">Settings are saved automatically</p>
       </div>
     </div>
   )

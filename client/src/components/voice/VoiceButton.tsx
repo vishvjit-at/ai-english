@@ -19,36 +19,36 @@ export function VoiceButton({ isListening, isThinking, isSpeaking, isSupported, 
   }
 
   return (
-    <div className="flex flex-col items-center gap-3">
+    <div className="flex flex-col items-center gap-2">
       <div className="relative">
         {isListening && (
           <>
-            <span className="absolute inset-0 rounded-full bg-accent-300/40" style={{ animation: 'pulse-soft 1.5s ease-out infinite' }} />
-            <span className="absolute -inset-3 rounded-full bg-accent-200/25" style={{ animation: 'pulse-soft 1.5s ease-out infinite 0.3s' }} />
+            <span className="absolute inset-0 bg-red-400/30 rounded-full animate-ping" />
+            <span className="absolute -inset-2 bg-red-400/20 rounded-full animate-ping" style={{ animationDelay: '0.2s' }} />
           </>
         )}
         {isSpeaking && (
-          <span className="absolute -inset-2 rounded-full bg-primary-200/30" style={{ animation: 'pulse-soft 2s ease-out infinite' }} />
+          <span className="absolute -inset-2 rounded-full bg-green-400/20 animate-ping" />
         )}
 
         <button
           onClick={handleClick}
-          disabled={isDisabled}
+          disabled={isDisabled && !isListening}
           className={cn(
-            'relative w-[68px] h-[68px] rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer',
+            'relative w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer',
             isListening
-              ? 'bg-gradient-to-br from-accent-300 to-accent-400 shadow-lg shadow-accent-300/25 scale-110'
+              ? 'bg-red-500 hover:bg-red-600 shadow-lg shadow-red-500/30'
               : isSpeaking
-              ? 'bg-gradient-to-br from-primary-300 to-primary-500 shadow-lg shadow-primary-300/25'
+              ? 'bg-green-600 rounded-full shadow-lg shadow-green-600/30'
               : isThinking
-              ? 'bg-neutral-200'
+              ? 'bg-slate-200 cursor-not-allowed'
               : isDisabled
-              ? 'bg-neutral-200 cursor-not-allowed'
-              : 'bg-gradient-to-br from-primary-400 to-primary-500 shadow-md shadow-primary-300/20 hover:shadow-lg hover:shadow-primary-300/30 hover:scale-105 active:scale-95'
+              ? 'bg-slate-200 cursor-not-allowed'
+              : 'bg-green-600 hover:bg-green-700 shadow-lg shadow-green-600/30 hover:scale-105 active:scale-95'
           )}
         >
           {isThinking ? (
-            <Loader2 className="w-6 h-6 text-neutral-400 animate-spin" />
+            <Loader2 className="w-6 h-6 text-slate-400 animate-spin" />
           ) : isListening ? (
             <MicOff className="w-6 h-6 text-white relative z-10" />
           ) : (
@@ -57,7 +57,7 @@ export function VoiceButton({ isListening, isThinking, isSpeaking, isSupported, 
         </button>
       </div>
 
-      <p className="text-xs font-heading font-medium text-neutral-400 text-center min-h-[18px]">
+      <p className="text-xs text-slate-500 mt-2 text-center">
         {isListening ? 'Listening... tap to stop'
           : isThinking ? 'Aria is thinking...'
           : isSpeaking ? 'Aria is speaking...'

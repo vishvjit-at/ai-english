@@ -1,11 +1,11 @@
 import { useState } from 'react'
-import { Mic, Sparkles, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react'
+import { Mic, Sparkles, ChevronDown, ChevronUp, ArrowRight, Lightbulb } from 'lucide-react'
 import type { UserContext } from '@/lib/types'
 
 const levels = [
-  { value: 'beginner', label: 'Beginner', color: 'bg-primary-300' },
-  { value: 'intermediate', label: 'Intermediate', color: 'bg-accent-300' },
-  { value: 'advanced', label: 'Advanced', color: 'bg-tertiary-300' },
+  { value: 'beginner', label: 'Beginner' },
+  { value: 'intermediate', label: 'Intermediate' },
+  { value: 'advanced', label: 'Advanced' },
 ] as const
 
 const examples = [
@@ -32,77 +32,99 @@ export function CustomScenarioSetup({ onStart, isLoading }: { onStart: (ctx: Use
     onStart({ name: name.trim(), level, customScenario: customScenario.trim() })
   }
 
-  const inputClass = 'w-full bg-neutral-50 border border-neutral-200 rounded-xl px-4 py-3 text-sm font-body text-neutral-700 focus:outline-none focus:ring-2 focus:ring-accent-200 focus:border-accent-300 transition-all placeholder:text-neutral-300'
+  const inputClass = 'w-full border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all placeholder:text-slate-400'
 
   return (
-    <div className="h-full overflow-y-auto bg-surface flex items-center justify-center px-5 py-10">
-      <div className="w-full max-w-md animate-fade-in-up">
-        <div className="bg-white rounded-3xl shadow-sm border border-neutral-100 overflow-hidden">
-          {/* Header */}
-          <div className="bg-gradient-to-br from-accent-100 to-accent-50 px-6 py-5 border-b border-accent-100/50">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-accent-300 to-accent-400 flex items-center justify-center shadow-sm">
-                <Sparkles className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h2 className="font-heading font-bold text-neutral-800 text-base">Your Own Scenario</h2>
-                <p className="text-neutral-400 text-xs font-body">Describe any situation</p>
-              </div>
-            </div>
+    <div className="min-h-full bg-slate-50 p-8 max-w-2xl mx-auto">
+      <h1 className="text-3xl font-bold text-slate-900 mb-2">Custom Scenario</h1>
+      <p className="text-slate-500 mb-8">Describe any situation and practice with Aria.</p>
+
+      {/* Your Practice Topic card */}
+      <div className="bg-white rounded-2xl border border-slate-100 p-6 mb-4">
+        <div className="mb-4">
+          <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+            Your Name <span className="text-red-400">*</span>
+          </label>
+          <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Rahul" className={inputClass} autoFocus />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+            Your Scenario <span className="text-red-400">*</span>
+          </label>
+          <textarea
+            value={customScenario}
+            onChange={(e) => setCustomScenario(e.target.value)}
+            placeholder="e.g. I am negotiating my salary with my manager. I have a competing offer."
+            rows={4}
+            className={`${inputClass} resize-none min-h-[120px]`}
+          />
+          <p className="text-sm text-slate-400 mt-2 flex items-center gap-1.5">
+            <Lightbulb className="w-3.5 h-3.5" />
+            More detail = more realistic practice
+          </p>
+        </div>
+
+        <div>
+          <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">English Level</label>
+          <div className="flex gap-2">
+            {levels.map((opt) => (
+              <button key={opt.value} onClick={() => setLevel(opt.value)}
+                className={`px-4 py-2 rounded-xl border text-sm font-medium transition-all cursor-pointer flex-1
+                  ${level === opt.value
+                    ? 'bg-green-600 text-white border-green-600'
+                    : 'border-slate-200 text-slate-600 hover:bg-slate-50'
+                  }`}>
+                {opt.label}
+              </button>
+            ))}
           </div>
+        </div>
 
-          <div className="p-6 flex flex-col gap-5">
-            <div>
-              <label className="block text-sm font-heading font-semibold text-neutral-600 mb-1.5">Your name <span className="text-accent-400">*</span></label>
-              <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Rahul" className={inputClass} autoFocus />
-            </div>
+        <button onClick={handleStart} disabled={!canStart || isLoading}
+          className="w-full bg-green-600 hover:bg-green-700 text-white py-3.5 rounded-xl font-semibold flex items-center justify-center gap-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-[0.98] mt-6">
+          {isLoading ? <><span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> Building scenario...</>
+            : <><Mic className="w-4 h-4" /> Start Practice <ArrowRight className="w-4 h-4" /></>}
+        </button>
+      </div>
 
-            <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <label className="text-sm font-heading font-semibold text-neutral-600">Your scenario <span className="text-accent-400">*</span></label>
-                <button onClick={() => setShowExamples((v) => !v)} className="text-xs text-accent-400 hover:text-accent-500 flex items-center gap-0.5 font-heading font-semibold cursor-pointer">
-                  Ideas {showExamples ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
-                </button>
-              </div>
-              <textarea value={customScenario} onChange={(e) => setCustomScenario(e.target.value)}
-                placeholder="e.g. I am negotiating my salary with my manager. I have a competing offer."
-                rows={4} className={`${inputClass} resize-none`} />
-              <p className="text-[10px] text-neutral-300 mt-1 font-body">More detail = more realistic practice</p>
+      {/* Browse Ideas collapsible */}
+      <div className="bg-white rounded-2xl border border-slate-100 overflow-hidden mb-4">
+        <button
+          onClick={() => setShowExamples((v) => !v)}
+          className="flex items-center justify-between p-4 cursor-pointer w-full text-left hover:bg-slate-50 transition-colors"
+        >
+          <span className="text-sm font-semibold text-slate-700">Browse Ideas</span>
+          {showExamples ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
+        </button>
+        {showExamples && (
+          <div className="grid grid-cols-2 gap-2 p-4 pt-0">
+            {examples.map((ex, i) => (
+              <button key={i} onClick={() => { setCustomScenario(ex); setShowExamples(false) }}
+                className="text-left bg-slate-50 rounded-lg px-3 py-2 text-sm text-slate-600 hover:bg-green-50 hover:text-green-700 cursor-pointer transition-colors">
+                {ex}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
 
-              {showExamples && (
-                <div className="mt-3 bg-accent-50/50 rounded-xl border border-accent-100 overflow-hidden animate-scale-in">
-                  <p className="text-[10px] text-accent-400 font-heading font-bold px-3 py-2 uppercase tracking-widest">Tap to use</p>
-                  <div className="flex flex-col max-h-40 overflow-y-auto">
-                    {examples.map((ex, i) => (
-                      <button key={i} onClick={() => { setCustomScenario(ex); setShowExamples(false) }}
-                        className="text-left px-4 py-2.5 text-xs text-neutral-500 hover:bg-accent-100/50 cursor-pointer transition-colors border-t border-accent-100/30 first:border-0 font-body">
-                        {ex}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-sm font-heading font-semibold text-neutral-600 mb-2">English level</label>
-              <div className="grid grid-cols-3 gap-2">
-                {levels.map((opt) => (
-                  <button key={opt.value} onClick={() => setLevel(opt.value)}
-                    className={`flex flex-col items-center gap-1 px-2 py-3 rounded-xl border transition-all cursor-pointer
-                      ${level === opt.value ? 'border-accent-300 bg-accent-50' : 'border-neutral-100 hover:border-neutral-200'}`}>
-                    <div className={`w-2.5 h-2.5 rounded-full ${opt.color} ${level === opt.value ? '' : 'opacity-30'} transition-all`} />
-                    <span className="text-xs font-heading font-semibold text-neutral-700">{opt.label}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <button onClick={handleStart} disabled={!canStart || isLoading}
-              className="w-full bg-gradient-to-r from-accent-300 to-accent-400 hover:from-accent-400 hover:to-accent-500 text-white py-3.5 rounded-xl font-heading font-bold flex items-center justify-center gap-2 shadow-sm hover:shadow-md disabled:from-neutral-200 disabled:to-neutral-200 disabled:shadow-none disabled:cursor-not-allowed transition-all cursor-pointer active:scale-[0.98]">
-              {isLoading ? <><span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> Building scenario...</>
-                : <><Mic className="w-4 h-4" /> Start Practice <ArrowRight className="w-4 h-4" /></>}
-            </button>
+      {/* Aria preview card */}
+      <div className="bg-white rounded-2xl border border-slate-100 p-6 flex gap-4">
+        <div className="w-12 h-12 bg-green-600 rounded-full text-white font-bold flex items-center justify-center text-lg shrink-0">
+          A
+        </div>
+        <div>
+          <p className="font-semibold text-slate-900 text-sm mb-1">Meet Aria</p>
+          <p className="text-slate-600 text-sm">
+            Your AI English partner. Patient, encouraging, and tailored to your scenario. She'll guide the conversation naturally.
+          </p>
+          <div className="flex gap-2 mt-3">
+            <span className="bg-green-50 text-green-700 text-xs font-medium px-2.5 py-1 rounded-full">Patient</span>
+            <span className="bg-green-50 text-green-700 text-xs font-medium px-2.5 py-1 rounded-full">Encouraging</span>
+            <span className="bg-green-50 text-green-700 text-xs font-medium px-2.5 py-1 rounded-full flex items-center gap-1">
+              <Sparkles className="w-3 h-3" /> AI-Powered
+            </span>
           </div>
         </div>
       </div>

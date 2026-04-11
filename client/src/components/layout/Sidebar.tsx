@@ -34,84 +34,65 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
       )}
 
       <aside className={`
-        fixed top-0 left-0 z-50 h-full w-[270px] bg-surface-dark flex flex-col
-        transition-transform duration-300 ease-out border-r border-neutral-200/50
+        fixed top-0 left-0 z-50 h-full w-64 bg-white border-r border-slate-100 flex flex-col
+        transition-transform duration-300 ease-out
         lg:static lg:translate-x-0
         ${isOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
-        {/* Logo */}
-        <div className="px-5 py-5 flex items-center justify-between shrink-0">
-          <Link to="/" className="flex items-center gap-3" onClick={onClose}>
-            <div className="w-9 h-9 bg-gradient-to-br from-primary-400 to-primary-600 rounded-xl flex items-center justify-center shadow-sm">
-              <Mic className="w-4 h-4 text-white" />
-            </div>
-            <div>
-              <h1 className="font-heading font-extrabold text-neutral-800 text-[15px] leading-tight">SpeakUp</h1>
-              <p className="text-[10px] text-neutral-400 font-heading">with Aria</p>
-            </div>
-          </Link>
-          <button onClick={onClose} className="lg:hidden w-8 h-8 flex items-center justify-center text-neutral-400 hover:text-neutral-600 cursor-pointer rounded-lg hover:bg-neutral-200/50 transition-colors">
-            <X className="w-4 h-4" />
-          </button>
-        </div>
+        {/* Logo section */}
+        <div className="p-5 shrink-0">
+          <div className="flex items-center justify-between mb-8">
+            <Link to="/" className="flex items-center gap-2.5" onClick={onClose}>
+              <div className="w-8 h-8 bg-green-600 rounded-xl flex items-center justify-center">
+                <Mic className="w-4 h-4 text-white" />
+              </div>
+              <div>
+                <p className="text-sm font-bold text-slate-900">SpeakUp</p>
+                <p className="text-[10px] text-slate-400 tracking-wider uppercase">Your English Partner</p>
+              </div>
+            </Link>
+            <button onClick={onClose} className="lg:hidden w-8 h-8 flex items-center justify-center text-slate-400 hover:text-slate-600 cursor-pointer rounded-lg hover:bg-slate-50 transition-colors">
+              <X className="w-4 h-4" />
+            </button>
+          </div>
 
-        {/* Custom scenario */}
-        <div className="px-3 mb-4">
+          {/* Custom scenario */}
           <Link to="/practice/custom" onClick={onClose}>
             <div className={`
-              relative overflow-hidden rounded-2xl p-4 cursor-pointer transition-all group
+              flex items-center gap-3 px-3 py-2 rounded-xl text-sm cursor-pointer transition-colors
               ${isActive('/practice/custom')
-                ? 'bg-gradient-to-br from-accent-300 to-accent-400 shadow-md'
-                : 'bg-gradient-to-br from-accent-100 to-accent-200/80 hover:from-accent-200 hover:to-accent-300/80 hover:shadow-sm'
+                ? 'bg-green-50 text-green-700 font-semibold'
+                : 'text-slate-600 hover:bg-slate-50'
               }
             `}>
-              <div className="flex items-center gap-3">
-                <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${isActive('/practice/custom') ? 'bg-white/30' : 'bg-white/60'}`}>
-                  <Sparkles className={`w-4 h-4 ${isActive('/practice/custom') ? 'text-white' : 'text-accent-500'}`} />
-                </div>
-                <div>
-                  <p className={`text-sm font-heading font-bold ${isActive('/practice/custom') ? 'text-white' : 'text-neutral-700'}`}>
-                    Custom Scenario
-                  </p>
-                  <p className={`text-[10px] ${isActive('/practice/custom') ? 'text-white/70' : 'text-neutral-400'}`}>
-                    Describe any situation
-                  </p>
-                </div>
-              </div>
+              <Sparkles className={`w-4 h-4 ${isActive('/practice/custom') ? 'text-green-600' : 'text-slate-400'}`} />
+              Custom Scenario
             </div>
           </Link>
-        </div>
 
-        {/* Lessons link */}
-        <div className="px-3 mb-3">
+          {/* Lessons link */}
           <Link to="/lessons" onClick={onClose}>
             <div className={`
-              flex items-center gap-2.5 px-3 py-2.5 rounded-xl cursor-pointer transition-all
+              flex items-center gap-3 px-3 py-2 rounded-xl text-sm cursor-pointer transition-colors mt-1
               ${isActive('/lessons') || location.pathname.startsWith('/lessons/')
-                ? 'bg-primary-50 text-primary-700'
-                : 'text-neutral-600 hover:bg-neutral-100/80'
+                ? 'bg-green-50 text-green-700 font-semibold'
+                : 'text-slate-600 hover:bg-slate-50'
               }
             `}>
-              <GraduationCap className={`w-4 h-4 ${isActive('/lessons') || location.pathname.startsWith('/lessons/') ? 'text-primary-400' : 'text-neutral-400'}`} />
-              <p className="text-[13px] font-heading font-semibold">Guided Lessons</p>
+              <GraduationCap className={`w-4 h-4 ${isActive('/lessons') || location.pathname.startsWith('/lessons/') ? 'text-green-600' : 'text-slate-400'}`} />
+              Guided Lessons
             </div>
           </Link>
         </div>
 
-        <div className="px-5 mb-3">
-          <div className="h-px bg-neutral-200/60" />
-        </div>
-
-        {/* Scenario list */}
-        <nav className="flex-1 overflow-y-auto px-3 pb-4">
+        {/* Nav */}
+        <nav className="flex-1 overflow-y-auto px-3">
           {scenarioData && (Object.keys(scenarioData) as PredefinedTopicKey[]).map((topic) => (
-            <div key={topic} className="mb-5">
-              <div className="flex items-center gap-2 px-2 mb-2">
-                <span className="text-neutral-400">{topicConfig[topic].icon}</span>
-                <p className="text-[10px] font-heading font-bold text-neutral-400 uppercase tracking-widest">
-                  {topicConfig[topic].label}
-                </p>
-              </div>
+            <div key={topic} className="mb-4">
+              <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider px-3 mb-1 mt-4 flex items-center gap-1.5">
+                <span className="text-slate-400">{topicConfig[topic].icon}</span>
+                {topicConfig[topic].label}
+              </p>
 
               <div className="flex flex-col gap-0.5">
                 {scenarioData[topic].map((scenario) => {
@@ -119,20 +100,18 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                   return (
                     <Link key={scenario.id} to={`/practice/${scenario.id}`} onClick={onClose}>
                       <div className={`
-                        flex items-center gap-2.5 px-3 py-2.5 rounded-xl cursor-pointer transition-all
+                        flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer transition-colors text-sm
                         ${active
-                          ? 'bg-primary-50 text-primary-700'
-                          : 'text-neutral-600 hover:bg-neutral-100/80'
+                          ? 'bg-green-50 text-green-700 font-semibold'
+                          : 'text-slate-600 hover:bg-slate-50'
                         }
                       `}>
-                        <MessageCircle className={`w-3.5 h-3.5 shrink-0 ${active ? 'text-primary-400' : 'text-neutral-300'}`} />
-                        <p className={`text-[13px] font-body truncate flex-1 ${active ? 'font-semibold' : ''}`}>
-                          {scenario.name}
-                        </p>
-                        <span className={`text-[9px] font-heading font-semibold capitalize px-1.5 py-0.5 rounded-full
-                          ${scenario.difficulty === 'beginner' ? 'bg-primary-50 text-primary-500' :
-                            scenario.difficulty === 'intermediate' ? 'bg-accent-100 text-accent-500' :
-                            'bg-tertiary-100 text-tertiary-500'}
+                        <MessageCircle className={`w-3.5 h-3.5 shrink-0 ${active ? 'text-green-600' : 'text-slate-300'}`} />
+                        <p className="truncate flex-1">{scenario.name}</p>
+                        <span className={`text-[9px] font-semibold capitalize px-1.5 py-0.5 rounded-full
+                          ${scenario.difficulty === 'beginner' ? 'bg-green-50 text-green-600' :
+                            scenario.difficulty === 'intermediate' ? 'bg-amber-50 text-amber-600' :
+                            'bg-purple-50 text-purple-600'}
                         `}>
                           {scenario.difficulty.slice(0, 3)}
                         </span>
@@ -145,92 +124,93 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
           ))}
 
           {!scenarioData && (
-            <div className="px-3 flex flex-col gap-2">
+            <div className="px-3 flex flex-col gap-2 mt-4">
               {[1, 2, 3, 4, 5].map((i) => (
-                <div key={i} className="h-10 bg-neutral-100 rounded-xl animate-pulse" />
+                <div key={i} className="h-10 bg-slate-100 rounded-xl animate-pulse" />
               ))}
             </div>
           )}
+
+          {/* Bottom nav links with divider */}
+          <div className="border-t border-slate-100 pt-4 mt-4 flex flex-col gap-0.5 pb-4">
+            <Link to="/history" onClick={onClose}>
+              <div className={`
+                flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer transition-colors text-sm
+                ${isActive('/history') || location.pathname.startsWith('/history/')
+                  ? 'bg-green-50 text-green-700 font-semibold'
+                  : 'text-slate-600 hover:bg-slate-50'
+                }
+              `}>
+                <Clock className={`w-4 h-4 ${isActive('/history') || location.pathname.startsWith('/history/') ? 'text-green-600' : 'text-slate-400'}`} />
+                History
+              </div>
+            </Link>
+            <Link to="/progress" onClick={onClose}>
+              <div className={`
+                flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer transition-colors text-sm
+                ${isActive('/progress')
+                  ? 'bg-green-50 text-green-700 font-semibold'
+                  : 'text-slate-600 hover:bg-slate-50'
+                }
+              `}>
+                <TrendingUp className={`w-4 h-4 ${isActive('/progress') ? 'text-green-600' : 'text-slate-400'}`} />
+                Progress
+              </div>
+            </Link>
+            <Link to="/vocabulary" onClick={onClose}>
+              <div className={`
+                flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer transition-colors text-sm
+                ${isActive('/vocabulary')
+                  ? 'bg-green-50 text-green-700 font-semibold'
+                  : 'text-slate-600 hover:bg-slate-50'
+                }
+              `}>
+                <BookOpen className={`w-4 h-4 ${isActive('/vocabulary') ? 'text-green-600' : 'text-slate-400'}`} />
+                Vocabulary
+              </div>
+            </Link>
+            <Link to="/settings" onClick={onClose}>
+              <div className={`
+                flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer transition-colors text-sm
+                ${isActive('/settings')
+                  ? 'bg-green-50 text-green-700 font-semibold'
+                  : 'text-slate-600 hover:bg-slate-50'
+                }
+              `}>
+                <Settings className={`w-4 h-4 ${isActive('/settings') ? 'text-green-600' : 'text-slate-400'}`} />
+                Settings
+              </div>
+            </Link>
+          </div>
         </nav>
 
-        {/* Bottom nav links */}
-        <div className="px-3 pb-3 shrink-0 flex flex-col gap-0.5">
-          <Link to="/history" onClick={onClose}>
-            <div className={`
-              flex items-center gap-2.5 px-3 py-2.5 rounded-xl cursor-pointer transition-all
-              ${isActive('/history') || location.pathname.startsWith('/history/')
-                ? 'bg-primary-50 text-primary-700'
-                : 'text-neutral-500 hover:bg-neutral-100/80 hover:text-neutral-700'
-              }
-            `}>
-              <Clock className={`w-4 h-4 ${isActive('/history') || location.pathname.startsWith('/history/') ? 'text-primary-400' : 'text-neutral-400'}`} />
-              <p className="text-[13px] font-heading font-semibold">History</p>
-            </div>
-          </Link>
-          <Link to="/progress" onClick={onClose}>
-            <div className={`
-              flex items-center gap-2.5 px-3 py-2.5 rounded-xl cursor-pointer transition-all
-              ${isActive('/progress')
-                ? 'bg-primary-50 text-primary-700'
-                : 'text-neutral-500 hover:bg-neutral-100/80 hover:text-neutral-700'
-              }
-            `}>
-              <TrendingUp className={`w-4 h-4 ${isActive('/progress') ? 'text-primary-400' : 'text-neutral-400'}`} />
-              <p className="text-[13px] font-heading font-semibold">Progress</p>
-            </div>
-          </Link>
-          <Link to="/vocabulary" onClick={onClose}>
-            <div className={`
-              flex items-center gap-2.5 px-3 py-2.5 rounded-xl cursor-pointer transition-all
-              ${isActive('/vocabulary')
-                ? 'bg-primary-50 text-primary-700'
-                : 'text-neutral-500 hover:bg-neutral-100/80 hover:text-neutral-700'
-              }
-            `}>
-              <BookOpen className={`w-4 h-4 ${isActive('/vocabulary') ? 'text-primary-400' : 'text-neutral-400'}`} />
-              <p className="text-[13px] font-heading font-semibold">Vocabulary</p>
-            </div>
-          </Link>
-          <Link to="/settings" onClick={onClose}>
-            <div className={`
-              flex items-center gap-2.5 px-3 py-2.5 rounded-xl cursor-pointer transition-all
-              ${isActive('/settings')
-                ? 'bg-primary-50 text-primary-700'
-                : 'text-neutral-500 hover:bg-neutral-100/80 hover:text-neutral-700'
-              }
-            `}>
-              <Settings className={`w-4 h-4 ${isActive('/settings') ? 'text-primary-400' : 'text-neutral-400'}`} />
-              <p className="text-[13px] font-heading font-semibold">Settings</p>
-            </div>
-          </Link>
-        </div>
-
-        <div className="px-3 py-3 border-t border-neutral-200/40 shrink-0">
+        {/* Bottom user section */}
+        <div className="border-t border-slate-100 p-4 shrink-0">
           {user ? (
-            <div className="flex items-center gap-2.5 px-2">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-300 to-primary-500 flex items-center justify-center shrink-0">
+            <div className="flex items-center gap-2.5">
+              <div className="w-9 h-9 bg-gradient-to-br from-green-400 to-green-600 rounded-full text-white text-sm font-bold flex items-center justify-center shrink-0">
                 {user.user_metadata?.avatar_url ? (
-                  <img src={user.user_metadata.avatar_url} alt="" className="w-8 h-8 rounded-full" />
+                  <img src={user.user_metadata.avatar_url} alt="" className="w-9 h-9 rounded-full" />
                 ) : (
-                  <span className="text-xs font-bold text-white">{(user.email?.[0] || '?').toUpperCase()}</span>
+                  (user.email?.[0] || '?').toUpperCase()
                 )}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-[12px] font-heading font-semibold text-neutral-600 truncate">
+                <p className="text-sm font-medium text-slate-900 truncate">
                   {user.user_metadata?.full_name || user.email}
                 </p>
-                <p className="text-[10px] text-neutral-300 truncate">{user.email}</p>
+                <p className="text-xs text-slate-400 truncate">{user.email}</p>
               </div>
               <button
                 onClick={() => signOut()}
-                className="w-7 h-7 flex items-center justify-center text-neutral-300 hover:text-neutral-500 rounded-lg hover:bg-neutral-100 transition-colors cursor-pointer shrink-0"
+                className="ml-auto p-1.5 text-slate-400 hover:text-red-500 transition-colors rounded-lg hover:bg-red-50 cursor-pointer shrink-0"
                 title="Sign out"
               >
-                <LogOut className="w-3.5 h-3.5" />
+                <LogOut className="w-4 h-4" />
               </button>
             </div>
           ) : (
-            <p className="text-[10px] text-neutral-300 font-heading text-center">Free to use</p>
+            <p className="text-xs text-slate-400 text-center">Free to use</p>
           )}
         </div>
       </aside>

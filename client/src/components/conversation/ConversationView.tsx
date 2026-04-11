@@ -95,58 +95,62 @@ export function ConversationView({ config, userContext, starterMessage, lessonOb
   const isLesson = !!config.lessonId
 
   return (
-    <div className="flex flex-col h-full bg-surface">
+    <div className="flex flex-col h-full bg-white">
       {/* Header */}
-      <div className="glass-soft shrink-0 px-5 py-3 flex items-center justify-between border-b border-neutral-100/60">
+      <div className="px-6 py-4 border-b border-slate-100 flex items-center gap-4 bg-white shrink-0">
+        {/* Left: Aria info */}
         <div className="flex items-center gap-3">
-          <div className="relative">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-primary-300 to-primary-500 flex items-center justify-center">
-              <span className="text-white font-heading font-bold text-sm">A</span>
-            </div>
-            <span className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-surface ${isSpeaking || isListening ? 'bg-primary-400' : 'bg-primary-300'}`} />
+          <div className="w-10 h-10 bg-green-600 rounded-full text-white font-bold flex items-center justify-center shrink-0">
+            A
           </div>
           <div>
-            <p className="font-heading font-bold text-neutral-700 text-sm">Aria</p>
-            <p className="text-[11px] text-neutral-400 font-body flex items-center gap-1">
+            <p className="font-semibold text-slate-900 text-sm">Aria</p>
+            <p className="text-xs text-slate-400 flex items-center gap-1">
               {isSaving ? 'Saving...'
-                : isSpeaking ? <><Volume2 className="w-3 h-3 text-primary-400" /> Speaking...</>
-                : isListening ? <><span className="w-1.5 h-1.5 bg-accent-400 rounded-full animate-pulse" /> Listening...</>
+                : isSpeaking ? <><Volume2 className="w-3 h-3 text-green-500" /> Speaking...</>
+                : isListening ? <><span className="w-1.5 h-1.5 bg-red-400 rounded-full animate-pulse" /> Listening...</>
                 : 'Ready to chat'}
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+
+        {/* Center: AudioVisualizer */}
+        <div className="flex-1 flex justify-center">
           {isSpeaking && <AudioVisualizer isActive={true} />}
+        </div>
+
+        {/* Right: actions */}
+        <div className="flex items-center gap-2">
           <button
             onClick={handleEndConversation}
             disabled={isSaving || messages.length < 2}
-            className="h-8 px-3 rounded-xl bg-gradient-to-br from-primary-400 to-primary-500 text-white text-xs font-heading font-semibold hover:shadow-md disabled:from-neutral-200 disabled:to-neutral-200 disabled:text-neutral-400 disabled:shadow-none disabled:cursor-not-allowed flex items-center gap-1.5 transition-all cursor-pointer"
+            className="h-9 px-4 rounded-xl bg-green-600 hover:bg-green-700 text-white text-sm font-semibold flex items-center gap-1.5 transition-colors disabled:bg-slate-100 disabled:text-slate-400 disabled:cursor-not-allowed cursor-pointer"
             title="End & Save"
           >
             {isSaving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <CheckCircle className="w-3.5 h-3.5" />}
             <span className="hidden sm:inline">{isSaving ? 'Saving...' : 'End & Save'}</span>
           </button>
-          <button onClick={handleReset} className="w-8 h-8 rounded-xl bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center transition-colors cursor-pointer" title="Restart">
-            <RotateCcw className="w-3.5 h-3.5 text-neutral-400" />
+          <button onClick={handleReset} className="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors cursor-pointer" title="Restart">
+            <RotateCcw className="w-3.5 h-3.5 text-slate-500" />
           </button>
         </div>
       </div>
 
       {/* Context bar */}
-      <div className="px-5 py-2 bg-primary-50/50 border-b border-primary-100/50 flex items-center justify-between shrink-0">
+      <div className="bg-green-50 border-b border-green-100 px-6 py-2 flex items-center justify-between shrink-0">
         <div className="flex-1 min-w-0 mr-2">
-          <p className="text-xs font-heading font-semibold text-primary-600">{config.scenarioName}</p>
-          {lessonObjective && <p className="text-[11px] text-primary-400">{lessonObjective}</p>}
-          {!isLesson && userContext.customScenario && <p className="text-[11px] text-primary-400 truncate">{userContext.customScenario}</p>}
-          {!isLesson && userContext.targetRole && <p className="text-[11px] text-primary-400">{userContext.targetRole}{userContext.targetCompany ? ` at ${userContext.targetCompany}` : ''}</p>}
+          <p className="text-sm font-semibold text-green-800">{config.scenarioName}</p>
+          {lessonObjective && <p className="text-xs text-green-600">{lessonObjective}</p>}
+          {!isLesson && userContext.customScenario && <p className="text-xs text-green-600 truncate">{userContext.customScenario}</p>}
+          {!isLesson && userContext.targetRole && <p className="text-xs text-green-600">{userContext.targetRole}{userContext.targetCompany ? ` at ${userContext.targetCompany}` : ''}</p>}
         </div>
         <div className="flex items-center gap-2">
           {isLesson && config.maxExchanges && (
-            <span className="text-[10px] font-heading font-semibold text-primary-500 bg-primary-100 px-2 py-0.5 rounded-full">
+            <span className="text-xs font-semibold text-green-700 bg-green-100 px-2 py-0.5 rounded-full">
               {exchangeCount}/{config.maxExchanges}
             </span>
           )}
-          <span className="text-[9px] font-heading font-semibold text-primary-400 uppercase tracking-wider bg-primary-50 px-2 py-0.5 rounded-full border border-primary-100">
+          <span className="text-xs font-semibold text-green-600 uppercase bg-green-50 px-2 py-0.5 rounded-full border border-green-200">
             {userContext.level}
           </span>
         </div>
@@ -154,38 +158,33 @@ export function ConversationView({ config, userContext, starterMessage, lessonOb
 
       {/* Lesson progress bar */}
       {isLesson && config.maxExchanges && (
-        <div className="h-1 bg-neutral-100 shrink-0">
+        <div className="h-1 bg-slate-100 shrink-0">
           <div
-            className="h-full bg-primary-400 transition-all"
+            className="h-full bg-green-500 transition-all"
             style={{ width: `${Math.min(100, (exchangeCount / config.maxExchanges) * 100)}%` }}
           />
         </div>
       )}
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-5 py-5 flex flex-col" style={{ gap: 'var(--ui-chat-gap)' }}>
+      <div className="flex-1 overflow-y-auto px-6 py-6 space-y-1 bg-white">
         {messages.map((msg, i) => (
           <MessageBubble key={msg.id} message={msg} index={i} />
         ))}
         {isThinking && (
-          <div className="flex items-start animate-fade-in">
-            <div className="bg-white rounded-2xl rounded-bl-md px-4 py-3 shadow-sm border border-neutral-100">
-              <div className="flex items-center gap-1.5 mb-2">
-                <div className="w-5 h-5 rounded-full bg-gradient-to-br from-primary-300 to-primary-500 flex items-center justify-center">
-                  <span className="text-[8px] font-bold text-white">A</span>
-                </div>
-                <span className="text-xs font-heading font-semibold text-primary-600">Aria</span>
-              </div>
+          <div className="flex items-start gap-2.5 animate-fade-in">
+            <div className="w-7 h-7 bg-green-600 rounded-full text-white text-xs flex items-center justify-center flex-shrink-0 font-bold">A</div>
+            <div className="bg-slate-100 rounded-2xl rounded-bl-sm px-4 py-2.5">
               <div className="flex gap-1.5">
-                <span className="w-2 h-2 bg-primary-300 rounded-full animate-bounce" style={{ animationDelay: '-0.3s' }} />
-                <span className="w-2 h-2 bg-primary-300 rounded-full animate-bounce" style={{ animationDelay: '-0.15s' }} />
-                <span className="w-2 h-2 bg-primary-300 rounded-full animate-bounce" />
+                <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '-0.3s' }} />
+                <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '-0.15s' }} />
+                <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" />
               </div>
             </div>
           </div>
         )}
         {error && (
-          <div className="bg-accent-100/60 border border-accent-200 text-neutral-600 text-sm px-4 py-3 rounded-xl animate-scale-in">{error}</div>
+          <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-xl">{error}</div>
         )}
         <div ref={messagesEndRef} />
       </div>
@@ -200,23 +199,21 @@ export function ConversationView({ config, userContext, starterMessage, lessonOb
       )}
 
       {/* Input area */}
-      <div className="shrink-0 bg-surface border-t border-neutral-100/60">
-        <div className="pt-4 pb-2 flex justify-center">
-          <VoiceButton isListening={isListening} isThinking={isThinking} isSpeaking={isSpeaking} isSupported={isSupported} onStart={startListening} onStop={stopListening} />
-        </div>
-        <div className="px-5 pb-4 flex gap-2">
+      <div className="border-t border-slate-100 px-6 py-4 bg-white flex flex-col gap-3 items-center shrink-0">
+        <VoiceButton isListening={isListening} isThinking={isThinking} isSpeaking={isSpeaking} isSupported={isSupported} onStart={startListening} onStop={stopListening} />
+        <div className="flex gap-2 w-full">
           <textarea
             placeholder="Or type your message..."
             value={textInput}
             onChange={(e) => setTextInput(e.target.value)}
             onKeyDown={handleKeyDown}
             rows={1}
-            className="flex-1 resize-none text-sm font-body min-h-[42px] max-h-[100px] bg-white border border-neutral-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-300/50 focus:border-primary-300 transition-all placeholder:text-neutral-300"
+            className="flex-1 resize-none text-sm min-h-[42px] max-h-[100px] bg-white border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all placeholder:text-slate-400"
           />
           <button
             onClick={handleTextSend}
             disabled={!textInput.trim() || isThinking}
-            className="self-end w-[42px] h-[42px] flex items-center justify-center bg-gradient-to-br from-primary-400 to-primary-500 text-white rounded-xl shadow-sm hover:shadow-md disabled:from-neutral-200 disabled:to-neutral-200 disabled:shadow-none disabled:cursor-not-allowed transition-all cursor-pointer active:scale-95"
+            className="self-end w-[42px] h-[42px] flex items-center justify-center bg-green-600 hover:bg-green-700 text-white rounded-xl transition-colors disabled:bg-slate-100 disabled:text-slate-400 disabled:cursor-not-allowed cursor-pointer active:scale-95"
           >
             <Send className="w-4 h-4" />
           </button>

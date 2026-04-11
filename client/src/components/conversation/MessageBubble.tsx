@@ -15,25 +15,26 @@ export function MessageBubble({ message, index }: MessageBubbleProps) {
       className={cn('flex flex-col animate-fade-in-up', isUser ? 'items-end' : 'items-start')}
       style={{ animationDelay: `${index * 0.04}s` }}
     >
-      <div
-        className={cn(
-          'max-w-[80%] px-4 py-3 text-[15px] leading-relaxed font-body',
-          isUser
-            ? 'bg-primary-100 text-neutral-700 rounded-2xl rounded-br-md'
-            : 'bg-white text-neutral-600 rounded-2xl rounded-bl-md shadow-sm border border-neutral-100'
-        )}
-      >
-        {!isUser && (
-          <div className="flex items-center gap-1.5 mb-1.5">
-            <div className="w-5 h-5 rounded-full bg-gradient-to-br from-primary-300 to-primary-500 flex items-center justify-center">
-              <span className="text-[8px] font-bold text-white">A</span>
-            </div>
-            <span className="text-xs font-heading font-semibold text-primary-600">Aria</span>
+      {isUser ? (
+        <div className="flex justify-end">
+          <div className="bg-green-600 text-white rounded-2xl rounded-br-sm px-4 py-2.5 max-w-[75%] text-sm leading-relaxed">
+            {message.content}
           </div>
-        )}
-        {message.content}
-      </div>
+        </div>
+      ) : (
+        <div className="flex items-start gap-2.5">
+          <div className="w-7 h-7 bg-green-600 rounded-full text-white text-xs flex items-center justify-center flex-shrink-0 font-bold">
+            A
+          </div>
+          <div className="bg-slate-100 text-slate-800 rounded-2xl rounded-bl-sm px-4 py-2.5 max-w-[75%] text-sm leading-relaxed">
+            {message.content}
+          </div>
+        </div>
+      )}
       {message.feedback && <FeedbackCard feedback={message.feedback} />}
+      <p className="text-xs text-slate-400 mt-1">
+        {new Date(message.timestamp || Date.now()).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+      </p>
     </div>
   )
 }

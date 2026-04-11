@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Clock, MessageSquare, Star, ChevronRight } from 'lucide-react'
+import { Clock, MessageSquare, Star, Calendar, Filter, Download, Plus } from 'lucide-react'
 import { fetchSessions } from '@/lib/api'
 import type { SessionListItem } from '@/lib/types'
 
@@ -12,10 +12,10 @@ const TOPIC_LABELS: Record<string, string> = {
 }
 
 const TOPIC_COLORS: Record<string, string> = {
-  job_interview: 'bg-blue-100 text-blue-600',
-  daily_life: 'bg-green-100 text-green-600',
-  college: 'bg-purple-100 text-purple-600',
-  custom: 'bg-amber-100 text-amber-600',
+  job_interview: 'bg-blue-50 text-blue-600',
+  daily_life: 'bg-green-50 text-green-600',
+  college: 'bg-purple-50 text-purple-600',
+  custom: 'bg-amber-50 text-amber-600',
 }
 
 function formatDuration(secs: number | null): string {
@@ -48,74 +48,116 @@ export function HistoryPage() {
       .finally(() => setLoading(false))
   }, [])
 
+  const totalMessages = sessions.reduce((sum, s) => sum + s.messageCount, 0)
+  const avgScore = sessions.filter((s) => s.overallScore != null).length > 0
+    ? (sessions.reduce((sum, s) => sum + (s.overallScore || 0), 0) / sessions.filter((s) => s.overallScore != null).length).toFixed(1)
+    : '--'
+  const totalMins = sessions.reduce((sum, s) => sum + Math.floor((s.durationSecs || 0) / 60), 0)
+
   return (
-    <div className="h-full overflow-y-auto bg-surface">
-      <div className="max-w-2xl mx-auto px-5 py-8 sm:py-12">
-        {/* Header */}
-        <div className="flex items-center gap-3 mb-8 animate-fade-in-up">
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-primary-400 to-primary-500 flex items-center justify-center shadow-sm">
-            <Clock className="w-5 h-5 text-white" />
-          </div>
+    <div className="h-full overflow-y-auto bg-slate-50">
+      <div className="max-w-5xl mx-auto px-6 py-8">
+        {/* Header row */}
+        <div className="flex justify-between items-start mb-8">
           <div>
-            <h1 className="font-heading font-extrabold text-neutral-800 text-xl">History</h1>
-            <p className="text-xs text-neutral-400 font-body">Your past conversations</p>
+            <h1 className="text-2xl font-bold text-slate-900">Conversation History</h1>
+            <p className="text-slate-500 text-sm mt-1">Review your past practice sessions</p>
+          </div>
+          <div className="flex gap-2">
+            <button className="flex items-center gap-2 border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-xl px-4 py-2 text-sm transition-colors cursor-pointer">
+              <Filter className="w-4 h-4" /> Filter
+            </button>
+            <button className="flex items-center gap-2 border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-xl px-4 py-2 text-sm transition-colors cursor-pointer">
+              <Download className="w-4 h-4" /> Export
+            </button>
+          </div>
+        </div>
+
+        {/* Stats row */}
+        <div className="grid grid-cols-4 gap-4 mb-8">
+          <div className="bg-white rounded-2xl border border-slate-100 p-5">
+            <p className="text-2xl font-bold text-slate-900">{sessions.length}</p>
+            <p className="text-xs text-slate-500 uppercase tracking-wider mt-1">Total Sessions</p>
+          </div>
+          <div className="bg-white rounded-2xl border border-slate-100 p-5">
+            <p className="text-2xl font-bold text-slate-900">{totalMessages}</p>
+            <p className="text-xs text-slate-500 uppercase tracking-wider mt-1">Messages Sent</p>
+          </div>
+          <div className="bg-white rounded-2xl border border-slate-100 p-5">
+            <p className="text-2xl font-bold text-slate-900">{avgScore}</p>
+            <p className="text-xs text-slate-500 uppercase tracking-wider mt-1">Avg Score</p>
+          </div>
+          <div className="bg-white rounded-2xl border border-slate-100 p-5">
+            <p className="text-2xl font-bold text-slate-900">{totalMins}m</p>
+            <p className="text-xs text-slate-500 uppercase tracking-wider mt-1">Total Practice</p>
           </div>
         </div>
 
         {loading ? (
           <div className="flex justify-center py-20">
-            <div className="w-8 h-8 border-3 border-primary-200 border-t-primary-500 rounded-full animate-spin" />
+            <div className="w-8 h-8 border-2 border-green-200 border-t-green-500 rounded-full animate-spin" />
           </div>
         ) : sessions.length === 0 ? (
-          <div className="text-center py-20 animate-fade-in-up">
-            <div className="w-16 h-16 mx-auto mb-4 rounded-3xl bg-primary-50 flex items-center justify-center">
-              <MessageSquare className="w-8 h-8 text-primary-300" />
-            </div>
-            <h2 className="font-heading font-bold text-neutral-600 text-lg mb-2">No conversations yet</h2>
-            <p className="text-sm text-neutral-400 font-body mb-6">Start practicing to see your history here.</p>
-            <Link
-              to="/"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-br from-primary-400 to-primary-500 text-white rounded-xl font-heading font-semibold text-sm hover:shadow-md transition-all"
-            >
-              Start Practicing
+          <div className="border-2 border-dashed border-slate-200 rounded-2xl p-12 flex flex-col items-center text-center text-slate-400">
+            <p className="text-3xl mb-2">+</p>
+            <p className="font-semibold text-slate-600 mb-1">Your journey is just beginning</p>
+            <p className="text-sm mb-4">Start a conversation to see your history here.</p>
+            <Link to="/" className="bg-green-600 hover:bg-green-700 text-white px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors">
+              Start Session
             </Link>
           </div>
         ) : (
-          <div className="flex flex-col gap-3">
-            {sessions.map((s, i) => (
-              <Link
-                key={s.id}
-                to={`/history/${s.id}`}
-                className="flex items-center gap-4 p-4 bg-white rounded-2xl border border-neutral-100 hover:border-primary-200 hover:shadow-sm transition-all animate-fade-in-up"
-                style={{ animationDelay: `${i * 0.03}s` }}
-              >
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1.5">
-                    <p className="font-heading font-semibold text-neutral-700 text-sm truncate">{s.scenarioName}</p>
-                    <span className={`text-[10px] font-heading font-semibold px-2 py-0.5 rounded-full shrink-0 ${TOPIC_COLORS[s.topic] || 'bg-neutral-100 text-neutral-500'}`}>
+          <>
+            <h2 className="text-lg font-semibold text-slate-900 mb-4">Recent Sessions</h2>
+            <div className="grid grid-cols-2 gap-4">
+              {sessions.map((s) => (
+                <Link
+                  key={s.id}
+                  to={`/history/${s.id}`}
+                  className="bg-white rounded-2xl border border-slate-100 p-6 hover:shadow-md transition-all cursor-pointer block"
+                >
+                  {/* Top: badge + score */}
+                  <div className="flex items-center justify-between mb-2">
+                    <span className={`text-xs font-medium px-2 py-0.5 rounded-full uppercase ${TOPIC_COLORS[s.topic] || 'bg-slate-100 text-slate-500'}`}>
                       {TOPIC_LABELS[s.topic] || s.topic}
                     </span>
+                    {s.overallScore != null && (
+                      <div className="flex items-center gap-1">
+                        <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                        <span className="text-sm font-semibold text-slate-700">{s.overallScore}/10</span>
+                      </div>
+                    )}
                   </div>
-                  <div className="flex items-center gap-4 text-[11px] text-neutral-400 font-body">
-                    <span>{formatDate(s.startedAt)}</span>
-                    <span className="flex items-center gap-1">
-                      <Clock className="w-3 h-3" /> {formatDuration(s.durationSecs)}
+
+                  {/* Title */}
+                  <p className="font-semibold text-slate-900 mt-2 mb-3 line-clamp-2">{s.scenarioName}</p>
+
+                  {/* Meta row */}
+                  <div className="flex gap-4 text-sm text-slate-500">
+                    <span className="flex items-center gap-1.5">
+                      <Calendar className="w-3.5 h-3.5" /> {formatDate(s.startedAt)}
                     </span>
-                    <span className="flex items-center gap-1">
-                      <MessageSquare className="w-3 h-3" /> {s.messageCount}
+                    <span className="flex items-center gap-1.5">
+                      <Clock className="w-3.5 h-3.5" /> {formatDuration(s.durationSecs)}
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <MessageSquare className="w-3.5 h-3.5" /> {s.messageCount}
                     </span>
                   </div>
-                </div>
-                {s.overallScore != null && (
-                  <div className="flex items-center gap-1 shrink-0">
-                    <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
-                    <span className="font-heading font-bold text-neutral-700 text-sm">{s.overallScore}</span>
-                  </div>
-                )}
-                <ChevronRight className="w-4 h-4 text-neutral-300 shrink-0" />
-              </Link>
-            ))}
-          </div>
+
+                  <p className="text-green-600 text-sm font-medium mt-4">View Transcript →</p>
+                </Link>
+              ))}
+
+              {/* Empty slot CTA if odd number */}
+              {sessions.length % 2 !== 0 && (
+                <Link to="/" className="border-2 border-dashed border-slate-200 rounded-2xl p-8 flex flex-col items-center justify-center text-center text-slate-400 hover:border-green-300 hover:text-green-600 transition-colors cursor-pointer">
+                  <Plus className="w-8 h-8 mb-2" />
+                  <p className="text-sm font-medium">Start a new session</p>
+                </Link>
+              )}
+            </div>
+          </>
         )}
       </div>
     </div>

@@ -7,27 +7,27 @@ export function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
-    <div className="flex h-screen bg-surface overflow-hidden">
+    <div className="flex h-screen bg-slate-50 overflow-hidden">
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       <div className="flex-1 flex flex-col min-w-0">
         {/* Mobile header */}
-        <div className="lg:hidden shrink-0 px-4 py-3 bg-surface border-b border-neutral-200/50 flex items-center gap-3">
+        <div className="lg:hidden shrink-0 px-4 py-3 bg-white border-b border-slate-100 flex items-center gap-3">
           <button
             onClick={() => setSidebarOpen(true)}
-            className="w-9 h-9 rounded-xl bg-neutral-100 flex items-center justify-center hover:bg-neutral-200 transition-colors cursor-pointer"
+            className="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center hover:bg-slate-200 transition-colors cursor-pointer"
           >
-            <Menu className="w-4 h-4 text-neutral-600" />
+            <Menu className="w-4 h-4 text-slate-600" />
           </button>
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-gradient-to-br from-primary-400 to-primary-600 rounded-lg flex items-center justify-center">
+            <div className="w-7 h-7 bg-green-600 rounded-lg flex items-center justify-center">
               <Mic className="w-3.5 h-3.5 text-white" />
             </div>
-            <p className="font-heading font-bold text-neutral-800 text-sm">SpeakUp</p>
+            <p className="font-bold text-slate-800 text-sm">SpeakUp</p>
           </div>
         </div>
 
-        <main className="flex-1 overflow-hidden">
+        <main className="flex-1 overflow-y-auto">
           <Outlet />
         </main>
       </div>
