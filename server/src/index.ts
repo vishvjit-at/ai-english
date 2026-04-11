@@ -31,12 +31,22 @@ app.use('/api', conversationRoutes)
 app.use('/api', voiceRoutes)
 app.use('/api', sessionRoutes)
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`)
+app.listen(Number(PORT), '0.0.0.0', () => {
+  console.log(`Server running on port ${PORT}`)
   if (!process.env.GROQ_API_KEY || process.env.GROQ_API_KEY === 'your_groq_api_key_here') {
-    console.warn('GROQ_API_KEY not set in server/.env — conversations will fail')
+    console.warn('GROQ_API_KEY not set — conversations will fail')
   }
   if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
     console.warn('SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY not set — auth will fail')
   }
+})
+
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught exception:', err)
+  process.exit(1)
+})
+
+process.on('unhandledRejection', (reason) => {
+  console.error('Unhandled rejection:', reason)
+  process.exit(1)
 })
