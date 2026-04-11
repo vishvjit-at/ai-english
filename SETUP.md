@@ -136,7 +136,7 @@ server/src/generated
 | Key | Value |
 |-----|-------|
 | `DATABASE_URL` | `postgresql://postgres.xtoipmvctktcztzoqbbx:67_$.TxLgDmNY,_@aws-0-[region].pooler.supabase.com:6543/postgres` (use transaction pooler from Supabase Settings → Database) |
-| `GROQ_API_KEY` | `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` |
+| `GROQ_API_KEY` | `gsk_...` (from console.groq.com → API Keys) |
 | `SUPABASE_URL` | `https://xtoipmvctktcztzoqbbx.supabase.co` |
 | `SUPABASE_SERVICE_ROLE_KEY` | `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh0b2lwbXZjdGt0Y3p0em9xYmJ4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NTY1Njk0NywiZXhwIjoyMDkxMjMyOTQ3fQ.CcHzK0lauEx1GzFpMUWuvskDv_qQcv7bdCbXIDrNguU` |
 | `CLIENT_URL` | (leave blank, set after Vercel deploy) |
@@ -195,7 +195,7 @@ server/src/generated
 | Service Role (server) | `SUPABASE_SERVICE_ROLE_KEY` | `eyJ...nguU` |
 | Local DB (Docker) | `DATABASE_URL` | `postgresql://aiuser:aipass@localhost:5432/ai_english` |
 | Production DB (Supabase pooler) | `DATABASE_URL` | Get from Supabase → Settings → Database → Transaction pooler (port 6543) |
-| Groq | `GROQ_API_KEY` | `gsk_7UeJ...` |
+| Groq | `GROQ_API_KEY` | get from console.groq.com |
 | ElevenLabs (optional) | `ELEVENLABS_API_KEY` | `sk_4a9a...` |
 
 ---
