@@ -1,0 +1,347 @@
+@import "tailwindcss";
+
+/* ── Semantic CSS custom properties ──────────────────────────── */
+:root {
+  /* Primary scale */
+  --sem-primary-50:  #ecfdf5;
+  --sem-primary-100: #d1fae5;
+  --sem-primary-200: #a7f3d0;
+  --sem-primary-300: #6ee7b7;
+  --sem-primary-400: #34d399;
+  --sem-primary-500: #10b981;
+  --sem-primary-600: #059669;
+  --sem-primary-700: #047857;
+
+  /* Accent scale */
+  --sem-accent-50:  #fff7ed;
+  --sem-accent-100: #ffedd5;
+  --sem-accent-200: #fed7aa;
+  --sem-accent-300: #fdba74;
+  --sem-accent-400: #fb923c;
+  --sem-accent-500: #f97316;
+
+  /* Tertiary scale */
+  --sem-tertiary-100: #ede9fe;
+  --sem-tertiary-200: #ddd6fe;
+  --sem-tertiary-300: #c4b5fd;
+  --sem-tertiary-400: #a78bfa;
+  --sem-tertiary-500: #8b5cf6;
+
+  /* Surface / neutral scale */
+  --sem-surface:      #FEFCF8;
+  --sem-surface-dark: #F5F0EB;
+  --sem-neutral-50:   #fafaf9;
+  --sem-neutral-100:  #f5f5f4;
+  --sem-neutral-200:  #e7e5e4;
+  --sem-neutral-300:  #d6d3d1;
+  --sem-neutral-400:  #a8a29e;
+  --sem-neutral-500:  #78716c;
+  --sem-neutral-600:  #57534e;
+  --sem-neutral-700:  #44403c;
+  --sem-neutral-800:  #292524;
+  --sem-neutral-900:  #1c1917;
+
+  /* Glass */
+  --sem-glass-bg: rgba(255, 252, 248, 0.8);
+}
+
+/* ── Theme: Calm Garden (default — same as :root) ─────────── */
+.theme-calm-garden {
+  /* defaults already set on :root */
+}
+
+/* ── Theme: Ocean Breeze ──────────────────────────────────── */
+.theme-ocean-breeze {
+  --sem-primary-50:  #eff6ff;
+  --sem-primary-100: #dbeafe;
+  --sem-primary-200: #bfdbfe;
+  --sem-primary-300: #93c5fd;
+  --sem-primary-400: #60a5fa;
+  --sem-primary-500: #3b82f6;
+  --sem-primary-600: #2563eb;
+  --sem-primary-700: #1d4ed8;
+
+  --sem-accent-50:  #fff1f2;
+  --sem-accent-100: #ffe4e6;
+  --sem-accent-200: #fecdd3;
+  --sem-accent-300: #fda4af;
+  --sem-accent-400: #fb7185;
+  --sem-accent-500: #f43f5e;
+
+  --sem-tertiary-100: #d1fae5;
+  --sem-tertiary-200: #a7f3d0;
+  --sem-tertiary-300: #6ee7b7;
+  --sem-tertiary-400: #34d399;
+  --sem-tertiary-500: #10b981;
+
+  --sem-surface:      #f8fafc;
+  --sem-surface-dark: #f1f5f9;
+  --sem-neutral-50:   #f8fafc;
+  --sem-neutral-100:  #f1f5f9;
+  --sem-neutral-200:  #e2e8f0;
+  --sem-neutral-300:  #cbd5e1;
+  --sem-neutral-400:  #94a3b8;
+  --sem-neutral-500:  #64748b;
+  --sem-neutral-600:  #475569;
+  --sem-neutral-700:  #334155;
+  --sem-neutral-800:  #1e293b;
+  --sem-neutral-900:  #0f172a;
+
+  --sem-glass-bg: rgba(248, 250, 252, 0.8);
+}
+
+/* ── Theme: Sunset Glow ───────────────────────────────────── */
+.theme-sunset-glow {
+  --sem-primary-50:  #fffbeb;
+  --sem-primary-100: #fef3c7;
+  --sem-primary-200: #fde68a;
+  --sem-primary-300: #fcd34d;
+  --sem-primary-400: #fbbf24;
+  --sem-primary-500: #f59e0b;
+  --sem-primary-600: #d97706;
+  --sem-primary-700: #b45309;
+
+  --sem-accent-50:  #fff1f2;
+  --sem-accent-100: #ffe4e6;
+  --sem-accent-200: #fecdd3;
+  --sem-accent-300: #fda4af;
+  --sem-accent-400: #f43f5e;
+  --sem-accent-500: #e11d48;
+
+  --sem-tertiary-100: #ffedd5;
+  --sem-tertiary-200: #fed7aa;
+  --sem-tertiary-300: #fdba74;
+  --sem-tertiary-400: #fb923c;
+  --sem-tertiary-500: #f97316;
+
+  --sem-surface:      #fffbeb;
+  --sem-surface-dark: #fef3c7;
+  --sem-neutral-50:   #fefce8;
+  --sem-neutral-100:  #fef9c3;
+  --sem-neutral-200:  #e7e5e4;
+  --sem-neutral-300:  #d6d3d1;
+  --sem-neutral-400:  #a8a29e;
+  --sem-neutral-500:  #78716c;
+  --sem-neutral-600:  #57534e;
+  --sem-neutral-700:  #44403c;
+  --sem-neutral-800:  #292524;
+  --sem-neutral-900:  #1c1917;
+
+  --sem-glass-bg: rgba(255, 251, 235, 0.8);
+}
+
+/* ── Theme: Lavender Dream ────────────────────────────────── */
+.theme-lavender-dream {
+  --sem-primary-50:  #faf5ff;
+  --sem-primary-100: #f3e8ff;
+  --sem-primary-200: #e9d5ff;
+  --sem-primary-300: #d8b4fe;
+  --sem-primary-400: #a78bfa;
+  --sem-primary-500: #8b5cf6;
+  --sem-primary-600: #7c3aed;
+  --sem-primary-700: #6d28d9;
+
+  --sem-accent-50:  #ecfdf5;
+  --sem-accent-100: #d1fae5;
+  --sem-accent-200: #a7f3d0;
+  --sem-accent-300: #6ee7b7;
+  --sem-accent-400: #34d399;
+  --sem-accent-500: #10b981;
+
+  --sem-tertiary-100: #fce7f3;
+  --sem-tertiary-200: #fbcfe8;
+  --sem-tertiary-300: #f9a8d4;
+  --sem-tertiary-400: #f472b6;
+  --sem-tertiary-500: #ec4899;
+
+  --sem-surface:      #faf5ff;
+  --sem-surface-dark: #f3e8ff;
+  --sem-neutral-50:   #faf5ff;
+  --sem-neutral-100:  #f5f3ff;
+  --sem-neutral-200:  #e8e3f3;
+  --sem-neutral-300:  #d4cde4;
+  --sem-neutral-400:  #a09abc;
+  --sem-neutral-500:  #6b6590;
+  --sem-neutral-600:  #504a6b;
+  --sem-neutral-700:  #3b3556;
+  --sem-neutral-800:  #2a2540;
+  --sem-neutral-900:  #1a162d;
+
+  --sem-glass-bg: rgba(250, 245, 255, 0.8);
+}
+
+/* ── Theme: Midnight ──────────────────────────────────────── */
+.theme-midnight {
+  --sem-primary-50:  #1a2e3b;
+  --sem-primary-100: #1c3a47;
+  --sem-primary-200: #1f4d5a;
+  --sem-primary-300: #5eead4;
+  --sem-primary-400: #2dd4bf;
+  --sem-primary-500: #14b8a6;
+  --sem-primary-600: #0d9488;
+  --sem-primary-700: #0f766e;
+
+  --sem-accent-50:  #2a2315;
+  --sem-accent-100: #3d331c;
+  --sem-accent-200: #5a4c2a;
+  --sem-accent-300: #fcd34d;
+  --sem-accent-400: #fbbf24;
+  --sem-accent-500: #f59e0b;
+
+  --sem-tertiary-100: #1e293b;
+  --sem-tertiary-200: #334155;
+  --sem-tertiary-300: #475569;
+  --sem-tertiary-400: #64748b;
+  --sem-tertiary-500: #94a3b8;
+
+  --sem-surface:      #0f172a;
+  --sem-surface-dark: #1e293b;
+  --sem-neutral-50:   #1e293b;
+  --sem-neutral-100:  #1e293b;
+  --sem-neutral-200:  #334155;
+  --sem-neutral-300:  #475569;
+  --sem-neutral-400:  #94a3b8;
+  --sem-neutral-500:  #cbd5e1;
+  --sem-neutral-600:  #e2e8f0;
+  --sem-neutral-700:  #e2e8f0;
+  --sem-neutral-800:  #f1f5f9;
+  --sem-neutral-900:  #f8fafc;
+
+  --sem-glass-bg: rgba(15, 23, 42, 0.85);
+}
+
+/* ── Tailwind v4 @theme — map semantic vars to utility classes ── */
+@theme {
+  --font-heading: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+
+  /* Primary */
+  --color-primary-50:  var(--sem-primary-50);
+  --color-primary-100: var(--sem-primary-100);
+  --color-primary-200: var(--sem-primary-200);
+  --color-primary-300: var(--sem-primary-300);
+  --color-primary-400: var(--sem-primary-400);
+  --color-primary-500: var(--sem-primary-500);
+  --color-primary-600: var(--sem-primary-600);
+  --color-primary-700: var(--sem-primary-700);
+
+  /* Accent */
+  --color-accent-50:  var(--sem-accent-50);
+  --color-accent-100: var(--sem-accent-100);
+  --color-accent-200: var(--sem-accent-200);
+  --color-accent-300: var(--sem-accent-300);
+  --color-accent-400: var(--sem-accent-400);
+  --color-accent-500: var(--sem-accent-500);
+
+  /* Tertiary */
+  --color-tertiary-100: var(--sem-tertiary-100);
+  --color-tertiary-200: var(--sem-tertiary-200);
+  --color-tertiary-300: var(--sem-tertiary-300);
+  --color-tertiary-400: var(--sem-tertiary-400);
+  --color-tertiary-500: var(--sem-tertiary-500);
+
+  /* Surface */
+  --color-surface:      var(--sem-surface);
+  --color-surface-dark: var(--sem-surface-dark);
+
+  /* Neutral */
+  --color-neutral-50:  var(--sem-neutral-50);
+  --color-neutral-100: var(--sem-neutral-100);
+  --color-neutral-200: var(--sem-neutral-200);
+  --color-neutral-300: var(--sem-neutral-300);
+  --color-neutral-400: var(--sem-neutral-400);
+  --color-neutral-500: var(--sem-neutral-500);
+  --color-neutral-600: var(--sem-neutral-600);
+  --color-neutral-700: var(--sem-neutral-700);
+  --color-neutral-800: var(--sem-neutral-800);
+  --color-neutral-900: var(--sem-neutral-900);
+}
+
+/* ── UI customization defaults ── */
+:root {
+  --ui-font-size: 15px;
+  --ui-radius: 16px;
+  --ui-chat-gap: 16px;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--ui-font-size);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--sem-surface);
+  color: var(--sem-neutral-600);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes pulse-soft {
+  0% { transform: scale(1); opacity: 0.5; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+@keyframes wave {
+  from { transform: scaleY(0.3); }
+  to { transform: scaleY(1); }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease-out both;
+}
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out both;
+}
+.animate-scale-in {
+  animation: scaleIn 0.35s ease-out both;
+}
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.glass-soft {
+  background: var(--sem-glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Disable animations */
+.no-animations .animate-fade-in-up,
+.no-animations .animate-fade-in,
+.no-animations .animate-scale-in,
+.no-animations .animate-float,
+.no-animations .animate-bounce,
+.no-animations .animate-pulse,
+.no-animations .animate-spin {
+  animation: none !important;
+  opacity: 1;
+  transform: none;
+}
+.no-animations * {
+  transition-duration: 0s !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in-up, .animate-fade-in, .animate-scale-in, .animate-float {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+}

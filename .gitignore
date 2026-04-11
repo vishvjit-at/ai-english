@@ -1,0 +1,11 @@
+node_modules
+dist
+.env
+.env.docker
+server/.env
+server/.env.docker
+client/.env
+server/src/generated
+.claude
+.agents
+.windsurf

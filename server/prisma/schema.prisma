@@ -1,0 +1,93 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id
+  email     String   @unique
+  name      String?
+  avatarUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sessions   Session[]
+  vocabulary VocabularyItem[]
+
+  @@map("users")
+}
+
+model Session {
+  id           String          @id @default(uuid())
+  userId       String
+  user         User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  scenarioId   String
+  scenarioName String
+  topic        String
+  userContext   Json
+  startedAt    DateTime        @default(now())
+  endedAt      DateTime?
+  durationSecs Int?
+  messageCount Int             @default(0)
+
+  lessonId   String?
+  lessonType String?
+
+  messages   Message[]
+  summary    SessionSummary?
+  vocabulary VocabularyItem[]
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  sessionId String
+  session   Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  role      String
+  content   String
+  feedback  Json?
+  createdAt DateTime @default(now())
+
+  @@index([sessionId])
+  @@map("messages")
+}
+
+model SessionSummary {
+  id                String   @id @default(uuid())
+  sessionId         String   @unique
+  session           Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  overallScore      Int
+  fluencyAssessment String
+  grammarSummary    String
+  vocabHighlights   String[]
+  areasToImprove    String[]
+  encouragement     String
+  createdAt         DateTime @default(now())
+
+  @@map("session_summaries")
+}
+
+model VocabularyItem {
+  id           String    @id @default(uuid())
+  userId       String
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sessionId    String?
+  session      Session?  @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+  word         String
+  context      String?
+  definition   String?
+  mastered     Boolean   @default(false)
+  reviewCount  Int       @default(0)
+  lastReviewAt DateTime?
+  createdAt    DateTime  @default(now())
+
+  @@index([userId])
+  @@index([word])
+  @@map("vocabulary")
+}
