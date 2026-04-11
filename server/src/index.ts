@@ -6,6 +6,7 @@ import authRoutes from './routes/auth.js'
 import conversationRoutes from './routes/conversation.js'
 import voiceRoutes from './routes/voice.js'
 import sessionRoutes from './routes/sessions.js'
+import { runMigrations } from './lib/migrate.js'
 
 const app = express()
 const PORT = process.env.PORT || 5000
@@ -31,15 +32,20 @@ app.use('/api', conversationRoutes)
 app.use('/api', voiceRoutes)
 app.use('/api', sessionRoutes)
 
-app.listen(Number(PORT), '0.0.0.0', () => {
-  console.log(`Server running on port ${PORT}`)
-  if (!process.env.GROQ_API_KEY || process.env.GROQ_API_KEY === 'your_groq_api_key_here') {
-    console.warn('GROQ_API_KEY not set — conversations will fail')
-  }
-  if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-    console.warn('SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY not set — auth will fail')
-  }
-})
+// Run migrations then start server
+runMigrations()
+  .catch(err => console.error('Migration error (non-fatal):', err))
+  .finally(() => {
+    app.listen(Number(PORT), '0.0.0.0', () => {
+      console.log(`Server running on port ${PORT}`)
+      if (!process.env.GROQ_API_KEY || process.env.GROQ_API_KEY === 'your_groq_api_key_here') {
+        console.warn('GROQ_API_KEY not set — conversations will fail')
+      }
+      if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+        console.warn('SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY not set — auth will fail')
+      }
+    })
+  })
 
 process.on('uncaughtException', (err) => {
   console.error('Uncaught exception:', err)
