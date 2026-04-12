@@ -192,7 +192,7 @@ const S = {
 
 function HomeAura() {
   return (
-    <div className="h-full flex flex-col relative overflow-hidden" style={{ background: '#c8e0ea' }}>
+    <div className="h-screen flex flex-col relative overflow-hidden" style={{ background: '#c8e0ea' }}>
       <HomeUserMenu />
 
       {/* Top title */}
@@ -291,7 +291,7 @@ function HomeAura() {
 
 function HomeClarity() {
   return (
-    <div className="h-full flex flex-col relative overflow-hidden" style={{ background: '#f5f9ff' }}>
+    <div className="h-screen flex flex-col relative overflow-hidden" style={{ background: '#f5f9ff' }}>
       <div className="absolute inset-0 pointer-events-none"
         style={{ background: 'radial-gradient(ellipse 70% 55% at 50% 52%, rgba(191,219,254,0.45) 0%, transparent 65%)' }} />
       <HomeUserMenu />
@@ -369,7 +369,7 @@ function HomeClarity() {
 
 function HomeNight() {
   return (
-    <div className="h-full flex flex-col relative overflow-hidden" style={{ background: '#07090f' }}>
+    <div className="h-screen flex flex-col relative overflow-hidden" style={{ background: '#07090f' }}>
       <div className="absolute inset-0 pointer-events-none"
         style={{ background: 'radial-gradient(ellipse 55% 50% at 50% 54%, rgba(79,70,229,0.22) 0%, rgba(124,58,237,0.1) 40%, transparent 68%)' }} />
       <HomeUserMenu dark />
