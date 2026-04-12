@@ -26,8 +26,8 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
 
-            {/* Home — no sidebar */}
-            <Route path="/" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+            {/* Home — public, no sidebar */}
+            <Route path="/" element={<HomePage />} />
 
             {/* Protected routes with sidebar */}
             <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>

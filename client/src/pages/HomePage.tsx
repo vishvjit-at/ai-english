@@ -13,8 +13,27 @@ function HomeUserMenu({ dark }: { dark?: boolean }) {
   const { user, signOut } = useAuth()
   const [open, setOpen] = useState(false)
 
-  const initial = (user?.user_metadata?.full_name || user?.email || '?')[0].toUpperCase()
-  const avatarUrl = user?.user_metadata?.avatar_url as string | undefined
+  // Not logged in — show Sign In button
+  if (!user) {
+    return (
+      <div className="absolute top-5 right-6 z-30">
+        <Link
+          to="/login"
+          className="px-5 py-2 rounded-full text-sm font-semibold cursor-pointer transition-all hover:scale-105"
+          style={{
+            background: dark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.08)',
+            border: dark ? '1.5px solid rgba(255,255,255,0.2)' : '1.5px solid rgba(0,0,0,0.12)',
+            color: dark ? '#e2e8f0' : '#374151',
+          }}
+        >
+          Sign In
+        </Link>
+      </div>
+    )
+  }
+
+  const initial = (user.user_metadata?.full_name || user.email || '?')[0].toUpperCase()
+  const avatarUrl = user.user_metadata?.avatar_url as string | undefined
 
   return (
     <div className="absolute top-5 right-6 z-30">
@@ -37,7 +56,7 @@ function HomeUserMenu({ dark }: { dark?: boolean }) {
         <>
           <div className="fixed inset-0 z-20" onClick={() => setOpen(false)} />
           <div
-            className="absolute right-0 top-12 z-30 rounded-2xl shadow-xl border overflow-hidden min-w-[180px]"
+            className="absolute right-0 top-12 z-30 rounded-2xl shadow-xl overflow-hidden min-w-[180px]"
             style={{
               background: dark ? '#0f172a' : '#ffffff',
               border: dark ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.08)',
@@ -45,7 +64,7 @@ function HomeUserMenu({ dark }: { dark?: boolean }) {
           >
             <div className="px-4 py-3 border-b" style={{ borderColor: dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)' }}>
               <p className="text-xs font-semibold truncate" style={{ color: dark ? '#94a3b8' : '#6b7280' }}>
-                {user?.user_metadata?.full_name || user?.email}
+                {user.user_metadata?.full_name || user.email}
               </p>
             </div>
             <button
