@@ -115,7 +115,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   // Apply theme class
   useEffect(() => {
     const root = document.documentElement
-    themes.forEach((t) => root.classList.remove(`theme-${t.id}`))
+    root.classList.remove('theme-calm-garden', 'theme-ocean-breeze', 'theme-midnight')
     root.classList.add(`theme-${settings.theme}`)
   }, [settings.theme])
 
