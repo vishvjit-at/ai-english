@@ -153,7 +153,8 @@ export function SignupPage() {
                   type="submit"
                   disabled={isSubmitting || !name || !email || !password}
                   fullWidth
-                  className="py-3.5 font-bold mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  wrapperClassName="mt-2"
+                  className="py-3.5 font-bold disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? 'Creating account…' : 'Create Account'}
                 </MaskButton>

@@ -19,6 +19,8 @@ interface MaskButtonProps {
   rounded?: 'full' | '2xl' | 'xl' | 'lg'
   /** Stretch button to full width of its container */
   fullWidth?: boolean
+  /** Tailwind classes applied to the outer wrapper div (e.g. "mt-2 mb-4") */
+  wrapperClassName?: string
 }
 
 export function MaskButton({
@@ -32,6 +34,7 @@ export function MaskButton({
   fillTextColor = 'white',
   rounded = 'full',
   fullWidth = false,
+  wrapperClassName = '',
 }: MaskButtonProps) {
   const fill = fillColor ?? 'var(--sem-primary-600)'
   const label = labelColor ?? fill
@@ -39,7 +42,7 @@ export function MaskButton({
 
   return (
     <div
-      className="mask-btn-wrap"
+      className={`mask-btn-wrap${wrapperClassName ? ` ${wrapperClassName}` : ''}`}
       style={{
         borderRadius: radius,
         border: `1.5px solid ${fill}`,

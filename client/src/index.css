@@ -342,14 +342,20 @@ body {
 .nav-item-muted    { border-left-color: var(--sem-neutral-300);  }
 .nav-item-muted::after    { background: var(--sem-neutral-400);  }
 
-/* ── CSS Mask Button (MASK2 urban-sprite style) ── */
+/* ── CSS Mask Button (MASK2 urban-sprite wipe) ── */
+/*
+ * The sprite has 29 frames arranged horizontally.
+ * mask-size: 2900% 100% stretches it so one frame = button size.
+ * mask-position: 0% 0% = frame 1 (solid/opaque) → fill fully visible.
+ * mask-position: 100% 0% = frame 29 (transparent) → fill wiped away.
+ */
 @keyframes mask-btn-in {
-  from { mask-position: 0 0;    -webkit-mask-position: 0 0;    }
-  to   { mask-position: 100% 0; -webkit-mask-position: 100% 0; }
+  from { -webkit-mask-position: 0% 0%;   mask-position: 0% 0%;   }
+  to   { -webkit-mask-position: 100% 0%; mask-position: 100% 0%; }
 }
 @keyframes mask-btn-out {
-  from { mask-position: 100% 0; -webkit-mask-position: 100% 0; }
-  to   { mask-position: 0 0;    -webkit-mask-position: 0 0;    }
+  from { -webkit-mask-position: 100% 0%; mask-position: 100% 0%; }
+  to   { -webkit-mask-position: 0% 0%;   mask-position: 0% 0%;   }
 }
 
 .mask-btn-wrap {
@@ -377,15 +383,16 @@ body {
   z-index: 0;
 }
 
-/* Animated fill layer — sits above the label */
+/* Animated fill layer — sits flush above the label */
 .mask-btn-fill {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   position: relative;
   z-index: 1;
   border: none;
+  margin: 0;
   font-family: inherit;
   font-size: inherit;
   font-weight: inherit;
@@ -393,11 +400,16 @@ body {
   cursor: pointer;
   white-space: nowrap;
   color: white;
-  width: 101%;
-  -webkit-mask: url('/urban-sprite.png') 3000% 100%;
-  mask: url('/urban-sprite.png') 3000% 100%;
-  -webkit-mask-size: 3000% 100%;
-  mask-size: 3000% 100%;
+  width: 100%;
+  /* Long-form mask properties — avoids shorthand position/size ambiguity */
+  -webkit-mask-image: url('/urban-sprite.png');
+  -webkit-mask-size: 2900% 100%;
+  -webkit-mask-position: 0% 0%;
+  -webkit-mask-repeat: no-repeat;
+  mask-image: url('/urban-sprite.png');
+  mask-size: 2900% 100%;
+  mask-position: 0% 0%;
+  mask-repeat: no-repeat;
   -webkit-animation: mask-btn-out 0.7s steps(29) forwards;
   animation: mask-btn-out 0.7s steps(29) forwards;
 }
@@ -415,8 +427,8 @@ body {
 .no-animations .mask-btn-fill {
   animation: none !important;
   -webkit-animation: none !important;
-  -webkit-mask-position: 0 0;
-  mask-position: 0 0;
+  -webkit-mask-position: 0% 0%;
+  mask-position: 0% 0%;
 }
 
 /* ── Magnetic particle button ── */
