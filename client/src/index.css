@@ -402,11 +402,11 @@ body {
   color: white;
   width: 100%;
   /* Long-form mask properties — avoids shorthand position/size ambiguity */
-  -webkit-mask-image: url('/urban-sprite.png');
+  -webkit-mask-image: url('/urban-sprite.webp');
   -webkit-mask-size: 2900% 100%;
   -webkit-mask-position: 0% 0%;
   -webkit-mask-repeat: no-repeat;
-  mask-image: url('/urban-sprite.png');
+  mask-image: url('/urban-sprite.webp');
   mask-size: 2900% 100%;
   mask-position: 0% 0%;
   mask-repeat: no-repeat;

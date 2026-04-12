@@ -28,8 +28,28 @@ export function ProgressPage() {
 
   if (loading) {
     return (
-      <div className="h-full flex items-center justify-center" style={{ background: 'var(--sem-surface)' }}>
-        <div className="w-8 h-8 border-2 border-primary-200 border-t-primary-500 rounded-full animate-spin" />
+      <div className="h-full overflow-y-auto" style={{ background: 'var(--sem-surface)' }}>
+        <div className="max-w-5xl mx-auto px-4 sm:px-8 py-6 sm:py-10">
+          <div className="mb-10">
+            <div className="h-3 w-24 bg-neutral-200 rounded animate-pulse mb-3" />
+            <div className="h-12 w-56 bg-neutral-200 rounded-xl animate-pulse mb-2" />
+            <div className="h-12 w-40 bg-neutral-200 rounded-xl animate-pulse" />
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="bg-white rounded-2xl border border-neutral-100 p-5">
+                <div className="w-10 h-10 rounded-xl bg-neutral-100 animate-pulse mb-3" />
+                <div className="h-9 w-14 bg-neutral-200 rounded animate-pulse mb-2" />
+                <div className="h-3 w-16 bg-neutral-100 rounded animate-pulse" />
+              </div>
+            ))}
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+            <div className="col-span-1 lg:col-span-2 bg-white rounded-2xl border border-neutral-100 p-6 h-52 animate-pulse" />
+            <div className="bg-white rounded-2xl border border-neutral-100 p-6 h-52 animate-pulse" />
+          </div>
+          <div className="bg-white rounded-2xl border border-neutral-100 p-6 h-32 animate-pulse mb-6" />
+        </div>
       </div>
     )
   }

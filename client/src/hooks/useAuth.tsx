@@ -14,10 +14,25 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | null>(null)
 
+// Read cached Supabase session synchronously — avoids auth spinner on page load
+function getCachedUser(): User | null {
+  try {
+    for (const key of Object.keys(localStorage)) {
+      if (key.endsWith('-auth-token')) {
+        const parsed = JSON.parse(localStorage.getItem(key) ?? '{}')
+        if (parsed?.user && parsed.expires_at && parsed.expires_at * 1000 > Date.now()) {
+          return parsed.user as User
+        }
+      }
+    }
+  } catch {}
+  return null
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
+  const [user, setUser] = useState<User | null>(() => getCachedUser())
   const [session, setSession] = useState<Session | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(() => getCachedUser() === null)
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {

@@ -50,9 +50,21 @@ export function LessonsPage() {
         </div>
 
         {loading ? (
-          <div className="flex justify-center py-24">
-            <div className="w-8 h-8 border-2 border-primary-200 border-t-primary-500 rounded-full animate-spin" />
-          </div>
+          <>
+            {[0, 1].map((g) => (
+              <section key={g} className="mb-12">
+                <div className="flex items-center gap-2.5 mb-5">
+                  <div className="w-8 h-8 rounded-xl bg-neutral-200 animate-pulse" />
+                  <div className="h-5 w-36 bg-neutral-200 rounded animate-pulse" />
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {[0, 1].map((i) => (
+                    <div key={i} className="bg-white rounded-2xl border border-neutral-100 p-6 h-44 animate-pulse" />
+                  ))}
+                </div>
+              </section>
+            ))}
+          </>
         ) : lessons.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 text-center">
             <div className="w-20 h-20 rounded-3xl bg-primary-50 flex items-center justify-center mb-6">
