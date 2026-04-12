@@ -5,6 +5,38 @@ import { useSettings } from '@/hooks/useSettings'
 import type { CSSProperties, ReactNode } from 'react'
 
 // ─────────────────────────────────────────────
+// Shared particle field — drop inside any mag-btn/mag-orb
+// ─────────────────────────────────────────────
+
+function ParticleField({ color = 'rgba(255,255,255,0.8)', count = 55, spread = 110 }: {
+  color?: string
+  count?: number
+  spread?: number
+}) {
+  const ref = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const field = ref.current
+    if (!field) return
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement('div')
+      p.className = 'mag-particle'
+      p.style.setProperty('--px', `${Math.random() * spread * 2 - spread}px`)
+      p.style.setProperty('--py', `${Math.random() * spread * 2 - spread}px`)
+      p.style.animationName = 'particleFloat'
+      p.style.animationDuration = `${1.2 + Math.random() * 1.8}s`
+      p.style.animationTimingFunction = 'ease-in-out'
+      p.style.animationIterationCount = 'infinite'
+      p.style.animationDelay = `${Math.random() * 2}s`
+      p.style.left = `${Math.random() * 100}%`
+      p.style.top = `${Math.random() * 100}%`
+      p.style.background = color
+      field.appendChild(p)
+    }
+  }, [color, count, spread])
+  return <div className="mag-field" ref={ref} />
+}
+
+// ─────────────────────────────────────────────
 // Magnetic particle button
 // ─────────────────────────────────────────────
 
@@ -15,32 +47,10 @@ function MagneticButton({
   style?: CSSProperties
   particleColor?: string
 }) {
-  const fieldRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const field = fieldRef.current
-    if (!field) return
-    for (let i = 0; i < 55; i++) {
-      const p = document.createElement('div')
-      p.className = 'mag-particle'
-      p.style.setProperty('--px', `${Math.random() * 220 - 110}px`)
-      p.style.setProperty('--py', `${Math.random() * 220 - 110}px`)
-      p.style.animationName = 'particleFloat'
-      p.style.animationDuration = `${1.2 + Math.random() * 1.8}s`
-      p.style.animationTimingFunction = 'ease-in-out'
-      p.style.animationIterationCount = 'infinite'
-      p.style.animationDelay = `${Math.random() * 2}s`
-      p.style.left = `${Math.random() * 100}%`
-      p.style.top = `${Math.random() * 100}%`
-      p.style.background = particleColor
-      field.appendChild(p)
-    }
-  }, [particleColor])
-
   return (
     <button className="mag-btn inline-flex items-center gap-2 text-white text-sm font-semibold px-7 py-3 rounded-full" style={style}>
       {children}
-      <div className="mag-field" ref={fieldRef} />
+      <ParticleField color={particleColor} />
     </button>
   )
 }
@@ -70,9 +80,10 @@ function Chip({ text, style, dark }: { text: string; style?: CSSProperties; dark
 interface BottomBarProps {
   dark?: boolean
   btnBg: string
+  particleColor?: string
 }
 
-function BottomBar({ dark, btnBg }: BottomBarProps) {
+function BottomBar({ dark, btnBg, particleColor }: BottomBarProps) {
   return (
     <div
       className="shrink-0 flex items-center justify-between px-10 py-5"
@@ -83,7 +94,7 @@ function BottomBar({ dark, btnBg }: BottomBarProps) {
       </p>
       <div className="flex items-center gap-3">
         <Link to="/practice/custom">
-          <MagneticButton style={{ background: btnBg }}>
+          <MagneticButton style={{ background: btnBg }} particleColor={particleColor}>
             <Sparkles className="w-3.5 h-3.5" />
             Start Practicing
           </MagneticButton>
@@ -122,8 +133,8 @@ function HomeAura() {
   return (
     <div className="h-full flex flex-col relative overflow-hidden" style={{ background: '#c8e0ea' }}>
 
-      {/* Top title — centered like reference */}
-      <div className="relative z-10 text-center pt-8 shrink-0">
+      {/* Top title */}
+      <div className="relative z-10 pt-8 px-10 shrink-0">
         <h1 className="font-black tracking-tight leading-none"
           style={{ fontSize: 'clamp(2.8rem, 5.5vw, 5rem)', fontFamily: 'var(--font-heading)', color: '#1e3a4a' }}>
           Speak Up
@@ -165,17 +176,19 @@ function HomeAura() {
           }} />
 
           {/* Orb — pearl white */}
-          <div className="mic-orb relative rounded-full flex items-center justify-center animate-float cursor-pointer"
-            style={{
-              width: S.orb, height: S.orb,
-              background: 'linear-gradient(145deg, #ffffff, #eef4f8)',
-              boxShadow: '0 24px 64px -12px rgba(100,140,200,0.3), 0 8px 24px -4px rgba(100,140,200,0.2), inset 0 2px 0 rgba(255,255,255,1)',
-            }}
-          >
-            <div className="absolute top-[18%] left-[28%] w-[35%] h-[18%] bg-white/70 rounded-full blur-sm rotate-[-15deg]" />
-            {/* Mic is periwinkle/indigo like the reference */}
-            <Mic style={{ width: S.mic, height: S.mic, color: '#7c8fcc' }} className="relative z-10" />
-          </div>
+          <Link to="/practice/custom">
+            <div className="mic-orb relative rounded-full flex items-center justify-center animate-float cursor-pointer"
+              style={{
+                width: S.orb, height: S.orb,
+                background: 'linear-gradient(145deg, #ffffff, #eef4f8)',
+                boxShadow: '0 24px 64px -12px rgba(100,140,200,0.3), 0 8px 24px -4px rgba(100,140,200,0.2), inset 0 2px 0 rgba(255,255,255,1)',
+              }}
+            >
+              <div className="absolute top-[18%] left-[28%] w-[35%] h-[18%] bg-white/70 rounded-full blur-sm rotate-[-15deg]" />
+              <Mic style={{ width: S.mic, height: S.mic, color: '#7c8fcc' }} className="relative z-10" />
+              <ParticleField color="rgba(0,0,0,0.45)" count={45} spread={130} />
+            </div>
+          </Link>
 
           <Chip text='💬 "Tell me about yourself"'
             style={{ top: '-12%', right: '-55%', animationDelay: '0s' }} />
@@ -192,7 +205,7 @@ function HomeAura() {
         </p>
         <div className="flex items-center gap-3">
           <Link to="/practice/custom">
-            <MagneticButton style={{ background: '#6aaa82' }}>
+            <MagneticButton style={{ background: '#6aaa82' }} particleColor="rgba(0,0,0,0.55)">
               <Sparkles className="w-3.5 h-3.5" />
               Start Practicing
             </MagneticButton>
@@ -261,16 +274,19 @@ function HomeClarity() {
             animation: 'pulse-ring 2s ease-in-out infinite 1s',
           }} />
 
-          <div className="mic-orb relative rounded-full flex items-center justify-center shadow-2xl animate-float cursor-pointer"
-            style={{
-              width: S.orb, height: S.orb,
-              background: 'linear-gradient(145deg, #eff6ff, #dbeafe)',
-              boxShadow: '0 24px 64px -12px rgba(59,130,246,0.28), inset 0 2px 0 rgba(255,255,255,0.9)',
-            }}
-          >
-            <div className="absolute top-[18%] left-[28%] w-[35%] h-[18%] bg-white/60 rounded-full blur-sm rotate-[-15deg]" />
-            <Mic style={{ width: S.mic, height: S.mic, color: '#2563eb' }} className="relative z-10" />
-          </div>
+          <Link to="/practice/custom">
+            <div className="mic-orb relative rounded-full flex items-center justify-center shadow-2xl animate-float cursor-pointer"
+              style={{
+                width: S.orb, height: S.orb,
+                background: 'linear-gradient(145deg, #eff6ff, #dbeafe)',
+                boxShadow: '0 24px 64px -12px rgba(59,130,246,0.28), inset 0 2px 0 rgba(255,255,255,0.9)',
+              }}
+            >
+              <div className="absolute top-[18%] left-[28%] w-[35%] h-[18%] bg-white/60 rounded-full blur-sm rotate-[-15deg]" />
+              <Mic style={{ width: S.mic, height: S.mic, color: '#2563eb' }} className="relative z-10" />
+              <ParticleField color="rgba(0,0,0,0.45)" count={45} spread={130} />
+            </div>
+          </Link>
 
           <Chip text='💬 "Tell me about yourself"'
             style={{ top: '-12%', right: '-55%', animationDelay: '0s' }} />
@@ -279,7 +295,7 @@ function HomeClarity() {
         </div>
       </div>
 
-      <BottomBar btnBg="#2563eb" />
+      <BottomBar btnBg="#2563eb" particleColor="rgba(0,0,0,0.55)" />
     </div>
   )
 }
@@ -341,17 +357,20 @@ function HomeNight() {
             animation: 'pulse-ring 2s ease-in-out infinite 1s',
           }} />
 
-          <div className="mic-orb relative rounded-full flex items-center justify-center animate-float cursor-pointer"
-            style={{
-              width: S.orb, height: S.orb,
-              background: 'linear-gradient(145deg, #1e1b4b, #2e1065)',
-              boxShadow: '0 0 48px 16px rgba(99,102,241,0.4), 0 0 96px 32px rgba(139,92,246,0.18), inset 0 1px 0 rgba(255,255,255,0.08)',
-            }}
-          >
-            <div className="absolute top-[18%] left-[28%] w-[35%] h-[18%] rounded-full blur-sm rotate-[-15deg]"
-              style={{ background: 'rgba(255,255,255,0.1)' }} />
-            <Mic style={{ width: S.mic, height: S.mic, color: '#a5b4fc' }} className="relative z-10" />
-          </div>
+          <Link to="/practice/custom">
+            <div className="mic-orb relative rounded-full flex items-center justify-center animate-float cursor-pointer"
+              style={{
+                width: S.orb, height: S.orb,
+                background: 'linear-gradient(145deg, #1e1b4b, #2e1065)',
+                boxShadow: '0 0 48px 16px rgba(99,102,241,0.4), 0 0 96px 32px rgba(139,92,246,0.18), inset 0 1px 0 rgba(255,255,255,0.08)',
+              }}
+            >
+              <div className="absolute top-[18%] left-[28%] w-[35%] h-[18%] rounded-full blur-sm rotate-[-15deg]"
+                style={{ background: 'rgba(255,255,255,0.1)' }} />
+              <Mic style={{ width: S.mic, height: S.mic, color: '#a5b4fc' }} className="relative z-10" />
+              <ParticleField color="rgba(255,255,255,0.75)" count={45} spread={130} />
+            </div>
+          </Link>
 
           <Chip text='💬 "Tell me about yourself"' dark
             style={{ top: '-12%', right: '-55%', animationDelay: '0s' }} />
@@ -360,7 +379,7 @@ function HomeNight() {
         </div>
       </div>
 
-      <BottomBar dark btnBg="#4f46e5" />
+      <BottomBar dark btnBg="#4f46e5" particleColor="rgba(255,255,255,0.8)" />
     </div>
   )
 }
