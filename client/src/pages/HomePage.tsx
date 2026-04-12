@@ -1,20 +1,22 @@
 import { Mic, Sparkles, ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useSettings } from '@/hooks/useSettings'
+import type { CSSProperties } from 'react'
 
 // ─────────────────────────────────────────────
-// Shared floating chips + bottom bar
+// Shared pieces
 // ─────────────────────────────────────────────
 
-function Chip({ text, style, dark }: { text: string; style?: React.CSSProperties; dark?: boolean }) {
+function Chip({ text, style, dark }: { text: string; style?: CSSProperties; dark?: boolean }) {
   return (
     <div
-      className="absolute px-3 py-2 rounded-2xl text-xs font-medium whitespace-nowrap shadow-lg animate-float"
+      className="absolute px-4 py-2.5 rounded-2xl text-sm font-medium whitespace-nowrap shadow-lg animate-float"
       style={{
-        background: dark ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.85)',
-        backdropFilter: 'blur(12px)',
-        border: dark ? '1px solid rgba(255,255,255,0.12)' : '1px solid rgba(0,0,0,0.06)',
-        color: dark ? '#e2e8f0' : '#374151',
+        background: dark ? 'rgba(255,255,255,0.07)' : 'rgba(255,255,255,0.88)',
+        backdropFilter: 'blur(14px)',
+        WebkitBackdropFilter: 'blur(14px)',
+        border: dark ? '1px solid rgba(255,255,255,0.12)' : '1px solid rgba(0,0,0,0.07)',
+        color: dark ? '#cbd5e1' : '#1f2937',
         ...style,
       }}
     >
@@ -25,24 +27,23 @@ function Chip({ text, style, dark }: { text: string; style?: React.CSSProperties
 
 interface BottomBarProps {
   dark?: boolean
-  btnBg?: string
-  btnColor?: string
+  btnBg: string
 }
 
-function BottomBar({ dark, btnBg, btnColor }: BottomBarProps) {
+function BottomBar({ dark, btnBg }: BottomBarProps) {
   return (
     <div
-      className="relative z-20 flex items-center justify-between px-8 py-5 shrink-0"
-      style={{ borderTop: `1px solid ${dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}` }}
+      className="shrink-0 flex items-center justify-between px-10 py-5"
+      style={{ borderTop: `1px solid ${dark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.07)'}` }}
     >
-      <p className="text-sm font-medium" style={{ color: dark ? '#94a3b8' : '#6b7280' }}>
+      <p className="text-sm font-medium tracking-wide" style={{ color: dark ? '#475569' : '#9ca3af' }}>
         More fluency, more confidence, more you.
       </p>
       <div className="flex items-center gap-3">
         <Link to="/practice/custom">
           <button
-            className="inline-flex items-center gap-2 text-sm font-semibold px-6 py-2.5 rounded-full hover-glow cursor-pointer"
-            style={{ background: btnBg || '#111827', color: btnColor || '#fff' }}
+            className="inline-flex items-center gap-2 text-white text-sm font-semibold px-7 py-3 rounded-full hover-glow cursor-pointer"
+            style={{ background: btnBg }}
           >
             <Sparkles className="w-3.5 h-3.5" />
             Start Practicing
@@ -50,11 +51,10 @@ function BottomBar({ dark, btnBg, btnColor }: BottomBarProps) {
         </Link>
         <Link to="/lessons">
           <button
-            className="group inline-flex items-center gap-2 text-sm font-semibold px-6 py-2.5 rounded-full cursor-pointer hover-slide"
+            className="group inline-flex items-center gap-2 text-sm font-semibold px-7 py-3 rounded-full cursor-pointer hover-slide"
             style={{
-              border: `1.5px solid ${dark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.15)'}`,
+              border: `1.5px solid ${dark ? 'rgba(255,255,255,0.18)' : 'rgba(0,0,0,0.13)'}`,
               color: dark ? '#e2e8f0' : '#374151',
-              background: 'transparent',
             }}
           >
             View Lessons
@@ -66,242 +66,274 @@ function BottomBar({ dark, btnBg, btnColor }: BottomBarProps) {
   )
 }
 
+// Size helpers — orb fills ~65% of viewport height
+const S = {
+  r1: 'clamp(280px, 60vh, 580px)',   // outer ring
+  r2: 'clamp(210px, 46vh, 440px)',   // mid ring
+  r3: 'clamp(148px, 32vh, 308px)',   // inner ring
+  orb: 'clamp(90px, 17vh, 164px)',   // center orb
+  mic: 'clamp(36px, 7vh, 68px)',     // mic icon
+}
+
 // ─────────────────────────────────────────────
-// Design 1 — AURA (colorful rings, teal bg)
+// Design 1 — AURA
 // ─────────────────────────────────────────────
 
 function HomeAura() {
   return (
-    <div className="h-full flex flex-col relative overflow-hidden" style={{ background: '#d4ede8' }}>
-      {/* Header */}
-      <div className="relative z-10 text-center pt-10 pb-2 shrink-0">
-        <h1 className="text-4xl font-black text-neutral-800 tracking-tight" style={{ fontFamily: 'var(--font-heading)' }}>
+    <div className="h-full flex flex-col relative overflow-hidden" style={{ background: '#c8e0ea' }}>
+
+      {/* Top title — centered like reference */}
+      <div className="relative z-10 text-center pt-8 shrink-0">
+        <h1 className="font-black tracking-tight leading-none"
+          style={{ fontSize: 'clamp(2.8rem, 5.5vw, 5rem)', fontFamily: 'var(--font-heading)', color: '#1e3a4a' }}>
           Speak Up
         </h1>
-        <p className="text-xs tracking-[0.25em] text-neutral-500 mt-1 uppercase">Your English Partner</p>
+        <p className="text-xs tracking-[0.3em] mt-2 uppercase" style={{ color: '#5a8a9f' }}>Your English Partner</p>
       </div>
 
-      {/* Orb area — flex-1 */}
+      {/* Orb */}
       <div className="flex-1 relative flex items-center justify-center min-h-0">
 
-        {/* Right tagline */}
-        <div className="absolute right-10 top-1/2 -translate-y-1/2 text-right z-10">
-          <p className="font-bold text-neutral-700 leading-tight" style={{ fontSize: 'clamp(1.4rem, 2.5vw, 2.2rem)', fontFamily: 'var(--font-heading)' }}>
-            Your AI<br />English Coach
+        {/* Tagline */}
+        <div className="absolute right-8 top-1/2 -translate-y-1/2 text-right z-20 max-w-[220px]">
+          <p className="font-black leading-[1.1]"
+            style={{ fontSize: 'clamp(1.8rem, 3.2vw, 3rem)', fontFamily: 'var(--font-heading)', color: '#1e3a4a' }}>
+            Your AI<br />English<br />Coach
           </p>
-          <p className="text-neutral-500 text-sm mt-2">Speak freely. Improve naturally.</p>
+          <p className="text-sm mt-3 leading-relaxed" style={{ color: '#5a8a9f' }}>Speak freely.<br />Improve naturally.</p>
         </div>
 
-        {/* Orb with colorful rings */}
+        {/* Rings — outer: sage green, mid: lavender, inner: sky blue */}
         <div className="relative flex items-center justify-center">
-          {/* Ring 3 — outer green */}
           <div className="absolute rounded-full" style={{
-            width: 320, height: 320,
-            border: '2px solid rgba(52,211,153,0.35)',
-            background: 'rgba(52,211,153,0.06)',
-            animation: 'pulse-ring 3s ease-in-out infinite',
+            width: S.r1, height: S.r1,
+            border: '2px solid rgba(134,200,155,0.55)',
+            background: 'rgba(134,200,155,0.1)',
+            animation: 'pulse-ring 3.2s ease-in-out infinite',
           }} />
-          {/* Ring 2 — middle lavender */}
           <div className="absolute rounded-full" style={{
-            width: 240, height: 240,
-            border: '2px solid rgba(167,139,250,0.45)',
-            background: 'rgba(167,139,250,0.08)',
-            animation: 'pulse-ring 2.5s ease-in-out infinite 0.4s',
+            width: S.r2, height: S.r2,
+            border: '2px solid rgba(192,168,250,0.6)',
+            background: 'rgba(192,168,250,0.1)',
+            animation: 'pulse-ring 2.6s ease-in-out infinite 0.5s',
           }} />
-          {/* Ring 1 — inner blue */}
           <div className="absolute rounded-full" style={{
-            width: 168, height: 168,
-            border: '2px solid rgba(96,165,250,0.55)',
-            background: 'rgba(96,165,250,0.1)',
-            animation: 'pulse-ring 2s ease-in-out infinite 0.8s',
+            width: S.r3, height: S.r3,
+            border: '2px solid rgba(120,180,240,0.65)',
+            background: 'rgba(120,180,240,0.12)',
+            animation: 'pulse-ring 2s ease-in-out infinite 1s',
           }} />
 
-          {/* Center orb */}
-          <div className="relative w-28 h-28 rounded-full flex items-center justify-center shadow-xl animate-float"
+          {/* Orb — pearl white */}
+          <div className="relative rounded-full flex items-center justify-center animate-float"
             style={{
-              background: 'linear-gradient(145deg, #ffffff, #e8f8f4)',
-              boxShadow: '0 16px 48px -8px rgba(52,211,153,0.35), inset 0 1px 0 rgba(255,255,255,0.9)',
+              width: S.orb, height: S.orb,
+              background: 'linear-gradient(145deg, #ffffff, #eef4f8)',
+              boxShadow: '0 24px 64px -12px rgba(100,140,200,0.3), 0 8px 24px -4px rgba(100,140,200,0.2), inset 0 2px 0 rgba(255,255,255,1)',
             }}
           >
-            <div className="absolute top-3 left-5 w-8 h-3 bg-white/60 rounded-full blur-sm rotate-[-15deg]" />
-            <Mic className="w-12 h-12 relative z-10" style={{ color: '#10b981' }} />
+            <div className="absolute top-[18%] left-[28%] w-[35%] h-[18%] bg-white/70 rounded-full blur-sm rotate-[-15deg]" />
+            {/* Mic is periwinkle/indigo like the reference */}
+            <Mic style={{ width: S.mic, height: S.mic, color: '#7c8fcc' }} className="relative z-10" />
           </div>
 
-          {/* Floating chips */}
-          <Chip text='💬 "Tell me about yourself"' style={{ top: -24, right: -80 }} />
-          <Chip text='✨ Great pronunciation!' style={{ bottom: -16, left: -88, animationDelay: '1.2s' }} />
+          <Chip text='💬 "Tell me about yourself"'
+            style={{ top: '-12%', right: '-55%', animationDelay: '0s' }} />
+          <Chip text='✨ Great pronunciation!'
+            style={{ bottom: '-8%', left: '-58%', animationDelay: '1.3s' }} />
         </div>
       </div>
 
-      <BottomBar btnBg="#10b981" btnColor="#fff" />
+      {/* Buttons match reference: muted sage + soft teal */}
+      <div className="shrink-0 flex items-center justify-between px-10 py-5"
+        style={{ borderTop: '1px solid rgba(0,0,0,0.07)' }}>
+        <p className="text-sm font-medium tracking-wide" style={{ color: '#5a8a9f' }}>
+          More fluency, more confidence, more you.
+        </p>
+        <div className="flex items-center gap-3">
+          <Link to="/practice/custom">
+            <button className="inline-flex items-center gap-2 text-white text-sm font-semibold px-7 py-3 rounded-full hover-glow cursor-pointer"
+              style={{ background: '#6aaa82' }}>
+              <Sparkles className="w-3.5 h-3.5" />
+              Start Practicing
+            </button>
+          </Link>
+          <Link to="/lessons">
+            <button className="group inline-flex items-center gap-2 text-sm font-semibold px-7 py-3 rounded-full cursor-pointer hover-slide"
+              style={{ background: '#7dbdba', color: '#fff', border: 'none' }}>
+              View Lessons
+              <ArrowRight className="w-3.5 h-3.5 group-arrow" />
+            </button>
+          </Link>
+        </div>
+      </div>
     </div>
   )
 }
 
 // ─────────────────────────────────────────────
-// Design 2 — CLARITY (clean white, blue rings)
+// Design 2 — CLARITY
 // ─────────────────────────────────────────────
 
 function HomeClarity() {
   return (
-    <div className="h-full flex flex-col relative overflow-hidden" style={{ background: '#f8fbff' }}>
-      {/* Subtle bg tint */}
+    <div className="h-full flex flex-col relative overflow-hidden" style={{ background: '#f5f9ff' }}>
       <div className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse 80% 60% at 50% 50%, rgba(219,234,254,0.5) 0%, transparent 70%)' }}
-      />
+        style={{ background: 'radial-gradient(ellipse 70% 55% at 50% 52%, rgba(191,219,254,0.45) 0%, transparent 65%)' }} />
 
-      {/* Header */}
-      <div className="relative z-10 pt-10 pb-2 px-10 shrink-0">
-        <h1 className="text-4xl font-black text-neutral-800 tracking-tight" style={{ fontFamily: 'var(--font-heading)' }}>
+      {/* Top title */}
+      <div className="relative z-10 pt-8 px-10 shrink-0">
+        <h1 className="font-black text-neutral-800 tracking-tight leading-none"
+          style={{ fontSize: 'clamp(2.8rem, 5.5vw, 5rem)', fontFamily: 'var(--font-heading)' }}>
           Speak Up
         </h1>
-        <p className="text-xs tracking-[0.25em] text-neutral-400 mt-1 uppercase">Your English Partner</p>
+        <p className="text-xs tracking-[0.3em] text-neutral-400 mt-2 uppercase">Your English Partner</p>
       </div>
 
-      {/* Orb area */}
+      {/* Orb */}
       <div className="flex-1 relative flex items-center justify-center min-h-0">
 
-        {/* Right tagline */}
-        <div className="absolute right-10 top-1/2 -translate-y-1/2 text-right z-10">
-          <p className="font-bold text-neutral-800 leading-tight" style={{ fontSize: 'clamp(1.4rem, 2.5vw, 2.2rem)', fontFamily: 'var(--font-heading)' }}>
-            Your AI<br />English Coach
+        {/* Tagline */}
+        <div className="absolute right-8 top-1/2 -translate-y-1/2 text-right z-20 max-w-[220px]">
+          <p className="font-black text-neutral-800 leading-[1.1]"
+            style={{ fontSize: 'clamp(1.8rem, 3.2vw, 3rem)', fontFamily: 'var(--font-heading)' }}>
+            Your AI<br />English<br />Coach
           </p>
-          <p className="text-neutral-400 text-sm mt-2">Speak freely. Improve naturally.</p>
+          <p className="text-neutral-400 text-sm mt-3 leading-relaxed">Speak freely.<br />Improve naturally.</p>
         </div>
 
-        {/* Orb */}
         <div className="relative flex items-center justify-center">
-          {/* Rings — all monochrome blue */}
           <div className="absolute rounded-full" style={{
-            width: 320, height: 320,
-            border: '1.5px solid rgba(147,197,253,0.5)',
-            background: 'rgba(219,234,254,0.2)',
-            animation: 'pulse-ring 3s ease-in-out infinite',
+            width: S.r1, height: S.r1,
+            border: '1.5px solid rgba(147,197,253,0.45)',
+            background: 'rgba(219,234,254,0.18)',
+            animation: 'pulse-ring 3.2s ease-in-out infinite',
           }} />
           <div className="absolute rounded-full" style={{
-            width: 240, height: 240,
+            width: S.r2, height: S.r2,
             border: '1.5px solid rgba(96,165,250,0.4)',
-            background: 'rgba(191,219,254,0.2)',
-            animation: 'pulse-ring 2.5s ease-in-out infinite 0.4s',
+            background: 'rgba(191,219,254,0.18)',
+            animation: 'pulse-ring 2.6s ease-in-out infinite 0.5s',
           }} />
           <div className="absolute rounded-full" style={{
-            width: 168, height: 168,
-            border: '1.5px solid rgba(59,130,246,0.35)',
-            background: 'rgba(147,197,253,0.15)',
-            animation: 'pulse-ring 2s ease-in-out infinite 0.8s',
+            width: S.r3, height: S.r3,
+            border: '1.5px solid rgba(59,130,246,0.38)',
+            background: 'rgba(147,197,253,0.14)',
+            animation: 'pulse-ring 2s ease-in-out infinite 1s',
           }} />
 
-          {/* Center orb */}
-          <div className="relative w-28 h-28 rounded-full flex items-center justify-center shadow-xl animate-float"
+          <div className="relative rounded-full flex items-center justify-center shadow-2xl animate-float"
             style={{
+              width: S.orb, height: S.orb,
               background: 'linear-gradient(145deg, #eff6ff, #dbeafe)',
-              boxShadow: '0 16px 48px -8px rgba(59,130,246,0.25), inset 0 1px 0 rgba(255,255,255,0.9)',
+              boxShadow: '0 24px 64px -12px rgba(59,130,246,0.28), inset 0 2px 0 rgba(255,255,255,0.9)',
             }}
           >
-            <div className="absolute top-3 left-5 w-8 h-3 bg-white/70 rounded-full blur-sm rotate-[-15deg]" />
-            <Mic className="w-12 h-12 relative z-10" style={{ color: '#3b82f6' }} />
+            <div className="absolute top-[18%] left-[28%] w-[35%] h-[18%] bg-white/60 rounded-full blur-sm rotate-[-15deg]" />
+            <Mic style={{ width: S.mic, height: S.mic, color: '#2563eb' }} className="relative z-10" />
           </div>
 
-          <Chip text='💬 "Tell me about yourself"' style={{ top: -24, right: -80 }} />
-          <Chip text='✨ Great pronunciation!' style={{ bottom: -16, left: -88, animationDelay: '1.2s' }} />
+          <Chip text='💬 "Tell me about yourself"'
+            style={{ top: '-12%', right: '-55%', animationDelay: '0s' }} />
+          <Chip text='✨ Great pronunciation!'
+            style={{ bottom: '-8%', left: '-58%', animationDelay: '1.3s' }} />
         </div>
       </div>
 
-      <BottomBar btnBg="#2563eb" btnColor="#fff" />
+      <BottomBar btnBg="#2563eb" />
     </div>
   )
 }
 
 // ─────────────────────────────────────────────
-// Design 3 — NIGHT (dark navy, glowing orb)
+// Design 3 — NIGHT
 // ─────────────────────────────────────────────
 
 function HomeNight() {
   return (
-    <div className="h-full flex flex-col relative overflow-hidden" style={{ background: '#080e1a' }}>
-      {/* Deep glow in center */}
+    <div className="h-full flex flex-col relative overflow-hidden" style={{ background: '#07090f' }}>
       <div className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse 60% 50% at 50% 55%, rgba(99,102,241,0.18) 0%, rgba(139,92,246,0.08) 40%, transparent 70%)' }}
-      />
+        style={{ background: 'radial-gradient(ellipse 55% 50% at 50% 54%, rgba(79,70,229,0.22) 0%, rgba(124,58,237,0.1) 40%, transparent 68%)' }} />
 
-      {/* Header */}
-      <div className="relative z-10 pt-10 pb-2 px-10 shrink-0">
-        <h1 className="text-4xl font-black tracking-tight" style={{ fontFamily: 'var(--font-heading)', color: '#f1f5f9' }}>
+      {/* Top title */}
+      <div className="relative z-10 pt-8 px-10 shrink-0">
+        <h1 className="font-black tracking-tight leading-none"
+          style={{ fontSize: 'clamp(2.8rem, 5.5vw, 5rem)', fontFamily: 'var(--font-heading)', color: '#f1f5f9' }}>
           Speak Up
         </h1>
-        <p className="text-xs tracking-[0.25em] mt-1 uppercase" style={{ color: '#475569' }}>Your English Partner</p>
+        <p className="text-xs tracking-[0.3em] mt-2 uppercase" style={{ color: '#334155' }}>Your English Partner</p>
       </div>
 
-      {/* Orb area */}
+      {/* Orb */}
       <div className="flex-1 relative flex items-center justify-center min-h-0">
 
-        {/* Right tagline */}
-        <div className="absolute right-10 top-1/2 -translate-y-1/2 text-right z-10">
-          <p className="font-bold leading-tight" style={{ fontSize: 'clamp(1.4rem, 2.5vw, 2.2rem)', fontFamily: 'var(--font-heading)', color: '#f1f5f9' }}>
-            Your AI<br />English Coach
+        {/* Tagline */}
+        <div className="absolute right-8 top-1/2 -translate-y-1/2 text-right z-20 max-w-[220px]">
+          <p className="font-black leading-[1.1]"
+            style={{ fontSize: 'clamp(1.8rem, 3.2vw, 3rem)', fontFamily: 'var(--font-heading)', color: '#f1f5f9' }}>
+            Your AI<br />English<br />Coach
           </p>
-          <p className="text-sm mt-2" style={{ color: '#64748b' }}>Speak freely. Improve naturally.</p>
+          <p className="text-sm mt-3 leading-relaxed" style={{ color: '#475569' }}>Speak freely.<br />Improve naturally.</p>
         </div>
 
-        {/* Orb */}
         <div className="relative flex items-center justify-center">
-          {/* Outer glow ring */}
+          {/* Ping ring */}
           <div className="absolute rounded-full animate-ping" style={{
-            width: 340, height: 340,
+            width: S.r1, height: S.r1,
+            border: '1px solid rgba(99,102,241,0.15)',
+            animationDuration: '3.5s',
+          }} />
+          <div className="absolute rounded-full" style={{
+            width: S.r1, height: S.r1,
             border: '1px solid rgba(99,102,241,0.2)',
-            animationDuration: '3s',
+            background: 'rgba(99,102,241,0.03)',
+            animation: 'pulse-ring 3.2s ease-in-out infinite',
           }} />
-          {/* Ring 3 */}
           <div className="absolute rounded-full" style={{
-            width: 310, height: 310,
-            border: '1px solid rgba(99,102,241,0.25)',
-            background: 'rgba(99,102,241,0.04)',
-            animation: 'pulse-ring 3s ease-in-out infinite',
+            width: S.r2, height: S.r2,
+            border: '1.5px solid rgba(139,92,246,0.32)',
+            background: 'rgba(139,92,246,0.05)',
+            animation: 'pulse-ring 2.6s ease-in-out infinite 0.5s',
           }} />
-          {/* Ring 2 */}
           <div className="absolute rounded-full" style={{
-            width: 230, height: 230,
-            border: '1.5px solid rgba(139,92,246,0.35)',
-            background: 'rgba(139,92,246,0.06)',
-            animation: 'pulse-ring 2.5s ease-in-out infinite 0.5s',
-          }} />
-          {/* Ring 1 */}
-          <div className="absolute rounded-full" style={{
-            width: 160, height: 160,
-            border: '1.5px solid rgba(167,139,250,0.5)',
-            background: 'rgba(139,92,246,0.1)',
+            width: S.r3, height: S.r3,
+            border: '1.5px solid rgba(167,139,250,0.45)',
+            background: 'rgba(139,92,246,0.08)',
             animation: 'pulse-ring 2s ease-in-out infinite 1s',
           }} />
 
-          {/* Center orb — glowing */}
-          <div className="relative w-28 h-28 rounded-full flex items-center justify-center animate-float"
+          <div className="relative rounded-full flex items-center justify-center animate-float"
             style={{
-              background: 'linear-gradient(145deg, #1e1b4b, #312e81)',
-              boxShadow: '0 0 40px 12px rgba(99,102,241,0.35), 0 0 80px 24px rgba(139,92,246,0.15), inset 0 1px 0 rgba(255,255,255,0.08)',
+              width: S.orb, height: S.orb,
+              background: 'linear-gradient(145deg, #1e1b4b, #2e1065)',
+              boxShadow: '0 0 48px 16px rgba(99,102,241,0.4), 0 0 96px 32px rgba(139,92,246,0.18), inset 0 1px 0 rgba(255,255,255,0.08)',
             }}
           >
-            <div className="absolute top-3 left-5 w-8 h-3 rounded-full blur-sm rotate-[-15deg]" style={{ background: 'rgba(255,255,255,0.12)' }} />
-            <Mic className="w-12 h-12 relative z-10" style={{ color: '#a5b4fc' }} />
+            <div className="absolute top-[18%] left-[28%] w-[35%] h-[18%] rounded-full blur-sm rotate-[-15deg]"
+              style={{ background: 'rgba(255,255,255,0.1)' }} />
+            <Mic style={{ width: S.mic, height: S.mic, color: '#a5b4fc' }} className="relative z-10" />
           </div>
 
-          <Chip text='💬 "Tell me about yourself"' dark style={{ top: -24, right: -80 }} />
-          <Chip text='✨ Great pronunciation!' dark style={{ bottom: -16, left: -88, animationDelay: '1.2s' }} />
+          <Chip text='💬 "Tell me about yourself"' dark
+            style={{ top: '-12%', right: '-55%', animationDelay: '0s' }} />
+          <Chip text='✨ Great pronunciation!' dark
+            style={{ bottom: '-8%', left: '-58%', animationDelay: '1.3s' }} />
         </div>
       </div>
 
-      <BottomBar dark btnBg="#4f46e5" btnColor="#fff" />
+      <BottomBar dark btnBg="#4f46e5" />
     </div>
   )
 }
 
 // ─────────────────────────────────────────────
-// Root — picks design from settings
+// Root
 // ─────────────────────────────────────────────
 
 export function HomePage() {
   const { settings } = useSettings()
-
-  if (settings.homeStyle === 'aura')    return <HomeAura />
-  if (settings.homeStyle === 'night')   return <HomeNight />
+  if (settings.homeStyle === 'aura')  return <HomeAura />
+  if (settings.homeStyle === 'night') return <HomeNight />
   return <HomeClarity />
 }
