@@ -1,21 +1,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 
-// ── Theme ──
-export type ThemeName = 'calm-garden' | 'ocean-breeze' | 'sunset-glow' | 'lavender-dream' | 'midnight'
-
-export interface ThemeInfo {
-  id: ThemeName
-  label: string
-  swatch: string
-}
-
-export const themes: ThemeInfo[] = [
-  { id: 'calm-garden', label: 'Calm Garden', swatch: '#34d399' },
-  { id: 'ocean-breeze', label: 'Ocean Breeze', swatch: '#60a5fa' },
-  { id: 'sunset-glow', label: 'Sunset Glow', swatch: '#fbbf24' },
-  { id: 'lavender-dream', label: 'Lavender Dream', swatch: '#a78bfa' },
-  { id: 'midnight', label: 'Midnight', swatch: '#2dd4bf' },
-]
+// ── Theme — driven by homeStyle, not user-selected independently ──
+export type ThemeName = 'calm-garden' | 'ocean-breeze' | 'midnight'
 
 // ── Home Style ──
 export type HomeStyle = 'aura' | 'clarity' | 'night'
@@ -79,7 +65,7 @@ export interface Settings {
 }
 
 const defaultSettings: Settings = {
-  theme: 'calm-garden',
+  theme: 'ocean-breeze',
   homeStyle: 'clarity',
   fontSize: 'medium',
   borderRadius: 'rounded',

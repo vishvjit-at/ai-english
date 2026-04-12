@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react'
 import { Settings, Palette, Zap, Volume2, Play, AlertTriangle } from 'lucide-react'
-import { useSettings, themes, homeStyles, type VoiceProvider, type VoiceOption } from '@/hooks/useSettings'
+import { useSettings, homeStyles, type HomeStyle, type ThemeName, type VoiceProvider, type VoiceOption } from '@/hooks/useSettings'
+
+const STYLE_THEME: Record<HomeStyle, ThemeName> = {
+  aura: 'calm-garden',
+  clarity: 'ocean-breeze',
+  night: 'midnight',
+}
 import { supabase } from '@/lib/supabase'
 
 async function getAuthHeaders(): Promise<Record<string, string>> {
@@ -167,44 +173,24 @@ export function SettingsPage() {
                 <Palette className="w-4 h-4 text-primary-600" /> Appearance
               </div>
 
-              {/* Color Theme */}
+              {/* Theme (home style = theme) */}
               <div className="mb-6">
-                <p className="text-xs text-neutral-500 uppercase tracking-wider mb-3">Color Theme</p>
-                <div className="flex gap-3 flex-wrap">
-                  {themes.map((t) => (
-                    <button
-                      key={t.id}
-                      onClick={() => updateSettings({ theme: t.id })}
-                      className={`w-8 h-8 rounded-full cursor-pointer transition-all ${settings.theme === t.id ? 'ring-2 ring-offset-2 ring-primary-600' : 'hover:scale-110'}`}
-                      style={{ background: `linear-gradient(135deg, ${t.swatch}, ${t.swatch}dd)` }}
-                      title={t.label}
-                    />
-                  ))}
-                </div>
-              </div>
-
-              {/* Home Style */}
-              <div className="mb-6">
-                <p className="text-xs text-neutral-500 uppercase tracking-wider mb-3">Home Page Style</p>
+                <p className="text-xs text-neutral-500 uppercase tracking-wider mb-3">Theme</p>
                 <div className="flex gap-3">
                   {homeStyles.map((s) => (
                     <button
                       key={s.id}
-                      onClick={() => updateSettings({ homeStyle: s.id })}
+                      onClick={() => updateSettings({ homeStyle: s.id, theme: STYLE_THEME[s.id] })}
                       className={`flex flex-col items-center gap-2 p-3 rounded-xl border-2 cursor-pointer transition-all hover:scale-105 ${
                         settings.homeStyle === s.id
                           ? 'border-primary-500 bg-primary-50'
                           : 'border-neutral-200 hover:border-neutral-300'
                       }`}
                     >
-                      {/* Mini preview */}
                       <div className="w-20 h-12 rounded-lg overflow-hidden relative flex items-center justify-center"
                         style={{ background: s.bg }}>
-                        {/* rings */}
-                        <div className="absolute w-10 h-10 rounded-full border opacity-40"
-                          style={{ borderColor: s.accent }} />
-                        <div className="absolute w-7 h-7 rounded-full border opacity-60"
-                          style={{ borderColor: s.accent }} />
+                        <div className="absolute w-10 h-10 rounded-full border opacity-40" style={{ borderColor: s.accent }} />
+                        <div className="absolute w-7 h-7 rounded-full border opacity-60" style={{ borderColor: s.accent }} />
                         <div className="w-5 h-5 rounded-full flex items-center justify-center"
                           style={{ background: s.accent + '33', border: `1.5px solid ${s.accent}` }}>
                           <div className="w-1.5 h-1.5 rounded-full" style={{ background: s.accent }} />
@@ -482,7 +468,7 @@ export function SettingsPage() {
 
               {/* Reset Defaults */}
               <button
-                onClick={() => updateSettings({ theme: themes[0].id, fontSize: 'medium', borderRadius: 'rounded', chatDensity: 'comfortable', animations: true })}
+                onClick={() => updateSettings({ homeStyle: 'clarity', theme: 'ocean-breeze', fontSize: 'medium', borderRadius: 'rounded', chatDensity: 'comfortable', animations: true })}
                 className="w-full border border-red-200 text-red-500 hover:bg-red-50 rounded-xl py-2.5 text-sm font-medium transition-colors cursor-pointer mt-4"
               >
                 Reset Defaults

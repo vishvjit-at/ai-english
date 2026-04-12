@@ -2,56 +2,7 @@
 
 /* ── Semantic CSS custom properties ──────────────────────────── */
 :root {
-  /* Primary scale */
-  --sem-primary-50:  #ecfdf5;
-  --sem-primary-100: #d1fae5;
-  --sem-primary-200: #a7f3d0;
-  --sem-primary-300: #6ee7b7;
-  --sem-primary-400: #34d399;
-  --sem-primary-500: #10b981;
-  --sem-primary-600: #059669;
-  --sem-primary-700: #047857;
-
-  /* Accent scale */
-  --sem-accent-50:  #fff7ed;
-  --sem-accent-100: #ffedd5;
-  --sem-accent-200: #fed7aa;
-  --sem-accent-300: #fdba74;
-  --sem-accent-400: #fb923c;
-  --sem-accent-500: #f97316;
-
-  /* Tertiary scale */
-  --sem-tertiary-100: #ede9fe;
-  --sem-tertiary-200: #ddd6fe;
-  --sem-tertiary-300: #c4b5fd;
-  --sem-tertiary-400: #a78bfa;
-  --sem-tertiary-500: #8b5cf6;
-
-  /* Surface / neutral scale */
-  --sem-surface:      #FEFCF8;
-  --sem-surface-dark: #F5F0EB;
-  --sem-neutral-50:   #fafaf9;
-  --sem-neutral-100:  #f5f5f4;
-  --sem-neutral-200:  #e7e5e4;
-  --sem-neutral-300:  #d6d3d1;
-  --sem-neutral-400:  #a8a29e;
-  --sem-neutral-500:  #78716c;
-  --sem-neutral-600:  #57534e;
-  --sem-neutral-700:  #44403c;
-  --sem-neutral-800:  #292524;
-  --sem-neutral-900:  #1c1917;
-
-  /* Glass */
-  --sem-glass-bg: rgba(255, 252, 248, 0.8);
-}
-
-/* ── Theme: Calm Garden (default — same as :root) ─────────── */
-.theme-calm-garden {
-  /* defaults already set on :root */
-}
-
-/* ── Theme: Ocean Breeze ──────────────────────────────────── */
-.theme-ocean-breeze {
+  /* Default = Clarity (blue) — overridden by theme classes */
   --sem-primary-50:  #eff6ff;
   --sem-primary-100: #dbeafe;
   --sem-primary-200: #bfdbfe;
@@ -60,19 +11,21 @@
   --sem-primary-500: #3b82f6;
   --sem-primary-600: #2563eb;
   --sem-primary-700: #1d4ed8;
+  --sem-primary-800: #1e40af;
+  --sem-primary-900: #1e3a8a;
 
-  --sem-accent-50:  #fff1f2;
-  --sem-accent-100: #ffe4e6;
-  --sem-accent-200: #fecdd3;
-  --sem-accent-300: #fda4af;
-  --sem-accent-400: #fb7185;
-  --sem-accent-500: #f43f5e;
+  --sem-accent-50:  #f0f9ff;
+  --sem-accent-100: #e0f2fe;
+  --sem-accent-200: #bae6fd;
+  --sem-accent-300: #7dd3fc;
+  --sem-accent-400: #38bdf8;
+  --sem-accent-500: #0ea5e9;
 
-  --sem-tertiary-100: #d1fae5;
-  --sem-tertiary-200: #a7f3d0;
-  --sem-tertiary-300: #6ee7b7;
-  --sem-tertiary-400: #34d399;
-  --sem-tertiary-500: #10b981;
+  --sem-tertiary-100: #f0fdf4;
+  --sem-tertiary-200: #dcfce7;
+  --sem-tertiary-300: #bbf7d0;
+  --sem-tertiary-400: #4ade80;
+  --sem-tertiary-500: #22c55e;
 
   --sem-surface:      #f8fafc;
   --sem-surface-dark: #f1f5f9;
@@ -90,124 +43,133 @@
   --sem-glass-bg: rgba(248, 250, 252, 0.8);
 }
 
-/* ── Theme: Sunset Glow ───────────────────────────────────── */
-.theme-sunset-glow {
-  --sem-primary-50:  #fffbeb;
-  --sem-primary-100: #fef3c7;
-  --sem-primary-200: #fde68a;
-  --sem-primary-300: #fcd34d;
-  --sem-primary-400: #fbbf24;
-  --sem-primary-500: #f59e0b;
-  --sem-primary-600: #d97706;
-  --sem-primary-700: #b45309;
+/* ── Theme: Aura — sage green / periwinkle ────────────────── */
+/* Matches HomeAura: sage button #6aaa82, teal #7dbdba, bg #c8e0ea */
+.theme-calm-garden {
+  --sem-primary-50:  #f0f7f3;
+  --sem-primary-100: #d9ede2;
+  --sem-primary-200: #b3dbc5;
+  --sem-primary-300: #8dcaa8;
+  --sem-primary-400: #7cc49a;
+  --sem-primary-500: #6aaa82;
+  --sem-primary-600: #558a68;
+  --sem-primary-700: #406b50;
+  --sem-primary-800: #2a4535;
+  --sem-primary-900: #1a2e22;
 
-  --sem-accent-50:  #fff1f2;
-  --sem-accent-100: #ffe4e6;
-  --sem-accent-200: #fecdd3;
-  --sem-accent-300: #fda4af;
-  --sem-accent-400: #f43f5e;
-  --sem-accent-500: #e11d48;
+  --sem-accent-50:  #eef6f8;
+  --sem-accent-100: #d2ecf2;
+  --sem-accent-200: #a5d9e5;
+  --sem-accent-300: #7dbdba;
+  --sem-accent-400: #5da8a6;
+  --sem-accent-500: #3d9291;
 
-  --sem-tertiary-100: #ffedd5;
-  --sem-tertiary-200: #fed7aa;
-  --sem-tertiary-300: #fdba74;
-  --sem-tertiary-400: #fb923c;
-  --sem-tertiary-500: #f97316;
+  --sem-tertiary-100: #eef0fb;
+  --sem-tertiary-200: #dde1f7;
+  --sem-tertiary-300: #b8c0ef;
+  --sem-tertiary-400: #9aa7e8;
+  --sem-tertiary-500: #7c8fcc;
 
-  --sem-surface:      #fffbeb;
-  --sem-surface-dark: #fef3c7;
-  --sem-neutral-50:   #fefce8;
-  --sem-neutral-100:  #fef9c3;
-  --sem-neutral-200:  #e7e5e4;
-  --sem-neutral-300:  #d6d3d1;
-  --sem-neutral-400:  #a8a29e;
-  --sem-neutral-500:  #78716c;
-  --sem-neutral-600:  #57534e;
-  --sem-neutral-700:  #44403c;
-  --sem-neutral-800:  #292524;
-  --sem-neutral-900:  #1c1917;
+  --sem-surface:      #f8fbf9;
+  --sem-surface-dark: #edf4f0;
+  --sem-neutral-50:   #f8fbf9;
+  --sem-neutral-100:  #f0f5f2;
+  --sem-neutral-200:  #dde8e2;
+  --sem-neutral-300:  #c0d4ca;
+  --sem-neutral-400:  #90b0a4;
+  --sem-neutral-500:  #6a8f83;
+  --sem-neutral-600:  #4e6f65;
+  --sem-neutral-700:  #3a5249;
+  --sem-neutral-800:  #253832;
+  --sem-neutral-900:  #1a2820;
 
-  --sem-glass-bg: rgba(255, 251, 235, 0.8);
+  --sem-glass-bg: rgba(248, 251, 249, 0.8);
 }
 
-/* ── Theme: Lavender Dream ────────────────────────────────── */
-.theme-lavender-dream {
-  --sem-primary-50:  #faf5ff;
-  --sem-primary-100: #f3e8ff;
-  --sem-primary-200: #e9d5ff;
-  --sem-primary-300: #d8b4fe;
-  --sem-primary-400: #a78bfa;
-  --sem-primary-500: #8b5cf6;
-  --sem-primary-600: #7c3aed;
-  --sem-primary-700: #6d28d9;
+/* ── Theme: Clarity — clean blue ─────────────────────────── */
+/* Matches HomeClarity: #2563eb blue, #f5f9ff bg */
+.theme-ocean-breeze {
+  --sem-primary-50:  #eff6ff;
+  --sem-primary-100: #dbeafe;
+  --sem-primary-200: #bfdbfe;
+  --sem-primary-300: #93c5fd;
+  --sem-primary-400: #60a5fa;
+  --sem-primary-500: #3b82f6;
+  --sem-primary-600: #2563eb;
+  --sem-primary-700: #1d4ed8;
+  --sem-primary-800: #1e40af;
+  --sem-primary-900: #1e3a8a;
 
-  --sem-accent-50:  #ecfdf5;
-  --sem-accent-100: #d1fae5;
-  --sem-accent-200: #a7f3d0;
-  --sem-accent-300: #6ee7b7;
-  --sem-accent-400: #34d399;
-  --sem-accent-500: #10b981;
+  --sem-accent-50:  #f0f9ff;
+  --sem-accent-100: #e0f2fe;
+  --sem-accent-200: #bae6fd;
+  --sem-accent-300: #7dd3fc;
+  --sem-accent-400: #38bdf8;
+  --sem-accent-500: #0ea5e9;
 
-  --sem-tertiary-100: #fce7f3;
-  --sem-tertiary-200: #fbcfe8;
-  --sem-tertiary-300: #f9a8d4;
-  --sem-tertiary-400: #f472b6;
-  --sem-tertiary-500: #ec4899;
+  --sem-tertiary-100: #f0fdf4;
+  --sem-tertiary-200: #dcfce7;
+  --sem-tertiary-300: #bbf7d0;
+  --sem-tertiary-400: #4ade80;
+  --sem-tertiary-500: #22c55e;
 
-  --sem-surface:      #faf5ff;
-  --sem-surface-dark: #f3e8ff;
-  --sem-neutral-50:   #faf5ff;
-  --sem-neutral-100:  #f5f3ff;
-  --sem-neutral-200:  #e8e3f3;
-  --sem-neutral-300:  #d4cde4;
-  --sem-neutral-400:  #a09abc;
-  --sem-neutral-500:  #6b6590;
-  --sem-neutral-600:  #504a6b;
-  --sem-neutral-700:  #3b3556;
-  --sem-neutral-800:  #2a2540;
-  --sem-neutral-900:  #1a162d;
-
-  --sem-glass-bg: rgba(250, 245, 255, 0.8);
-}
-
-/* ── Theme: Midnight ──────────────────────────────────────── */
-.theme-midnight {
-  --sem-primary-50:  #1a2e3b;
-  --sem-primary-100: #1c3a47;
-  --sem-primary-200: #1f4d5a;
-  --sem-primary-300: #5eead4;
-  --sem-primary-400: #2dd4bf;
-  --sem-primary-500: #14b8a6;
-  --sem-primary-600: #0d9488;
-  --sem-primary-700: #0f766e;
-
-  --sem-accent-50:  #2a2315;
-  --sem-accent-100: #3d331c;
-  --sem-accent-200: #5a4c2a;
-  --sem-accent-300: #fcd34d;
-  --sem-accent-400: #fbbf24;
-  --sem-accent-500: #f59e0b;
-
-  --sem-tertiary-100: #1e293b;
-  --sem-tertiary-200: #334155;
-  --sem-tertiary-300: #475569;
-  --sem-tertiary-400: #64748b;
-  --sem-tertiary-500: #94a3b8;
-
-  --sem-surface:      #0f172a;
-  --sem-surface-dark: #1e293b;
-  --sem-neutral-50:   #1e293b;
-  --sem-neutral-100:  #1e293b;
-  --sem-neutral-200:  #334155;
-  --sem-neutral-300:  #475569;
+  --sem-surface:      #f8fafc;
+  --sem-surface-dark: #f1f5f9;
+  --sem-neutral-50:   #f8fafc;
+  --sem-neutral-100:  #f1f5f9;
+  --sem-neutral-200:  #e2e8f0;
+  --sem-neutral-300:  #cbd5e1;
   --sem-neutral-400:  #94a3b8;
-  --sem-neutral-500:  #cbd5e1;
-  --sem-neutral-600:  #e2e8f0;
-  --sem-neutral-700:  #e2e8f0;
-  --sem-neutral-800:  #f1f5f9;
-  --sem-neutral-900:  #f8fafc;
+  --sem-neutral-500:  #64748b;
+  --sem-neutral-600:  #475569;
+  --sem-neutral-700:  #334155;
+  --sem-neutral-800:  #1e293b;
+  --sem-neutral-900:  #0f172a;
 
-  --sem-glass-bg: rgba(15, 23, 42, 0.85);
+  --sem-glass-bg: rgba(248, 250, 252, 0.8);
+}
+
+/* ── Theme: Night — deep indigo / violet ──────────────────── */
+/* Matches HomeNight: #4f46e5 indigo, #a5b4fc light, #07090f bg */
+.theme-midnight {
+  --sem-primary-50:  #eef2ff;
+  --sem-primary-100: #e0e7ff;
+  --sem-primary-200: #c7d2fe;
+  --sem-primary-300: #a5b4fc;
+  --sem-primary-400: #818cf8;
+  --sem-primary-500: #6366f1;
+  --sem-primary-600: #4f46e5;
+  --sem-primary-700: #4338ca;
+  --sem-primary-800: #3730a3;
+  --sem-primary-900: #312e81;
+
+  --sem-accent-50:  #fdf4ff;
+  --sem-accent-100: #fae8ff;
+  --sem-accent-200: #f5d0fe;
+  --sem-accent-300: #e879f9;
+  --sem-accent-400: #d946ef;
+  --sem-accent-500: #a21caf;
+
+  --sem-tertiary-100: #1e1b4b;
+  --sem-tertiary-200: #312e81;
+  --sem-tertiary-300: #4338ca;
+  --sem-tertiary-400: #6366f1;
+  --sem-tertiary-500: #818cf8;
+
+  --sem-surface:      #07090f;
+  --sem-surface-dark: #0d1117;
+  --sem-neutral-50:   #0d1117;
+  --sem-neutral-100:  #161b27;
+  --sem-neutral-200:  #1e2535;
+  --sem-neutral-300:  #2d3548;
+  --sem-neutral-400:  #64748b;
+  --sem-neutral-500:  #94a3b8;
+  --sem-neutral-600:  #b1bac4;
+  --sem-neutral-700:  #cbd5e1;
+  --sem-neutral-800:  #e2e8f0;
+  --sem-neutral-900:  #f1f5f9;
+
+  --sem-glass-bg: rgba(7, 9, 15, 0.85);
 }
 
 /* ── Tailwind v4 @theme — map semantic vars to utility classes ── */
