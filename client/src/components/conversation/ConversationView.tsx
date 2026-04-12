@@ -124,7 +124,7 @@ export function ConversationView({ config, userContext, starterMessage, lessonOb
           <button
             onClick={handleEndConversation}
             disabled={isSaving || messages.length < 2}
-            className="h-9 px-4 rounded-xl bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold flex items-center gap-1.5 transition-colors disabled:bg-neutral-100 disabled:text-neutral-400 disabled:cursor-not-allowed cursor-pointer"
+            className="h-9 px-4 rounded-xl bg-primary-600 text-white text-sm font-semibold flex items-center gap-1.5 hover-glow disabled:bg-neutral-100 disabled:text-neutral-400 disabled:cursor-not-allowed cursor-pointer"
             title="End & Save"
           >
             {isSaving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <CheckCircle className="w-3.5 h-3.5" />}
@@ -213,7 +213,7 @@ export function ConversationView({ config, userContext, starterMessage, lessonOb
           <button
             onClick={handleTextSend}
             disabled={!textInput.trim() || isThinking}
-            className="self-end w-[42px] h-[42px] flex items-center justify-center bg-primary-600 hover:bg-primary-700 text-white rounded-xl transition-colors disabled:bg-neutral-100 disabled:text-neutral-400 disabled:cursor-not-allowed cursor-pointer active:scale-95"
+            className="self-end w-[42px] h-[42px] flex items-center justify-center bg-primary-600 text-white rounded-xl hover-glow disabled:bg-neutral-100 disabled:text-neutral-400 disabled:cursor-not-allowed cursor-pointer"
           >
             <Send className="w-4 h-4" />
           </button>

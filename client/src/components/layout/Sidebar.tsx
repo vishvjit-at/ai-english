@@ -42,9 +42,9 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         {/* Logo section */}
         <div className="p-5 shrink-0">
           <div className="flex items-center justify-between mb-8">
-            <Link to="/" className="flex items-center gap-2.5" onClick={onClose}>
-              <div className="w-8 h-8 bg-primary-600 rounded-xl flex items-center justify-center">
-                <Mic className="w-4 h-4 text-white" />
+            <Link to="/" className="flex items-center gap-2.5 group" onClick={onClose}>
+              <div className="w-8 h-8 bg-primary-600 rounded-xl flex items-center justify-center hover-glow">
+                <Mic className="w-4 h-4 text-white group-icon" />
               </div>
               <div>
                 <p className="text-sm font-bold text-neutral-900">SpeakUp</p>
@@ -57,29 +57,29 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
           </div>
 
           {/* Custom scenario */}
-          <Link to="/practice/custom" onClick={onClose}>
+          <Link to="/practice/custom" onClick={onClose} className="block">
             <div className={`
-              flex items-center gap-3 px-3 py-2 rounded-xl text-sm cursor-pointer transition-colors
+              group flex items-center gap-3 px-3 py-2 rounded-xl text-sm cursor-pointer hover-slide
               ${isActive('/practice/custom')
                 ? 'bg-primary-50 text-primary-700 font-semibold'
-                : 'text-neutral-600 hover:bg-neutral-50'
+                : 'text-neutral-600 hover:bg-primary-50/60 hover:text-primary-700'
               }
             `}>
-              <Sparkles className={`w-4 h-4 ${isActive('/practice/custom') ? 'text-primary-600' : 'text-neutral-400'}`} />
+              <Sparkles className={`w-4 h-4 group-icon ${isActive('/practice/custom') ? 'text-primary-600' : 'text-neutral-400'}`} />
               Custom Scenario
             </div>
           </Link>
 
           {/* Lessons link */}
-          <Link to="/lessons" onClick={onClose}>
+          <Link to="/lessons" onClick={onClose} className="block mt-1">
             <div className={`
-              flex items-center gap-3 px-3 py-2 rounded-xl text-sm cursor-pointer transition-colors mt-1
+              group flex items-center gap-3 px-3 py-2 rounded-xl text-sm cursor-pointer hover-slide
               ${isActive('/lessons') || location.pathname.startsWith('/lessons/')
                 ? 'bg-primary-50 text-primary-700 font-semibold'
-                : 'text-neutral-600 hover:bg-neutral-50'
+                : 'text-neutral-600 hover:bg-primary-50/60 hover:text-primary-700'
               }
             `}>
-              <GraduationCap className={`w-4 h-4 ${isActive('/lessons') || location.pathname.startsWith('/lessons/') ? 'text-primary-600' : 'text-neutral-400'}`} />
+              <GraduationCap className={`w-4 h-4 group-icon ${isActive('/lessons') || location.pathname.startsWith('/lessons/') ? 'text-primary-600' : 'text-neutral-400'}`} />
               Guided Lessons
             </div>
           </Link>
@@ -98,15 +98,15 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                 {scenarioData[topic].map((scenario) => {
                   const active = isActive(`/practice/${scenario.id}`)
                   return (
-                    <Link key={scenario.id} to={`/practice/${scenario.id}`} onClick={onClose}>
+                    <Link key={scenario.id} to={`/practice/${scenario.id}`} onClick={onClose} className="block">
                       <div className={`
-                        flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer transition-colors text-sm
+                        group flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer text-sm hover-slide
                         ${active
                           ? 'bg-primary-50 text-primary-700 font-semibold'
-                          : 'text-neutral-600 hover:bg-neutral-50'
+                          : 'text-neutral-600 hover:bg-primary-50/60 hover:text-primary-700'
                         }
                       `}>
-                        <MessageCircle className={`w-3.5 h-3.5 shrink-0 ${active ? 'text-primary-600' : 'text-neutral-300'}`} />
+                        <MessageCircle className={`w-3.5 h-3.5 shrink-0 group-icon ${active ? 'text-primary-600' : 'text-neutral-300'}`} />
                         <p className="truncate flex-1">{scenario.name}</p>
                         <span className={`text-[9px] font-semibold capitalize px-1.5 py-0.5 rounded-full
                           ${scenario.difficulty === 'beginner' ? 'bg-primary-50 text-primary-600' :
@@ -133,54 +133,25 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
 
           {/* Bottom nav links with divider */}
           <div className="border-t border-neutral-100 pt-4 mt-4 flex flex-col gap-0.5 pb-4">
-            <Link to="/history" onClick={onClose}>
-              <div className={`
-                flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer transition-colors text-sm
-                ${isActive('/history') || location.pathname.startsWith('/history/')
-                  ? 'bg-primary-50 text-primary-700 font-semibold'
-                  : 'text-neutral-600 hover:bg-neutral-50'
-                }
-              `}>
-                <Clock className={`w-4 h-4 ${isActive('/history') || location.pathname.startsWith('/history/') ? 'text-primary-600' : 'text-neutral-400'}`} />
-                History
-              </div>
-            </Link>
-            <Link to="/progress" onClick={onClose}>
-              <div className={`
-                flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer transition-colors text-sm
-                ${isActive('/progress')
-                  ? 'bg-primary-50 text-primary-700 font-semibold'
-                  : 'text-neutral-600 hover:bg-neutral-50'
-                }
-              `}>
-                <TrendingUp className={`w-4 h-4 ${isActive('/progress') ? 'text-primary-600' : 'text-neutral-400'}`} />
-                Progress
-              </div>
-            </Link>
-            <Link to="/vocabulary" onClick={onClose}>
-              <div className={`
-                flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer transition-colors text-sm
-                ${isActive('/vocabulary')
-                  ? 'bg-primary-50 text-primary-700 font-semibold'
-                  : 'text-neutral-600 hover:bg-neutral-50'
-                }
-              `}>
-                <BookOpen className={`w-4 h-4 ${isActive('/vocabulary') ? 'text-primary-600' : 'text-neutral-400'}`} />
-                Vocabulary
-              </div>
-            </Link>
-            <Link to="/settings" onClick={onClose}>
-              <div className={`
-                flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer transition-colors text-sm
-                ${isActive('/settings')
-                  ? 'bg-primary-50 text-primary-700 font-semibold'
-                  : 'text-neutral-600 hover:bg-neutral-50'
-                }
-              `}>
-                <Settings className={`w-4 h-4 ${isActive('/settings') ? 'text-primary-600' : 'text-neutral-400'}`} />
-                Settings
-              </div>
-            </Link>
+            {[
+              { to: '/history', icon: <Clock className="w-4 h-4" />, label: 'History', active: isActive('/history') || location.pathname.startsWith('/history/') },
+              { to: '/progress', icon: <TrendingUp className="w-4 h-4" />, label: 'Progress', active: isActive('/progress') },
+              { to: '/vocabulary', icon: <BookOpen className="w-4 h-4" />, label: 'Vocabulary', active: isActive('/vocabulary') },
+              { to: '/settings', icon: <Settings className="w-4 h-4" />, label: 'Settings', active: isActive('/settings') },
+            ].map(({ to, icon, label, active }) => (
+              <Link key={to} to={to} onClick={onClose} className="block">
+                <div className={`
+                  group flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer text-sm hover-slide
+                  ${active
+                    ? 'bg-primary-50 text-primary-700 font-semibold'
+                    : 'text-neutral-600 hover:bg-primary-50/60 hover:text-primary-700'
+                  }
+                `}>
+                  <span className={`group-icon ${active ? 'text-primary-600' : 'text-neutral-400'}`}>{icon}</span>
+                  {label}
+                </div>
+              </Link>
+            ))}
           </div>
         </nav>
 
@@ -203,7 +174,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
               </div>
               <button
                 onClick={() => signOut()}
-                className="ml-auto p-1.5 text-neutral-400 hover:text-red-500 transition-colors rounded-lg hover:bg-red-50 cursor-pointer shrink-0"
+                className="ml-auto p-1.5 text-neutral-400 hover:text-red-500 transition-all hover:scale-110 rounded-lg hover:bg-red-50 cursor-pointer shrink-0"
                 title="Sign out"
               >
                 <LogOut className="w-4 h-4" />

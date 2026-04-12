@@ -60,7 +60,7 @@ export function VocabularyReviewPage() {
                 </p>
                 <button
                   onClick={() => startReview(10)}
-                  className="inline-flex items-center gap-2 px-8 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-semibold text-sm transition-colors cursor-pointer"
+                  className="inline-flex items-center gap-2 px-8 py-3 bg-primary-600 text-white rounded-xl font-semibold text-sm hover-glow cursor-pointer"
                 >
                   <Sparkles className="w-4 h-4" /> Start Review
                 </button>
@@ -194,7 +194,7 @@ export function VocabularyReviewPage() {
 
             <button
               onClick={() => startReview(10)}
-              className="w-full flex items-center justify-center gap-2 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-semibold text-sm transition-colors cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 py-3 bg-primary-600 text-white rounded-xl font-semibold text-sm hover-glow cursor-pointer"
             >
               <RotateCcw className="w-4 h-4" /> Review Again
             </button>

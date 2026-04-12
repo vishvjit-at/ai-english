@@ -76,7 +76,7 @@ export function LessonsPage() {
                       <Link
                         key={lesson.id}
                         to={`/lessons/${lesson.id}`}
-                        className="bg-white rounded-2xl border border-neutral-100 p-5 hover:shadow-md transition-all cursor-pointer block"
+                        className="group bg-white rounded-2xl border border-neutral-100 p-5 hover-lift cursor-pointer block"
                       >
                         {/* Top: difficulty + message count */}
                         <div className="flex items-center justify-between">
@@ -99,7 +99,7 @@ export function LessonsPage() {
                               <div key={n} className="w-5 h-5 rounded-full bg-primary-100 border-2 border-white" />
                             ))}
                           </div>
-                          <ArrowRight className="w-4 h-4 text-neutral-400" />
+                          <ArrowRight className="w-4 h-4 text-neutral-400 group-arrow" />
                         </div>
                       </Link>
                     ))}
@@ -117,7 +117,7 @@ export function LessonsPage() {
             <p className="text-primary-200 text-sm mb-4">
               Aria can build a personalised curriculum based on your specific industry or interests.
             </p>
-            <button className="bg-white text-primary-900 font-semibold px-5 py-2.5 rounded-xl text-sm inline-flex items-center gap-2 hover:bg-primary-50 transition-colors cursor-pointer">
+            <button className="bg-white text-primary-900 font-semibold px-5 py-2.5 rounded-xl text-sm inline-flex items-center gap-2 hover-glow cursor-pointer">
               <Sparkles className="w-4 h-4" /> Request AI Curriculum
             </button>
           </div>

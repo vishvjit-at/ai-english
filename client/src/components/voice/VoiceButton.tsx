@@ -44,7 +44,7 @@ export function VoiceButton({ isListening, isThinking, isSpeaking, isSupported, 
               ? 'bg-neutral-200 cursor-not-allowed'
               : isDisabled
               ? 'bg-neutral-200 cursor-not-allowed'
-              : 'bg-primary-600 hover:bg-primary-700 shadow-lg shadow-primary-600/30 hover:scale-105 active:scale-95'
+              : 'bg-primary-600 shadow-lg shadow-primary-600/30 hover-glow'
           )}
         >
           {isThinking ? (

@@ -15,13 +15,13 @@ export function HomePage() {
         </p>
 
         {/* Mic button */}
-        <div className="w-24 h-24 bg-primary-600 hover:bg-primary-700 rounded-full shadow-xl shadow-primary-600/30 flex items-center justify-center mx-auto cursor-pointer transition-all hover:scale-105 active:scale-95">
+        <div className="w-24 h-24 bg-primary-600 rounded-full shadow-xl shadow-primary-600/30 flex items-center justify-center mx-auto cursor-pointer hover-glow">
           <Mic className="w-10 h-10 text-white" />
         </div>
         <p className="text-xs tracking-[0.2em] text-neutral-400 mt-3 mb-6">TAP TO SPEAK</p>
 
         <Link to="/practice/custom">
-          <button className="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-8 py-3.5 rounded-xl font-semibold shadow-lg shadow-primary-600/20 transition-colors cursor-pointer">
+          <button className="inline-flex items-center gap-2 bg-primary-600 text-white px-8 py-3.5 rounded-xl font-semibold shadow-lg shadow-primary-600/20 hover-glow cursor-pointer">
             <Sparkles className="w-5 h-5" />
             Create Your Scenario
             <ArrowRight className="w-4 h-4" />

@@ -186,7 +186,7 @@ export function ProgressPage() {
           <p className="text-primary-200 text-sm mb-4">
             Based on your {data.totalSessions} sessions, Aria recommends focusing on more advanced scenarios.
           </p>
-          <button className="bg-white text-primary-900 font-semibold px-6 py-3 rounded-xl text-sm inline-flex items-center gap-2 hover:bg-primary-50 transition-colors cursor-pointer">
+          <button className="bg-white text-primary-900 font-semibold px-6 py-3 rounded-xl text-sm inline-flex items-center gap-2 hover-glow cursor-pointer">
             Upgrade My Curriculum →
           </button>
         </section>

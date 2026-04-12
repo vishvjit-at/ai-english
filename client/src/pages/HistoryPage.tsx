@@ -102,7 +102,7 @@ export function HistoryPage() {
             <p className="text-3xl mb-2">+</p>
             <p className="font-semibold text-neutral-600 mb-1">Your journey is just beginning</p>
             <p className="text-sm mb-4">Start a conversation to see your history here.</p>
-            <Link to="/" className="bg-primary-600 hover:bg-primary-700 text-white px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors">
+            <Link to="/" className="bg-primary-600 text-white px-6 py-2.5 rounded-xl text-sm font-semibold hover-glow">
               Start Session
             </Link>
           </div>
@@ -114,7 +114,7 @@ export function HistoryPage() {
                 <Link
                   key={s.id}
                   to={`/history/${s.id}`}
-                  className="bg-white rounded-2xl border border-neutral-100 p-6 hover:shadow-md transition-all cursor-pointer block"
+                  className="group bg-white rounded-2xl border border-neutral-100 p-6 hover-lift cursor-pointer block"
                 >
                   {/* Top: badge + score */}
                   <div className="flex items-center justify-between mb-2">
@@ -145,7 +145,7 @@ export function HistoryPage() {
                     </span>
                   </div>
 
-                  <p className="text-primary-600 text-sm font-medium mt-4">View Transcript →</p>
+                  <p className="text-primary-600 text-sm font-medium mt-4 inline-flex items-center gap-1">View Transcript <span className="group-arrow">→</span></p>
                 </Link>
               ))}
 
