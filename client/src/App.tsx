@@ -26,9 +26,11 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
 
-            {/* Protected routes */}
+            {/* Home — no sidebar */}
+            <Route path="/" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+
+            {/* Protected routes with sidebar */}
             <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
-              <Route path="/" element={<HomePage />} />
               <Route path="/practice/custom" element={<CustomPracticePage />} />
               <Route path="/practice/:scenarioId" element={<PracticePage />} />
               <Route path="/lessons" element={<LessonsPage />} />

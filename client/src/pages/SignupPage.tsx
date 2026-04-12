@@ -14,7 +14,7 @@ export function SignupPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--sem-surface)' }}>
         <div className="w-8 h-8 border-2 border-primary-200 border-t-primary-500 rounded-full animate-spin" />
       </div>
     )
@@ -34,13 +34,12 @@ export function SignupPage() {
     setIsSubmitting(false)
   }
 
-  const inputClass = 'w-full border border-neutral-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 placeholder:text-neutral-400 transition-colors'
+  const inputClass = 'w-full border border-neutral-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:border-primary-500 placeholder:text-neutral-400 transition-colors'
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex" style={{ background: 'var(--sem-surface)' }}>
       {/* Left panel */}
-      <div className="hidden lg:flex w-5/12 bg-gradient-to-br from-primary-900 to-primary-700 p-12 flex-col text-white">
-        {/* Logo */}
+      <div className="hidden lg:flex w-5/12 p-12 flex-col text-white" style={{ background: 'linear-gradient(135deg, var(--sem-primary-900), var(--sem-primary-700))' }}>
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 bg-white/20 rounded-xl flex items-center justify-center">
             <Mic className="w-4 h-4 text-white" />
@@ -48,25 +47,24 @@ export function SignupPage() {
           <span className="text-lg font-bold">Aria AI</span>
         </div>
 
-        {/* Middle content */}
         <div className="mt-auto mb-auto">
-          <h2 className="text-4xl font-bold leading-tight mb-4">
-            Unlock your potential<br />in English
+          <p className="text-xs tracking-[0.3em] uppercase font-medium mb-4 opacity-60">Your English Partner</p>
+          <h2 className="font-black leading-tight mb-4" style={{ fontSize: 'clamp(2rem, 3vw, 2.8rem)', fontFamily: 'var(--font-heading)' }}>
+            Unlock your<br />potential in<br />English
           </h2>
-          <p className="text-primary-200 text-lg mb-12">
-            Practice conversations with an AI tutor that's always patient, always available.
+          <p className="text-lg mb-12 opacity-80">
+            Practice with an AI tutor that's always patient, always available.
           </p>
 
-          {/* Testimonial card */}
           <div className="bg-white/10 backdrop-blur rounded-2xl p-6">
-            <p className="text-primary-50 text-sm leading-relaxed mb-4">
+            <p className="text-sm leading-relaxed mb-4 opacity-90">
               "Aria helped me feel confident speaking English at work. After just 2 weeks, I gave my first presentation in English!"
             </p>
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center text-white text-sm font-bold">A</div>
+              <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold" style={{ background: 'var(--sem-primary-500)' }}>A</div>
               <div>
                 <p className="text-white text-sm font-semibold">Ananya S.</p>
-                <p className="text-primary-300 text-xs">Software Engineer</p>
+                <p className="text-xs opacity-60">Software Engineer</p>
               </div>
             </div>
           </div>
@@ -74,19 +72,23 @@ export function SignupPage() {
       </div>
 
       {/* Right panel */}
-      <div className="flex-1 bg-white p-8 lg:p-12 flex flex-col justify-center">
+      <div className="flex-1 p-8 lg:p-12 flex flex-col justify-center bg-white">
         <div className="max-w-lg mx-auto w-full">
-          <h1 className="text-3xl font-bold text-neutral-900 mb-2">Create Account</h1>
-          <p className="text-neutral-500 mb-8">Start your journey to fluency today.</p>
+          <p className="text-xs tracking-[0.3em] uppercase font-medium mb-2" style={{ color: 'var(--sem-neutral-400)', fontFamily: 'var(--font-heading)' }}>
+            Join Today
+          </p>
+          <h1 className="font-black tracking-tight leading-none mb-8" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontFamily: 'var(--font-heading)', color: 'var(--sem-neutral-900)' }}>
+            Create<br />Account
+          </h1>
 
           {success ? (
-            <div className="text-center py-8">
-              <div className="w-12 h-12 mx-auto mb-3 bg-primary-100 rounded-full flex items-center justify-center">
-                <span className="text-primary-500 text-xl">✓</span>
+            <div className="text-center py-12">
+              <div className="w-16 h-16 mx-auto mb-4 bg-primary-50 rounded-3xl flex items-center justify-center">
+                <span className="text-primary-500 text-2xl font-black">✓</span>
               </div>
-              <p className="text-neutral-600 mb-2 font-semibold">Account created!</p>
-              <p className="text-sm text-neutral-400 mb-4">Check your email to confirm, then sign in.</p>
-              <Link to="/login" className="text-primary-600 font-semibold text-sm hover:underline">
+              <h2 className="font-black text-neutral-700 text-xl mb-2">Account created!</h2>
+              <p className="text-sm text-neutral-400 mb-6">Check your email to confirm, then sign in.</p>
+              <Link to="/login" className="bg-primary-600 text-white px-7 py-3 rounded-full text-sm font-semibold hover-glow inline-block">
                 Go to Sign In
               </Link>
             </div>
@@ -95,7 +97,7 @@ export function SignupPage() {
               {/* Google OAuth */}
               <button
                 onClick={signInWithGoogle}
-                className="w-full flex items-center justify-center gap-3 border border-neutral-200 rounded-xl py-3 text-sm font-medium text-neutral-700 hover:bg-neutral-50 transition-colors cursor-pointer mb-6"
+                className="w-full flex items-center justify-center gap-3 border border-neutral-200 rounded-2xl py-3.5 text-sm font-semibold text-neutral-700 hover:bg-neutral-50 transition-colors cursor-pointer hover-lift mb-6"
               >
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
                   <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" />
@@ -106,10 +108,9 @@ export function SignupPage() {
                 Continue with Google
               </button>
 
-              {/* OR divider */}
               <div className="flex items-center gap-4 mb-6">
                 <div className="flex-1 h-px bg-neutral-100" />
-                <span className="text-xs text-neutral-400">OR EMAIL</span>
+                <span className="text-xs text-neutral-400 font-medium tracking-wider">OR EMAIL</span>
                 <div className="flex-1 h-px bg-neutral-100" />
               </div>
 
@@ -145,27 +146,26 @@ export function SignupPage() {
                   />
                 </div>
 
-                {error && <p className="text-xs text-red-500">{error}</p>}
+                {error && <p className="text-xs text-red-500 font-medium">{error}</p>}
 
                 <button
                   type="submit"
                   disabled={isSubmitting || !name || !email || !password}
-                  className="w-full bg-primary-600 text-white rounded-xl py-3 font-semibold hover-glow disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer mt-2"
+                  className="w-full bg-primary-600 text-white rounded-full py-3.5 font-bold hover-glow disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer mt-2"
                 >
-                  {isSubmitting ? 'Creating account...' : 'Create Account'}
+                  {isSubmitting ? 'Creating account…' : 'Create Account'}
                 </button>
               </form>
 
               <p className="text-center text-sm text-neutral-500 mt-6">
                 Already have an account?{' '}
-                <Link to="/login" className="text-primary-600 font-semibold hover:underline">Sign in</Link>
+                <Link to="/login" className="text-primary-600 font-bold hover:underline">Sign in</Link>
               </p>
             </>
           )}
         </div>
       </div>
 
-      {/* Footer */}
       <div className="fixed bottom-0 left-0 right-0 flex justify-between text-xs text-neutral-400 px-12 py-4 pointer-events-none">
         <span>© 2026 Aria AI</span>
         <span>Privacy · Terms</span>

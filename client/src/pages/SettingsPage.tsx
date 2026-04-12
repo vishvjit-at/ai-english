@@ -146,11 +146,17 @@ export function SettingsPage() {
     : serverVoices.map((v) => ({ id: v.id, name: v.name, lang: v.lang, type: v.type }))
 
   return (
-    <div className="h-full overflow-y-auto bg-neutral-50">
-      <div className="max-w-4xl mx-auto px-6 py-8">
+    <div className="h-full overflow-y-auto" style={{ background: 'var(--sem-surface)' }}>
+      <div className="max-w-4xl mx-auto px-8 py-10">
         {/* Header */}
-        <h1 className="text-2xl font-bold text-neutral-900 mb-1">Settings</h1>
-        <p className="text-neutral-500 text-sm mb-8">Personalise your sanctuary with Aria</p>
+        <div className="mb-10">
+          <p className="text-xs tracking-[0.3em] uppercase font-medium mb-2" style={{ color: 'var(--sem-neutral-400)', fontFamily: 'var(--font-heading)' }}>
+            Your Preferences
+          </p>
+          <h1 className="font-black tracking-tight leading-none" style={{ fontSize: 'clamp(2.2rem, 4vw, 3.4rem)', fontFamily: 'var(--font-heading)', color: 'var(--sem-neutral-900)' }}>
+            App<br />Settings
+          </h1>
+        </div>
 
         <div className="grid grid-cols-3 gap-6">
           {/* Left: Appearance + Voice (col-span-2) */}

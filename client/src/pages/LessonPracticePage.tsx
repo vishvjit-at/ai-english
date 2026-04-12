@@ -69,41 +69,47 @@ export function LessonPracticePage() {
 
   if (stage === 'setup' && lesson) {
     return (
-      <div className="h-full overflow-y-auto bg-surface">
-        <div className="max-w-md mx-auto px-5 py-12">
-          <div className="text-center mb-8 animate-fade-in-up">
-            <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-blue-100 to-primary-100 flex items-center justify-center">
-              <span className="text-2xl">📝</span>
+      <div className="h-full overflow-y-auto flex items-center justify-center p-8" style={{ background: 'var(--sem-surface)' }}>
+        <div className="w-full max-w-md">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-primary-50 flex items-center justify-center">
+              <span className="text-3xl">📝</span>
             </div>
-            <h1 className="font-heading font-extrabold text-neutral-800 text-xl mb-2">{lesson.name}</h1>
-            <p className="text-sm text-neutral-400 font-body">{lesson.objective}</p>
-            <div className="flex items-center justify-center gap-3 mt-3">
-              <span className="text-[10px] font-heading font-semibold text-neutral-400 bg-neutral-100 px-2 py-0.5 rounded-full capitalize">{lesson.difficulty}</span>
-              <span className="text-[10px] font-heading font-semibold text-neutral-400 bg-neutral-100 px-2 py-0.5 rounded-full">{lesson.maxExchanges} exchanges</span>
+            <p className="text-xs tracking-[0.3em] uppercase font-medium mb-2" style={{ color: 'var(--sem-neutral-400)', fontFamily: 'var(--font-heading)' }}>
+              Guided Lesson
+            </p>
+            <h1 className="font-black tracking-tight leading-tight mb-2" style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontFamily: 'var(--font-heading)', color: 'var(--sem-neutral-900)' }}>
+              {lesson.name}
+            </h1>
+            <p className="text-sm text-neutral-400 mb-3">{lesson.objective}</p>
+            <div className="flex items-center justify-center gap-2">
+              <span className="text-xs font-semibold text-neutral-500 bg-neutral-100 px-3 py-1 rounded-full capitalize">{lesson.difficulty}</span>
+              <span className="text-xs font-semibold text-neutral-500 bg-neutral-100 px-3 py-1 rounded-full">{lesson.maxExchanges} exchanges</span>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl border border-neutral-100 p-6 animate-fade-in-up" style={{ animationDelay: '0.05s' }}>
-            <div className="mb-4">
-              <label className="text-xs font-heading font-semibold text-neutral-600 mb-1.5 block">Your Name</label>
+          <div className="bg-white rounded-3xl border border-neutral-100 p-8">
+            <div className="mb-5">
+              <label className="text-xs font-bold text-neutral-500 uppercase tracking-widest mb-2 block">Your Name</label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Enter your name"
-                className="w-full text-sm font-body bg-neutral-50 border border-neutral-200 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary-300/50 focus:border-primary-300 transition-all placeholder:text-neutral-300"
+                className="w-full text-sm border border-neutral-200 rounded-2xl px-4 py-3 focus:outline-none focus:ring-2 focus:border-primary-500 transition-all placeholder:text-neutral-400"
               />
             </div>
 
-            <div className="mb-6">
-              <label className="text-xs font-heading font-semibold text-neutral-600 mb-1.5 block">Level</label>
+            <div className="mb-8">
+              <label className="text-xs font-bold text-neutral-500 uppercase tracking-widest mb-2 block">Level</label>
               <div className="grid grid-cols-3 gap-2">
                 {(['beginner', 'intermediate', 'advanced'] as const).map((l) => (
                   <button
                     key={l}
                     onClick={() => setLevel(l)}
-                    className={`py-2 rounded-xl text-xs font-heading font-semibold capitalize transition-all cursor-pointer border ${
-                      level === l ? 'border-primary-300 bg-primary-50 text-primary-600' : 'border-neutral-100 text-neutral-500 hover:border-neutral-200'
+                    className={`py-2.5 rounded-2xl text-xs font-semibold capitalize transition-all cursor-pointer border ${
+                      level === l ? 'border-primary-500 bg-primary-50 text-primary-600' : 'border-neutral-200 text-neutral-500 hover:border-neutral-300'
                     }`}
                   >
                     {l}
@@ -115,12 +121,14 @@ export function LessonPracticePage() {
             <button
               onClick={handleStart}
               disabled={!name.trim() || isStarting}
-              className="w-full py-3 bg-gradient-to-br from-primary-400 to-primary-500 text-white rounded-xl font-heading font-semibold text-sm hover:shadow-md disabled:opacity-50 transition-all cursor-pointer"
+              className="w-full py-3.5 bg-primary-600 text-white rounded-full font-bold text-sm hover-glow disabled:opacity-50 transition-all cursor-pointer flex items-center justify-center gap-2"
             >
-              {isStarting ? 'Starting...' : 'Start Lesson'}
+              {isStarting ? (
+                <><span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> Starting…</>
+              ) : 'Start Lesson'}
             </button>
 
-            {error && <p className="text-xs text-rose-500 font-body mt-3 text-center">{error}</p>}
+            {error && <p className="text-xs text-rose-500 mt-3 text-center font-medium">{error}</p>}
           </div>
         </div>
       </div>

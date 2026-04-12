@@ -13,7 +13,7 @@ export function LoginPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-white">
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--sem-surface)' }}>
         <div className="w-8 h-8 border-2 border-primary-200 border-t-primary-500 rounded-full animate-spin" />
       </div>
     )
@@ -32,23 +32,29 @@ export function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 to-white flex items-center justify-center relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden" style={{ background: 'var(--sem-surface)' }}>
       {/* Decorative blobs */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-primary-400/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary-400/20 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 pointer-events-none" />
+      <div className="absolute top-0 left-0 w-96 h-96 bg-primary-400/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary-400/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 pointer-events-none" />
 
-      <div className="bg-white rounded-3xl shadow-xl p-10 w-full max-w-md relative z-10 mx-4">
+      <div className="bg-white rounded-3xl border border-neutral-100 p-10 w-full max-w-md relative z-10 mx-4">
         {/* Logo */}
-        <div className="w-12 h-12 bg-primary-600 rounded-2xl flex items-center justify-center mx-auto mb-3">
-          <Mic className="w-6 h-6 text-white" />
+        <div className="flex flex-col items-center mb-8">
+          <div className="w-14 h-14 bg-primary-600 rounded-2xl flex items-center justify-center mb-4">
+            <Mic className="w-7 h-7 text-white" />
+          </div>
+          <p className="text-xs tracking-[0.3em] uppercase font-medium mb-1" style={{ color: 'var(--sem-neutral-400)', fontFamily: 'var(--font-heading)' }}>
+            Welcome Back
+          </p>
+          <h1 className="font-black tracking-tight text-center leading-none" style={{ fontSize: 'clamp(1.8rem, 4vw, 2.4rem)', fontFamily: 'var(--font-heading)', color: 'var(--sem-neutral-900)' }}>
+            Sign In
+          </h1>
         </div>
-        <h1 className="text-2xl font-bold text-neutral-900 text-center">Aria AI</h1>
-        <p className="text-sm text-neutral-400 text-center mb-8">Your English Partner</p>
 
         {/* Google OAuth */}
         <button
           onClick={signInWithGoogle}
-          className="w-full flex items-center justify-center gap-3 border border-neutral-200 rounded-xl py-3 text-sm font-medium text-neutral-700 hover:bg-neutral-50 transition-colors cursor-pointer"
+          className="w-full flex items-center justify-center gap-3 border border-neutral-200 rounded-2xl py-3.5 text-sm font-semibold text-neutral-700 hover:bg-neutral-50 transition-colors cursor-pointer hover-lift"
         >
           <svg className="w-5 h-5" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" />
@@ -62,14 +68,14 @@ export function LoginPage() {
         {/* OR divider */}
         <div className="flex items-center gap-4 my-6">
           <div className="flex-1 h-px bg-neutral-100" />
-          <span className="text-xs text-neutral-400">OR EMAIL</span>
+          <span className="text-xs text-neutral-400 font-medium tracking-wider">OR EMAIL</span>
           <div className="flex-1 h-px bg-neutral-100" />
         </div>
 
         {/* Email form */}
         <form onSubmit={handleEmailLogin} className="flex flex-col gap-4">
           <div>
-            <label className="block text-sm font-medium text-neutral-700 mb-1.5">Email</label>
+            <label className="block text-sm font-semibold text-neutral-700 mb-1.5">Email</label>
             <div className="relative">
               <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400 w-4 h-4" />
               <input
@@ -77,14 +83,14 @@ export function LoginPage() {
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full border border-neutral-200 rounded-xl px-4 py-3 pl-10 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 placeholder:text-neutral-400 transition-colors"
+                className="w-full border border-neutral-200 rounded-2xl px-4 py-3 pl-10 text-sm focus:outline-none focus:ring-2 focus:border-primary-500 placeholder:text-neutral-400 transition-colors"
               />
             </div>
           </div>
           <div>
-            <div className="relative mb-1.5">
-              <label className="block text-sm font-medium text-neutral-700">Password</label>
-              <Link to="/forgot-password" className="absolute right-0 top-0 text-xs text-primary-600 hover:underline">
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="text-sm font-semibold text-neutral-700">Password</label>
+              <Link to="/forgot-password" className="text-xs text-primary-600 hover:underline">
                 Forgot Password?
               </Link>
             </div>
@@ -95,7 +101,7 @@ export function LoginPage() {
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full border border-neutral-200 rounded-xl px-4 py-3 pl-10 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 placeholder:text-neutral-400 transition-colors"
+                className="w-full border border-neutral-200 rounded-2xl px-4 py-3 pl-10 pr-10 text-sm focus:outline-none focus:ring-2 focus:border-primary-500 placeholder:text-neutral-400 transition-colors"
               />
               <button
                 type="button"
@@ -107,26 +113,25 @@ export function LoginPage() {
             </div>
           </div>
 
-          {error && <p className="text-xs text-red-500">{error}</p>}
+          {error && <p className="text-xs text-red-500 font-medium">{error}</p>}
 
           <button
             type="submit"
             disabled={isSubmitting || !email || !password}
-            className="w-full bg-primary-600 text-white rounded-xl py-3 font-semibold mt-2 hover-glow disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            className="w-full bg-primary-600 text-white rounded-full py-3.5 font-bold mt-2 hover-glow disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
-            {isSubmitting ? 'Signing in...' : 'Sign In'}
+            {isSubmitting ? 'Signing in…' : 'Sign In'}
           </button>
         </form>
 
         <p className="text-center text-sm text-neutral-500 mt-6">
           Don't have an account?{' '}
-          <Link to="/signup" className="text-primary-600 font-semibold hover:underline">Sign Up</Link>
+          <Link to="/signup" className="text-primary-600 font-bold hover:underline">Sign Up</Link>
         </p>
 
-        {/* Status indicator */}
         <div className="mt-8 pt-6 border-t border-neutral-100 flex items-center justify-center gap-2">
           <span className="w-2 h-2 bg-primary-400 rounded-full" />
-          <span className="text-xs text-neutral-400">SYSTEMS OPERATIONAL</span>
+          <span className="text-xs text-neutral-400 tracking-wider">SYSTEMS OPERATIONAL</span>
         </div>
       </div>
     </div>

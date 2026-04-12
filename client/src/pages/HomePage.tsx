@@ -1,8 +1,69 @@
-import { useEffect, useRef } from 'react'
-import { Mic, Sparkles, ArrowRight } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+import { Mic, Sparkles, ArrowRight, LogOut } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useSettings } from '@/hooks/useSettings'
+import { useAuth } from '@/hooks/useAuth'
 import type { CSSProperties, ReactNode } from 'react'
+
+// ─────────────────────────────────────────────
+// User avatar + logout menu — top-right overlay
+// ─────────────────────────────────────────────
+
+function HomeUserMenu({ dark }: { dark?: boolean }) {
+  const { user, signOut } = useAuth()
+  const [open, setOpen] = useState(false)
+
+  const initial = (user?.user_metadata?.full_name || user?.email || '?')[0].toUpperCase()
+  const avatarUrl = user?.user_metadata?.avatar_url as string | undefined
+
+  return (
+    <div className="absolute top-5 right-6 z-30">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center font-bold text-sm cursor-pointer transition-transform hover:scale-105"
+        style={{
+          background: dark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.08)',
+          border: dark ? '1.5px solid rgba(255,255,255,0.2)' : '1.5px solid rgba(0,0,0,0.12)',
+          color: dark ? '#e2e8f0' : '#374151',
+        }}
+      >
+        {avatarUrl
+          ? <img src={avatarUrl} alt="" className="w-full h-full object-cover" />
+          : initial
+        }
+      </button>
+
+      {open && (
+        <>
+          <div className="fixed inset-0 z-20" onClick={() => setOpen(false)} />
+          <div
+            className="absolute right-0 top-12 z-30 rounded-2xl shadow-xl border overflow-hidden min-w-[180px]"
+            style={{
+              background: dark ? '#0f172a' : '#ffffff',
+              border: dark ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.08)',
+            }}
+          >
+            <div className="px-4 py-3 border-b" style={{ borderColor: dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)' }}>
+              <p className="text-xs font-semibold truncate" style={{ color: dark ? '#94a3b8' : '#6b7280' }}>
+                {user?.user_metadata?.full_name || user?.email}
+              </p>
+            </div>
+            <button
+              onClick={() => { setOpen(false); signOut() }}
+              className="w-full flex items-center gap-2.5 px-4 py-3 text-sm font-semibold cursor-pointer transition-colors"
+              style={{ color: dark ? '#f87171' : '#ef4444' }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = dark ? 'rgba(239,68,68,0.12)' : 'rgba(239,68,68,0.06)')}
+              onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+            >
+              <LogOut className="w-4 h-4" />
+              Sign Out
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
 
 // ─────────────────────────────────────────────
 // Shared particle field — drop inside any mag-btn/mag-orb
@@ -132,6 +193,7 @@ const S = {
 function HomeAura() {
   return (
     <div className="h-full flex flex-col relative overflow-hidden" style={{ background: '#c8e0ea' }}>
+      <HomeUserMenu />
 
       {/* Top title */}
       <div className="relative z-10 pt-8 px-10 shrink-0">
@@ -232,6 +294,7 @@ function HomeClarity() {
     <div className="h-full flex flex-col relative overflow-hidden" style={{ background: '#f5f9ff' }}>
       <div className="absolute inset-0 pointer-events-none"
         style={{ background: 'radial-gradient(ellipse 70% 55% at 50% 52%, rgba(191,219,254,0.45) 0%, transparent 65%)' }} />
+      <HomeUserMenu />
 
       {/* Top title */}
       <div className="relative z-10 pt-8 px-10 shrink-0">
@@ -309,6 +372,7 @@ function HomeNight() {
     <div className="h-full flex flex-col relative overflow-hidden" style={{ background: '#07090f' }}>
       <div className="absolute inset-0 pointer-events-none"
         style={{ background: 'radial-gradient(ellipse 55% 50% at 50% 54%, rgba(79,70,229,0.22) 0%, rgba(124,58,237,0.1) 40%, transparent 68%)' }} />
+      <HomeUserMenu dark />
 
       {/* Top title */}
       <div className="relative z-10 pt-8 px-10 shrink-0">
