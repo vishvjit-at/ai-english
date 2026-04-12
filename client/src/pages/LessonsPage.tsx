@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { GraduationCap, BookOpen, MessageSquare, Zap, ArrowRight, Sparkles } from 'lucide-react'
 import { fetchLessons } from '@/lib/api'
+import { MaskButton } from '@/components/ui/MaskButton'
 import type { Lesson, LessonType } from '@/lib/types'
 
 const TYPE_CONFIG: Record<LessonType, { icon: React.ReactNode; label: string; color: string }> = {
@@ -17,6 +18,7 @@ const DIFFICULTY_COLORS: Record<string, string> = {
 }
 
 export function LessonsPage() {
+  const navigate = useNavigate()
   const [lessons, setLessons] = useState<Lesson[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -58,9 +60,9 @@ export function LessonsPage() {
             </div>
             <h2 className="font-black text-neutral-700 text-2xl mb-2" style={{ fontFamily: 'var(--font-heading)' }}>No lessons yet</h2>
             <p className="text-neutral-400 text-sm mb-8 max-w-xs">Check back soon — new lessons are being added regularly.</p>
-            <Link to="/" className="bg-primary-600 text-white px-7 py-3 rounded-full text-sm font-semibold hover-glow">
+            <MaskButton onClick={() => navigate('/')} className="px-7 py-3 text-sm font-semibold">
               Start Practicing
-            </Link>
+            </MaskButton>
           </div>
         ) : (
           <>
@@ -122,9 +124,9 @@ export function LessonsPage() {
                 <p className="text-sm mb-6" style={{ color: 'var(--sem-primary-200)' }}>
                   Aria can build a personalised curriculum based on your specific industry or interests.
                 </p>
-                <button className="bg-white font-semibold px-7 py-3 rounded-full text-sm inline-flex items-center gap-2 hover-glow cursor-pointer" style={{ color: 'var(--sem-primary-900)' }}>
+                <MaskButton fillColor="white" labelColor="white" fillTextColor="var(--sem-primary-900)" className="px-7 py-3 text-sm font-semibold">
                   <Sparkles className="w-4 h-4" /> Request AI Curriculum
-                </button>
+                </MaskButton>
               </div>
               <Sparkles className="w-20 h-20 shrink-0 opacity-20" />
             </div>

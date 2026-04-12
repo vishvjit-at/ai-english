@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Mic, Sparkles, ChevronDown, ChevronUp, ArrowRight, Lightbulb } from 'lucide-react'
 import type { UserContext } from '@/lib/types'
+import { MaskButton } from '@/components/ui/MaskButton'
 
 const levels = [
   { value: 'beginner', label: 'Beginner' },
@@ -88,11 +89,11 @@ export function CustomScenarioSetup({ onStart, isLoading }: { onStart: (ctx: Use
           </div>
         </div>
 
-        <button onClick={handleStart} disabled={!canStart || isLoading}
-          className="w-full bg-primary-600 hover:bg-primary-700 text-white py-3.5 rounded-full font-bold flex items-center justify-center gap-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer hover-glow">
+        <MaskButton onClick={handleStart} disabled={!canStart || isLoading} fullWidth
+          className="py-3.5 font-bold disabled:opacity-50 disabled:cursor-not-allowed">
           {isLoading ? <><span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> Building scenario…</>
             : <><Mic className="w-4 h-4" /> Start Practice <ArrowRight className="w-4 h-4" /></>}
-        </button>
+        </MaskButton>
       </div>
 
       {/* Browse Ideas collapsible */}

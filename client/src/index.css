@@ -288,6 +288,81 @@ body {
   -webkit-backdrop-filter: blur(16px);
 }
 
+/* ── CSS Mask Button (MASK2 urban-sprite style) ── */
+@keyframes mask-btn-in {
+  from { mask-position: 0 0;    -webkit-mask-position: 0 0;    }
+  to   { mask-position: 100% 0; -webkit-mask-position: 100% 0; }
+}
+@keyframes mask-btn-out {
+  from { mask-position: 100% 0; -webkit-mask-position: 100% 0; }
+  to   { mask-position: 0 0;    -webkit-mask-position: 0 0;    }
+}
+
+.mask-btn-wrap {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Underlying label — revealed when the fill is wiped away */
+.mask-btn-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  pointer-events: none;
+  white-space: nowrap;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  z-index: 0;
+}
+
+/* Animated fill layer — sits above the label */
+.mask-btn-fill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  position: relative;
+  z-index: 1;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  color: white;
+  width: 101%;
+  -webkit-mask: url('https://raw.githubusercontent.com/robin-dela/css-mask-animation/master/img/urban-sprite.png') 3000% 100%;
+  mask: url('https://raw.githubusercontent.com/robin-dela/css-mask-animation/master/img/urban-sprite.png') 3000% 100%;
+  -webkit-animation: mask-btn-out 0.7s steps(29) forwards;
+  animation: mask-btn-out 0.7s steps(29) forwards;
+}
+
+.mask-btn-wrap:hover .mask-btn-fill:not(:disabled) {
+  -webkit-animation: mask-btn-in 0.7s steps(29) forwards;
+  animation: mask-btn-in 0.7s steps(29) forwards;
+}
+
+.mask-btn-fill:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.no-animations .mask-btn-fill {
+  animation: none !important;
+  -webkit-animation: none !important;
+  -webkit-mask-position: 0 0;
+  mask-position: 0 0;
+}
+
 /* ── Magnetic particle button ── */
 .mag-btn {
   position: relative;

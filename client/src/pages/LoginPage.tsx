@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import { Mic, Mail, Lock, Eye, EyeOff } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
+import { MaskButton } from '@/components/ui/MaskButton'
 
 export function LoginPage() {
   const { user, loading, signInWithGoogle, signInWithEmail } = useAuth()
@@ -115,13 +116,14 @@ export function LoginPage() {
 
           {error && <p className="text-xs text-red-500 font-medium">{error}</p>}
 
-          <button
+          <MaskButton
             type="submit"
             disabled={isSubmitting || !email || !password}
-            className="w-full bg-primary-600 text-white rounded-full py-3.5 font-bold mt-2 hover-glow disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            fullWidth
+            className="py-3.5 font-bold mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSubmitting ? 'Signing in…' : 'Sign In'}
-          </button>
+          </MaskButton>
         </form>
 
         <p className="text-center text-sm text-neutral-500 mt-6">

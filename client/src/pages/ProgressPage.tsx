@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { TrendingUp, MessageSquare, Clock, Star, Flame, Target, BookOpen } from 'lucide-react'
 import { fetchProgress, fetchDifficultyRecommendation } from '@/lib/api'
 import { LevelRecommendation } from '@/components/ui/LevelRecommendation'
+import { MaskButton } from '@/components/ui/MaskButton'
 import type { ProgressData, DifficultyRecommendation } from '@/lib/types'
 
 const TOPIC_LABELS: Record<string, string> = {
@@ -13,6 +14,7 @@ const TOPIC_LABELS: Record<string, string> = {
 }
 
 export function ProgressPage() {
+  const navigate = useNavigate()
   const [data, setData] = useState<ProgressData | null>(null)
   const [recommendation, setRecommendation] = useState<DifficultyRecommendation | null>(null)
   const [loading, setLoading] = useState(true)
@@ -50,9 +52,9 @@ export function ProgressPage() {
             </div>
             <h2 className="font-black text-neutral-700 text-2xl mb-2" style={{ fontFamily: 'var(--font-heading)' }}>No data yet</h2>
             <p className="text-neutral-400 text-sm mb-8 max-w-xs">Complete some conversations to see your progress here.</p>
-            <Link to="/" className="bg-primary-600 text-white px-7 py-3 rounded-full text-sm font-semibold hover-glow">
+            <MaskButton onClick={() => navigate('/')} className="px-7 py-3 text-sm font-semibold">
               Start Practicing
-            </Link>
+            </MaskButton>
           </div>
         </div>
       </div>
@@ -195,9 +197,9 @@ export function ProgressPage() {
           <p className="text-sm mb-6" style={{ color: 'var(--sem-primary-200)' }}>
             Based on your {data.totalSessions} sessions, Aria recommends focusing on more advanced scenarios.
           </p>
-          <button className="bg-white font-semibold px-7 py-3 rounded-full text-sm inline-flex items-center gap-2 hover-glow cursor-pointer" style={{ color: 'var(--sem-primary-900)' }}>
+          <MaskButton fillColor="white" labelColor="white" fillTextColor="var(--sem-primary-900)" className="px-7 py-3 text-sm font-semibold">
             Upgrade My Curriculum →
-          </button>
+          </MaskButton>
         </section>
 
         {data.longestStreak > 0 && (

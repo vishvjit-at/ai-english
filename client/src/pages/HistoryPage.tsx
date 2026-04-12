@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Clock, MessageSquare, Star, Calendar, Plus, TrendingUp, Timer } from 'lucide-react'
 import { fetchSessions } from '@/lib/api'
+import { MaskButton } from '@/components/ui/MaskButton'
 import type { SessionListItem } from '@/lib/types'
 
 const TOPIC_LABELS: Record<string, string> = {
@@ -34,6 +35,7 @@ function formatDate(iso: string): string {
 }
 
 export function HistoryPage() {
+  const navigate = useNavigate()
   const [sessions, setSessions] = useState<SessionListItem[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -92,9 +94,9 @@ export function HistoryPage() {
             </div>
             <h2 className="font-black text-neutral-700 text-2xl mb-2" style={{ fontFamily: 'var(--font-heading)' }}>Your journey starts here</h2>
             <p className="text-neutral-400 text-sm mb-8 max-w-xs">Start a conversation with Aria to see your history here.</p>
-            <Link to="/" className="bg-primary-600 text-white px-7 py-3 rounded-full text-sm font-semibold hover-glow">
+            <MaskButton onClick={() => navigate('/')} className="px-7 py-3 text-sm font-semibold">
               Start First Session
-            </Link>
+            </MaskButton>
           </div>
         ) : (
           <>

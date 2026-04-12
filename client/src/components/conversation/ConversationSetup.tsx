@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Mic, ArrowRight, Info } from 'lucide-react'
 import type { Scenario, UserContext } from '@/lib/types'
+import { MaskButton } from '@/components/ui/MaskButton'
 
 const levels = [
   { value: 'beginner', label: 'Beginner', desc: 'Basic sentences' },
@@ -116,11 +117,11 @@ export function ConversationSetup({ scenario, onStart, isLoading }: { scenario: 
           </div>
 
           {/* Start button */}
-          <button onClick={handleStart} disabled={!canStart || isLoading}
-            className="w-full bg-primary-600 hover:bg-primary-700 text-white py-3.5 rounded-full font-bold flex items-center justify-center gap-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer hover-glow">
+          <MaskButton onClick={handleStart} disabled={!canStart || isLoading} fullWidth
+            className="py-3.5 font-bold disabled:opacity-50 disabled:cursor-not-allowed">
             {isLoading ? <><span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> Starting…</>
               : <><Mic className="w-4 h-4" /> Start Session <ArrowRight className="w-4 h-4" /></>}
-          </button>
+          </MaskButton>
         </div>
       </div>
     </div>

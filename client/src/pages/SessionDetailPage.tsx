@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import { ArrowLeft, Clock, MessageSquare, Sparkles, AlertTriangle, BookOpen, Lightbulb, Trash2, Loader2, Download, Star } from 'lucide-react'
 import { fetchSession, generateSummary, deleteSession, fetchDifficultyRecommendation } from '@/lib/api'
 import { LevelRecommendation } from '@/components/ui/LevelRecommendation'
+import { MaskButton } from '@/components/ui/MaskButton'
 import type { SessionDetail, FeedbackData, DifficultyRecommendation } from '@/lib/types'
 
 function formatDuration(secs: number | null): string {
@@ -155,13 +156,13 @@ export function SessionDetailPage() {
             <Sparkles className="w-10 h-10 text-primary-400 mx-auto mb-4" />
             <p className="font-bold text-neutral-700 mb-1">No summary yet</p>
             <p className="text-sm text-neutral-400 mb-6">Generate an AI-powered analysis of this conversation</p>
-            <button
+            <MaskButton
               onClick={handleGenerateSummary}
               disabled={generatingSummary}
-              className="inline-flex items-center gap-2 px-7 py-3 bg-primary-600 text-white rounded-full font-semibold text-sm hover-glow disabled:opacity-50 cursor-pointer"
+              className="px-7 py-3 font-semibold text-sm disabled:opacity-50"
             >
               {generatingSummary ? <><Loader2 className="w-4 h-4 animate-spin" /> Generating…</> : <><Sparkles className="w-4 h-4" /> Generate Summary</>}
-            </button>
+            </MaskButton>
           </div>
         )}
 

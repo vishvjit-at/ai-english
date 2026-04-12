@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { fetchLessons, startConversation } from '@/lib/api'
 import { ConversationView } from '@/components/conversation/ConversationView'
+import { MaskButton } from '@/components/ui/MaskButton'
 import type { Lesson, UserContext } from '@/lib/types'
 
 type Stage = 'loading' | 'setup' | 'conversation'
@@ -118,15 +119,16 @@ export function LessonPracticePage() {
               </div>
             </div>
 
-            <button
+            <MaskButton
               onClick={handleStart}
               disabled={!name.trim() || isStarting}
-              className="w-full py-3.5 bg-primary-600 text-white rounded-full font-bold text-sm hover-glow disabled:opacity-50 transition-all cursor-pointer flex items-center justify-center gap-2"
+              fullWidth
+              className="py-3.5 font-bold text-sm disabled:opacity-50"
             >
               {isStarting ? (
                 <><span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> Starting…</>
               ) : 'Start Lesson'}
-            </button>
+            </MaskButton>
 
             {error && <p className="text-xs text-rose-500 mt-3 text-center font-medium">{error}</p>}
           </div>

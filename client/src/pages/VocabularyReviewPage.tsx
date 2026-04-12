@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { BookOpen, Send, Check, X, ArrowRight, RotateCcw, Sparkles, Brain, History } from 'lucide-react'
 import { useVocabReview } from '@/hooks/useVocabReview'
+import { MaskButton } from '@/components/ui/MaskButton'
 
 export function VocabularyReviewPage() {
   const {
@@ -63,12 +64,9 @@ export function VocabularyReviewPage() {
                 <p className="text-sm text-neutral-400 mb-10 max-w-sm">
                   Use your saved vocabulary words in sentences. Aria will evaluate your usage.
                 </p>
-                <button
-                  onClick={() => startReview(10)}
-                  className="inline-flex items-center gap-2 px-8 py-3 bg-primary-600 text-white rounded-full font-semibold text-sm hover-glow cursor-pointer"
-                >
+                <MaskButton onClick={() => startReview(10)} className="px-8 py-3 font-semibold text-sm">
                   <Sparkles className="w-4 h-4" /> Start Review
-                </button>
+                </MaskButton>
               </>
             )}
           </div>
@@ -138,13 +136,10 @@ export function VocabularyReviewPage() {
             )}
 
             {phase === 'evaluated' && (
-              <button
-                onClick={nextWord}
-                className="w-full flex items-center justify-center gap-2 py-3.5 bg-primary-600 text-white hover:bg-primary-700 rounded-full font-semibold text-sm transition-colors cursor-pointer mb-6 hover-glow"
-              >
+              <MaskButton onClick={nextWord} fullWidth className="py-3.5 font-semibold text-sm mb-6">
                 {progress.current >= progress.total ? 'See Results' : 'Next Word'}
                 <ArrowRight className="w-4 h-4" />
-              </button>
+              </MaskButton>
             )}
 
             {/* Memory Tip + Review History */}
@@ -200,12 +195,9 @@ export function VocabularyReviewPage() {
               ))}
             </div>
 
-            <button
-              onClick={() => startReview(10)}
-              className="w-full flex items-center justify-center gap-2 py-3.5 bg-primary-600 text-white rounded-full font-semibold text-sm hover-glow cursor-pointer"
-            >
+            <MaskButton onClick={() => startReview(10)} fullWidth className="py-3.5 font-semibold text-sm">
               <RotateCcw className="w-4 h-4" /> Review Again
-            </button>
+            </MaskButton>
           </div>
         )}
       </div>
