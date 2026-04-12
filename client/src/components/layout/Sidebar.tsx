@@ -5,11 +5,18 @@ import { fetchScenarios } from '@/lib/api'
 import { useAuth } from '@/hooks/useAuth'
 import type { Scenario, PredefinedTopicKey } from '@/lib/types'
 
-const topicConfig: Record<string, { icon: React.ReactNode; label: string }> = {
-  job_interview: { icon: <Briefcase className="w-4 h-4" />, label: 'Job Interview' },
-  daily_life: { icon: <Coffee className="w-4 h-4" />, label: 'Daily Life' },
-  college: { icon: <GraduationCap className="w-4 h-4" />, label: 'College' },
+const topicConfig: Record<string, { icon: React.ReactNode; label: string; color: string }> = {
+  job_interview: { icon: <Briefcase className="w-4 h-4" />, label: 'Job Interview', color: 'nav-item-primary' },
+  daily_life:    { icon: <Coffee className="w-4 h-4" />,   label: 'Daily Life',    color: 'nav-item-amber'   },
+  college:       { icon: <GraduationCap className="w-4 h-4" />, label: 'College',  color: 'nav-item-purple'  },
 }
+
+const bottomNav = [
+  { to: '/history',    icon: <Clock className="w-4 h-4" />,      label: 'History',    color: 'nav-item-amber'   },
+  { to: '/progress',   icon: <TrendingUp className="w-4 h-4" />, label: 'Progress',   color: 'nav-item-teal'    },
+  { to: '/vocabulary', icon: <BookOpen className="w-4 h-4" />,   label: 'Vocabulary', color: 'nav-item-purple'  },
+  { to: '/settings',   icon: <Settings className="w-4 h-4" />,   label: 'Settings',   color: 'nav-item-muted'   },
+]
 
 interface SidebarProps {
   isOpen: boolean
@@ -39,12 +46,12 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         lg:static lg:translate-x-0
         ${isOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
-        {/* Logo section */}
-        <div className="p-5 shrink-0">
-          <div className="flex items-center justify-between mb-8">
-            <Link to="/" className="flex items-center gap-2.5 group" onClick={onClose}>
-              <div className="w-8 h-8 bg-primary-600 rounded-xl flex items-center justify-center hover-glow">
-                <Mic className="w-4 h-4 text-white group-icon" />
+        {/* Logo */}
+        <div className="p-5 pb-3 shrink-0">
+          <div className="flex items-center justify-between mb-5">
+            <Link to="/" className="flex items-center gap-2.5" onClick={onClose}>
+              <div className="w-8 h-8 bg-primary-600 rounded-xl flex items-center justify-center">
+                <Mic className="w-4 h-4 text-white" />
               </div>
               <div>
                 <p className="text-sm font-bold text-neutral-900">SpeakUp</p>
@@ -56,106 +63,90 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
             </button>
           </div>
 
-          {/* Custom scenario */}
-          <Link to="/practice/custom" onClick={onClose} className="block">
-            <div className={`
-              group flex items-center gap-3 px-3 py-2 rounded-xl text-sm cursor-pointer hover-slide
-              ${isActive('/practice/custom')
-                ? 'bg-primary-50 text-primary-700 font-semibold'
-                : 'text-neutral-600 hover:bg-primary-50/60 hover:text-primary-700'
-              }
-            `}>
-              <Sparkles className={`w-4 h-4 group-icon ${isActive('/practice/custom') ? 'text-primary-600' : 'text-neutral-400'}`} />
-              Custom Scenario
-            </div>
+          {/* Top action links */}
+          <Link
+            to="/practice/custom"
+            onClick={onClose}
+            className={`nav-item nav-item-primary ${isActive('/practice/custom') ? 'nav-item-active' : ''}`}
+          >
+            <Sparkles className="w-4 h-4 shrink-0" />
+            Custom Scenario
           </Link>
 
-          {/* Lessons link */}
-          <Link to="/lessons" onClick={onClose} className="block mt-1">
-            <div className={`
-              group flex items-center gap-3 px-3 py-2 rounded-xl text-sm cursor-pointer hover-slide
-              ${isActive('/lessons') || location.pathname.startsWith('/lessons/')
-                ? 'bg-primary-50 text-primary-700 font-semibold'
-                : 'text-neutral-600 hover:bg-primary-50/60 hover:text-primary-700'
-              }
-            `}>
-              <GraduationCap className={`w-4 h-4 group-icon ${isActive('/lessons') || location.pathname.startsWith('/lessons/') ? 'text-primary-600' : 'text-neutral-400'}`} />
-              Guided Lessons
-            </div>
+          <Link
+            to="/lessons"
+            onClick={onClose}
+            className={`nav-item nav-item-accent mt-0.5 ${isActive('/lessons') || location.pathname.startsWith('/lessons/') ? 'nav-item-active' : ''}`}
+          >
+            <GraduationCap className="w-4 h-4 shrink-0" />
+            Guided Lessons
           </Link>
         </div>
 
-        {/* Nav */}
+        {/* Scrollable nav */}
         <nav className="flex-1 overflow-y-auto px-3">
-          {scenarioData && (Object.keys(scenarioData) as PredefinedTopicKey[]).map((topic) => (
-            <div key={topic} className="mb-4">
-              <p className="text-[10px] font-semibold text-neutral-400 uppercase tracking-wider px-3 mb-1 mt-4 flex items-center gap-1.5">
-                <span className="text-neutral-400">{topicConfig[topic].icon}</span>
-                {topicConfig[topic].label}
-              </p>
+          {scenarioData && (Object.keys(scenarioData) as PredefinedTopicKey[]).map((topic) => {
+            const cfg = topicConfig[topic]
+            return (
+              <div key={topic} className="mb-3">
+                <p className="text-[10px] font-semibold text-neutral-400 uppercase tracking-wider px-3 mb-1 mt-3 flex items-center gap-1.5">
+                  <span>{cfg.icon}</span>
+                  {cfg.label}
+                </p>
 
-              <div className="flex flex-col gap-0.5">
-                {scenarioData[topic].map((scenario) => {
-                  const active = isActive(`/practice/${scenario.id}`)
-                  return (
-                    <Link key={scenario.id} to={`/practice/${scenario.id}`} onClick={onClose} className="block">
-                      <div className={`
-                        group flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer text-sm hover-slide
-                        ${active
-                          ? 'bg-primary-50 text-primary-700 font-semibold'
-                          : 'text-neutral-600 hover:bg-primary-50/60 hover:text-primary-700'
-                        }
-                      `}>
-                        <MessageCircle className={`w-3.5 h-3.5 shrink-0 group-icon ${active ? 'text-primary-600' : 'text-neutral-300'}`} />
+                <div className="flex flex-col gap-0.5">
+                  {scenarioData[topic].map((scenario) => {
+                    const active = isActive(`/practice/${scenario.id}`)
+                    return (
+                      <Link
+                        key={scenario.id}
+                        to={`/practice/${scenario.id}`}
+                        onClick={onClose}
+                        className={`nav-item ${cfg.color} ${active ? 'nav-item-active' : ''}`}
+                      >
+                        <MessageCircle className="w-3.5 h-3.5 shrink-0" />
                         <p className="truncate flex-1">{scenario.name}</p>
-                        <span className={`text-[9px] font-semibold capitalize px-1.5 py-0.5 rounded-full
-                          ${scenario.difficulty === 'beginner' ? 'bg-primary-50 text-primary-600' :
-                            scenario.difficulty === 'intermediate' ? 'bg-amber-50 text-amber-600' :
-                            'bg-purple-50 text-purple-600'}
-                        `}>
+                        <span className="text-[9px] font-semibold capitalize px-1.5 py-0.5 rounded-full bg-white/20">
                           {scenario.difficulty.slice(0, 3)}
                         </span>
-                      </div>
-                    </Link>
-                  )
-                })}
+                      </Link>
+                    )
+                  })}
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
 
           {!scenarioData && (
             <div className="px-3 flex flex-col gap-2 mt-4">
               {[1, 2, 3, 4, 5].map((i) => (
-                <div key={i} className="h-10 bg-neutral-100 rounded-xl animate-pulse" />
+                <div key={i} className="h-9 bg-neutral-100 rounded-xl animate-pulse" />
               ))}
             </div>
           )}
 
-          {/* Bottom nav links with divider */}
-          <div className="border-t border-neutral-100 pt-4 mt-4 flex flex-col gap-0.5 pb-4">
-            {[
-              { to: '/history', icon: <Clock className="w-4 h-4" />, label: 'History', active: isActive('/history') || location.pathname.startsWith('/history/') },
-              { to: '/progress', icon: <TrendingUp className="w-4 h-4" />, label: 'Progress', active: isActive('/progress') },
-              { to: '/vocabulary', icon: <BookOpen className="w-4 h-4" />, label: 'Vocabulary', active: isActive('/vocabulary') },
-              { to: '/settings', icon: <Settings className="w-4 h-4" />, label: 'Settings', active: isActive('/settings') },
-            ].map(({ to, icon, label, active }) => (
-              <Link key={to} to={to} onClick={onClose} className="block">
-                <div className={`
-                  group flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer text-sm hover-slide
-                  ${active
-                    ? 'bg-primary-50 text-primary-700 font-semibold'
-                    : 'text-neutral-600 hover:bg-primary-50/60 hover:text-primary-700'
-                  }
-                `}>
-                  <span className={`group-icon ${active ? 'text-primary-600' : 'text-neutral-400'}`}>{icon}</span>
+          {/* Bottom nav */}
+          <div className="border-t border-neutral-100 pt-2 mt-3 flex flex-col gap-0.5 pb-4">
+            {bottomNav.map(({ to, icon, label, color }) => {
+              const active = to === '/history'
+                ? isActive('/history') || location.pathname.startsWith('/history/')
+                : isActive(to)
+              return (
+                <Link
+                  key={to}
+                  to={to}
+                  onClick={onClose}
+                  className={`nav-item ${color} ${active ? 'nav-item-active' : ''}`}
+                >
+                  {icon}
                   {label}
-                </div>
-              </Link>
-            ))}
+                </Link>
+              )
+            })}
           </div>
         </nav>
 
-        {/* Bottom user section */}
+        {/* User section */}
         <div className="border-t border-neutral-100 p-4 shrink-0">
           {user ? (
             <div className="flex items-center gap-2.5">

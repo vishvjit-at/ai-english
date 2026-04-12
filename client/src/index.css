@@ -288,6 +288,60 @@ body {
   -webkit-backdrop-filter: blur(16px);
 }
 
+/* ── Sidebar nav-item slide effect ── */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.75rem;
+  text-decoration: none;
+  color: var(--sem-neutral-600);
+  border-left: 3px solid transparent;
+  position: relative;
+  z-index: 1;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  overflow: hidden;
+  transition: color 0.2s ease;
+}
+
+.nav-item::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 100%;
+  z-index: -1;
+  transition: width 0.28s ease;
+}
+
+.nav-item:hover          { color: white; }
+.nav-item:hover::after   { width: 100%; }
+.nav-item-active         { color: white; font-weight: 600; }
+.nav-item-active::after  { width: 100%; }
+
+/* Color variants — using semantic CSS vars so they swap with the theme */
+.nav-item-primary  { border-left-color: var(--sem-primary-500);  }
+.nav-item-primary::after  { background: var(--sem-primary-500);  }
+
+.nav-item-accent   { border-left-color: var(--sem-accent-400);   }
+.nav-item-accent::after   { background: var(--sem-accent-400);   }
+
+.nav-item-amber    { border-left-color: #f59e0b; }
+.nav-item-amber::after    { background: #f59e0b; }
+
+.nav-item-purple   { border-left-color: #a855f7; }
+.nav-item-purple::after   { background: #a855f7; }
+
+.nav-item-teal     { border-left-color: var(--sem-tertiary-400); }
+.nav-item-teal::after     { background: var(--sem-tertiary-400); }
+
+.nav-item-muted    { border-left-color: var(--sem-neutral-300);  }
+.nav-item-muted::after    { background: var(--sem-neutral-400);  }
+
 /* ── CSS Mask Button (MASK2 urban-sprite style) ── */
 @keyframes mask-btn-in {
   from { mask-position: 0 0;    -webkit-mask-position: 0 0;    }
@@ -340,8 +394,10 @@ body {
   white-space: nowrap;
   color: white;
   width: 101%;
-  -webkit-mask: url('https://raw.githubusercontent.com/robin-dela/css-mask-animation/master/img/urban-sprite.png') 3000% 100%;
-  mask: url('https://raw.githubusercontent.com/robin-dela/css-mask-animation/master/img/urban-sprite.png') 3000% 100%;
+  -webkit-mask: url('/urban-sprite.png') 3000% 100%;
+  mask: url('/urban-sprite.png') 3000% 100%;
+  -webkit-mask-size: 3000% 100%;
+  mask-size: 3000% 100%;
   -webkit-animation: mask-btn-out 0.7s steps(29) forwards;
   animation: mask-btn-out 0.7s steps(29) forwards;
 }
