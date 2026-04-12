@@ -146,30 +146,30 @@ export function SettingsPage() {
     : serverVoices.map((v) => ({ id: v.id, name: v.name, lang: v.lang, type: v.type }))
 
   return (
-    <div className="h-full overflow-y-auto bg-slate-50">
+    <div className="h-full overflow-y-auto bg-neutral-50">
       <div className="max-w-4xl mx-auto px-6 py-8">
         {/* Header */}
-        <h1 className="text-2xl font-bold text-slate-900 mb-1">Settings</h1>
-        <p className="text-slate-500 text-sm mb-8">Personalise your sanctuary with Aria</p>
+        <h1 className="text-2xl font-bold text-neutral-900 mb-1">Settings</h1>
+        <p className="text-neutral-500 text-sm mb-8">Personalise your sanctuary with Aria</p>
 
         <div className="grid grid-cols-3 gap-6">
           {/* Left: Appearance + Voice (col-span-2) */}
           <div className="col-span-2">
             {/* Appearance section */}
-            <div className="bg-white rounded-2xl border border-slate-100 p-6 mb-6">
-              <div className="flex items-center gap-2 text-sm font-semibold text-slate-900 mb-4">
-                <Palette className="w-4 h-4 text-green-600" /> Appearance
+            <div className="bg-white rounded-2xl border border-neutral-100 p-6 mb-6">
+              <div className="flex items-center gap-2 text-sm font-semibold text-neutral-900 mb-4">
+                <Palette className="w-4 h-4 text-primary-600" /> Appearance
               </div>
 
               {/* Color Theme */}
               <div className="mb-6">
-                <p className="text-xs text-slate-500 uppercase tracking-wider mb-3">Color Theme</p>
+                <p className="text-xs text-neutral-500 uppercase tracking-wider mb-3">Color Theme</p>
                 <div className="flex gap-3 flex-wrap">
                   {themes.map((t) => (
                     <button
                       key={t.id}
                       onClick={() => updateSettings({ theme: t.id })}
-                      className={`w-8 h-8 rounded-full cursor-pointer transition-all ${settings.theme === t.id ? 'ring-2 ring-offset-2 ring-green-600' : 'hover:scale-110'}`}
+                      className={`w-8 h-8 rounded-full cursor-pointer transition-all ${settings.theme === t.id ? 'ring-2 ring-offset-2 ring-primary-600' : 'hover:scale-110'}`}
                       style={{ background: `linear-gradient(135deg, ${t.swatch}, ${t.swatch}dd)` }}
                       title={t.label}
                     />
@@ -179,7 +179,7 @@ export function SettingsPage() {
 
               {/* Font Size */}
               <div className="mb-6">
-                <p className="text-xs text-slate-500 uppercase tracking-wider mb-3">Font Size</p>
+                <p className="text-xs text-neutral-500 uppercase tracking-wider mb-3">Font Size</p>
                 <div className="flex gap-2">
                   {([
                     { value: 'small', label: 'A', size: 'text-sm' },
@@ -190,7 +190,7 @@ export function SettingsPage() {
                       key={opt.value}
                       onClick={() => updateSettings({ fontSize: opt.value })}
                       className={`flex items-center justify-center w-12 h-10 rounded-xl border font-bold transition-all cursor-pointer ${opt.size}
-                        ${settings.fontSize === opt.value ? 'bg-green-600 text-white border-green-600' : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200'}`}
+                        ${settings.fontSize === opt.value ? 'bg-primary-600 text-white border-primary-600' : 'bg-neutral-100 text-neutral-600 border-neutral-200 hover:bg-neutral-200'}`}
                     >
                       {opt.label}
                     </button>
@@ -200,7 +200,7 @@ export function SettingsPage() {
 
               {/* Corner Style */}
               <div>
-                <p className="text-xs text-slate-500 uppercase tracking-wider mb-3">Corner Style</p>
+                <p className="text-xs text-neutral-500 uppercase tracking-wider mb-3">Corner Style</p>
                 <div className="flex gap-2">
                   {([
                     { value: 'sharp', label: 'Sharp', radius: '4px' },
@@ -211,7 +211,7 @@ export function SettingsPage() {
                       key={opt.value}
                       onClick={() => updateSettings({ borderRadius: opt.value })}
                       className={`flex flex-col items-center gap-2 px-4 py-2.5 rounded-xl border transition-all cursor-pointer
-                        ${settings.borderRadius === opt.value ? 'border-green-500 bg-green-50 text-green-700' : 'border-slate-200 text-slate-600 hover:bg-slate-50'}`}
+                        ${settings.borderRadius === opt.value ? 'border-primary-500 bg-primary-50 text-primary-700' : 'border-neutral-200 text-neutral-600 hover:bg-neutral-50'}`}
                     >
                       <div className="w-10 h-6 bg-current opacity-20 border-2 border-current" style={{ borderRadius: opt.radius }} />
                       <span className="text-xs font-medium">{opt.label}</span>
@@ -222,24 +222,24 @@ export function SettingsPage() {
             </div>
 
             {/* Voice & Audio section */}
-            <div className="bg-white rounded-2xl border border-slate-100 p-6 mb-6">
-              <div className="flex items-center gap-2 text-sm font-semibold text-slate-900 mb-4">
-                <Volume2 className="w-4 h-4 text-green-600" /> Voice & Audio
+            <div className="bg-white rounded-2xl border border-neutral-100 p-6 mb-6">
+              <div className="flex items-center gap-2 text-sm font-semibold text-neutral-900 mb-4">
+                <Volume2 className="w-4 h-4 text-primary-600" /> Voice & Audio
               </div>
 
               {/* Provider Selection */}
               <div className="mb-5">
-                <p className="text-xs text-slate-500 uppercase tracking-wider mb-3">Voice Provider</p>
+                <p className="text-xs text-neutral-500 uppercase tracking-wider mb-3">Voice Provider</p>
                 <div className="grid grid-cols-2 gap-2">
                   {PROVIDER_OPTIONS.map((opt) => (
                     <button
                       key={opt.value}
                       onClick={() => updateSettings({ voiceProvider: opt.value, voiceName: '' })}
                       className={`flex flex-col items-center gap-1 py-3 px-2 rounded-xl border transition-all cursor-pointer
-                        ${settings.voiceProvider === opt.value ? 'border-green-500 bg-green-50' : 'border-slate-200 hover:border-slate-300'}`}
+                        ${settings.voiceProvider === opt.value ? 'border-primary-500 bg-primary-50' : 'border-neutral-200 hover:border-neutral-300'}`}
                     >
-                      <span className="text-sm font-semibold text-slate-700">{opt.label}</span>
-                      <span className="text-xs text-slate-400">{opt.desc}</span>
+                      <span className="text-sm font-semibold text-neutral-700">{opt.label}</span>
+                      <span className="text-xs text-neutral-400">{opt.desc}</span>
                     </button>
                   ))}
                 </div>
@@ -249,12 +249,12 @@ export function SettingsPage() {
               {settings.voiceProvider !== 'browser' && usageInfo && (
                 <div className="mb-5">
                   <div className="flex items-center justify-between mb-2">
-                    <p className="text-xs font-semibold text-slate-500">Usage this month</p>
-                    <span className="text-xs text-slate-400">{formatNumber(usageInfo.used)} / {formatNumber(usageInfo.limit)} chars</span>
+                    <p className="text-xs font-semibold text-neutral-500">Usage this month</p>
+                    <span className="text-xs text-neutral-400">{formatNumber(usageInfo.used)} / {formatNumber(usageInfo.limit)} chars</span>
                   </div>
-                  <div className="w-full h-2 bg-slate-100 rounded-full">
+                  <div className="w-full h-2 bg-neutral-100 rounded-full">
                     <div
-                      className={`h-full rounded-full transition-all ${isLimitExceeded ? 'bg-red-400' : 'bg-green-500'}`}
+                      className={`h-full rounded-full transition-all ${isLimitExceeded ? 'bg-red-400' : 'bg-primary-500'}`}
                       style={{ width: `${Math.min(100, (usageInfo.used / usageInfo.limit) * 100)}%` }}
                     />
                   </div>
@@ -269,11 +269,11 @@ export function SettingsPage() {
 
               {/* Voice Selection */}
               <div className="mb-5">
-                <p className="text-xs text-slate-500 uppercase tracking-wider mb-3">Aria Voice Library</p>
+                <p className="text-xs text-neutral-500 uppercase tracking-wider mb-3">Aria Voice Library</p>
                 {loadingVoices ? (
-                  <p className="text-xs text-slate-400">Loading voices...</p>
+                  <p className="text-xs text-neutral-400">Loading voices...</p>
                 ) : voiceList.length === 0 ? (
-                  <p className="text-xs text-slate-400">
+                  <p className="text-xs text-neutral-400">
                     {settings.voiceProvider === 'browser'
                       ? 'No English voices detected. Voices depend on your browser and OS.'
                       : 'No voices available. Check API key configuration on the server.'}
@@ -284,16 +284,16 @@ export function SettingsPage() {
                     <button
                       onClick={() => updateSettings({ voiceName: '' })}
                       className={`border rounded-xl p-4 flex items-center gap-3 cursor-pointer transition-all
-                        ${settings.voiceName === '' ? 'border-green-500 bg-green-50' : 'border-slate-200 hover:border-slate-300'}`}
+                        ${settings.voiceName === '' ? 'border-primary-500 bg-primary-50' : 'border-neutral-200 hover:border-neutral-300'}`}
                     >
-                      <div className="w-10 h-10 bg-green-600 rounded-full text-white font-bold flex items-center justify-center">A</div>
+                      <div className="w-10 h-10 bg-primary-600 rounded-full text-white font-bold flex items-center justify-center">A</div>
                       <div className="flex-1">
-                        <p className="font-semibold text-sm text-slate-900">Auto-select</p>
-                        <p className="text-xs text-slate-500">
+                        <p className="font-semibold text-sm text-neutral-900">Auto-select</p>
+                        <p className="text-xs text-neutral-500">
                           {settings.voiceProvider === 'browser' ? 'Best voice for your device' : 'Default voice'}
                         </p>
                       </div>
-                      <div className={`w-4 h-4 rounded-full border-2 ${settings.voiceName === '' ? 'bg-green-500 border-green-500' : 'border-slate-300'}`} />
+                      <div className={`w-4 h-4 rounded-full border-2 ${settings.voiceName === '' ? 'bg-primary-500 border-primary-500' : 'border-neutral-300'}`} />
                     </button>
 
                     {voiceList.slice(0, 2).map((v) => {
@@ -303,16 +303,16 @@ export function SettingsPage() {
                           key={voiceKey}
                           onClick={() => updateSettings({ voiceName: voiceKey })}
                           className={`border rounded-xl p-4 flex items-center gap-3 cursor-pointer transition-all
-                            ${settings.voiceName === voiceKey ? 'border-green-500 bg-green-50' : 'border-slate-200 hover:border-slate-300'}`}
+                            ${settings.voiceName === voiceKey ? 'border-primary-500 bg-primary-50' : 'border-neutral-200 hover:border-neutral-300'}`}
                         >
-                          <div className="w-10 h-10 bg-green-600 rounded-full text-white font-bold flex items-center justify-center">
+                          <div className="w-10 h-10 bg-primary-600 rounded-full text-white font-bold flex items-center justify-center">
                             {v.name[0]?.toUpperCase()}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="font-semibold text-sm text-slate-900 truncate">{v.name}</p>
-                            <p className="text-xs text-slate-500">{v.lang}{v.type ? ` - ${v.type}` : ''}</p>
+                            <p className="font-semibold text-sm text-neutral-900 truncate">{v.name}</p>
+                            <p className="text-xs text-neutral-500">{v.lang}{v.type ? ` - ${v.type}` : ''}</p>
                           </div>
-                          <div className={`w-4 h-4 rounded-full border-2 shrink-0 ${settings.voiceName === voiceKey ? 'bg-green-500 border-green-500' : 'border-slate-300'}`} />
+                          <div className={`w-4 h-4 rounded-full border-2 shrink-0 ${settings.voiceName === voiceKey ? 'bg-primary-500 border-primary-500' : 'border-neutral-300'}`} />
                         </button>
                       )
                     })}
@@ -323,8 +323,8 @@ export function SettingsPage() {
               {/* Speed slider */}
               <div className="mb-5">
                 <div className="flex items-center justify-between mb-3">
-                  <p className="text-xs text-slate-500 uppercase tracking-wider">Speed</p>
-                  <span className="text-xs text-slate-500 font-medium">
+                  <p className="text-xs text-neutral-500 uppercase tracking-wider">Speed</p>
+                  <span className="text-xs text-neutral-500 font-medium">
                     {settings.voiceSpeed <= 0.8 ? 'Slow' : settings.voiceSpeed >= 1.1 ? 'Fast' : 'Normal'}
                   </span>
                 </div>
@@ -335,19 +335,19 @@ export function SettingsPage() {
                   step="0.05"
                   value={settings.voiceSpeed}
                   onChange={(e) => updateSettings({ voiceSpeed: parseFloat(e.target.value) })}
-                  className="w-full h-2 bg-slate-100 rounded-full appearance-none cursor-pointer accent-green-500"
+                  className="w-full h-2 bg-neutral-100 rounded-full appearance-none cursor-pointer accent-primary-500"
                 />
                 <div className="flex justify-between mt-1">
-                  <span className="text-[10px] text-slate-300">Slow</span>
-                  <span className="text-[10px] text-slate-300">Normal</span>
-                  <span className="text-[10px] text-slate-300">Fast</span>
+                  <span className="text-[10px] text-neutral-300">Slow</span>
+                  <span className="text-[10px] text-neutral-300">Normal</span>
+                  <span className="text-[10px] text-neutral-300">Fast</span>
                 </div>
               </div>
 
               {/* Voice Pitch row */}
               <div className="flex items-center justify-between mb-5">
-                <p className="text-sm text-slate-700">Voice Pitch</p>
-                <button className="border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-xl px-4 py-2 text-sm transition-colors cursor-pointer">
+                <p className="text-sm text-neutral-700">Voice Pitch</p>
+                <button className="border border-neutral-200 text-neutral-700 hover:bg-neutral-50 rounded-xl px-4 py-2 text-sm transition-colors cursor-pointer">
                   Default
                 </button>
               </div>
@@ -358,8 +358,8 @@ export function SettingsPage() {
                 disabled={isPreviewing || isLimitExceeded}
                 className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-xl font-semibold text-sm transition-colors cursor-pointer
                   ${isLimitExceeded
-                    ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
-                    : 'bg-green-50 text-green-600 hover:bg-green-100'
+                    ? 'bg-neutral-100 text-neutral-400 cursor-not-allowed'
+                    : 'bg-primary-50 text-primary-600 hover:bg-primary-100'
                   }`}
               >
                 <Play className="w-4 h-4" />
@@ -368,19 +368,19 @@ export function SettingsPage() {
             </div>
 
             {/* Animations toggle */}
-            <div className="bg-white rounded-2xl border border-slate-100 p-6">
+            <div className="bg-white rounded-2xl border border-neutral-100 p-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Zap className="w-4 h-4 text-green-600" />
+                  <Zap className="w-4 h-4 text-primary-600" />
                   <div>
-                    <p className="text-sm font-semibold text-slate-700">Animations</p>
-                    <p className="text-xs text-slate-400">Entrance effects & transitions</p>
+                    <p className="text-sm font-semibold text-neutral-700">Animations</p>
+                    <p className="text-xs text-neutral-400">Entrance effects & transitions</p>
                   </div>
                 </div>
                 <button
                   onClick={() => updateSettings({ animations: !settings.animations })}
                   className={`w-10 h-6 rounded-full transition-all cursor-pointer flex items-center px-0.5
-                    ${settings.animations ? 'bg-green-500' : 'bg-slate-200'}`}
+                    ${settings.animations ? 'bg-primary-500' : 'bg-neutral-200'}`}
                 >
                   <div className={`w-5 h-5 rounded-full bg-white shadow-sm transition-transform ${settings.animations ? 'translate-x-4' : 'translate-x-0'}`} />
                 </button>
@@ -390,32 +390,32 @@ export function SettingsPage() {
 
           {/* Right: Insights (col-span-1) */}
           <div>
-            <div className="bg-white rounded-2xl border border-slate-100 p-6">
-              <div className="flex items-center gap-2 text-sm font-semibold text-slate-900 mb-4">
-                <Settings className="w-4 h-4 text-green-600" /> Insights
+            <div className="bg-white rounded-2xl border border-neutral-100 p-6">
+              <div className="flex items-center gap-2 text-sm font-semibold text-neutral-900 mb-4">
+                <Settings className="w-4 h-4 text-primary-600" /> Insights
               </div>
 
               {/* Character Usage */}
               <div className="mb-5">
-                <p className="text-xs text-slate-500 uppercase tracking-wider mb-2">Character Usage</p>
+                <p className="text-xs text-neutral-500 uppercase tracking-wider mb-2">Character Usage</p>
                 {usageInfo ? (
                   <>
-                    <p className="text-3xl font-bold text-slate-900 mb-1">{formatNumber(usageInfo.used)}</p>
-                    <p className="text-xs text-slate-400 mb-2">of {formatNumber(usageInfo.limit)} chars</p>
-                    <div className="w-full h-2 bg-slate-100 rounded-full mb-2">
+                    <p className="text-3xl font-bold text-neutral-900 mb-1">{formatNumber(usageInfo.used)}</p>
+                    <p className="text-xs text-neutral-400 mb-2">of {formatNumber(usageInfo.limit)} chars</p>
+                    <div className="w-full h-2 bg-neutral-100 rounded-full mb-2">
                       <div
-                        className="h-full bg-green-500 rounded-full"
+                        className="h-full bg-primary-500 rounded-full"
                         style={{ width: `${Math.min(100, (usageInfo.used / usageInfo.limit) * 100)}%` }}
                       />
                     </div>
-                    <p className="text-xs text-slate-400">Upgrading offers unrestricted access to all voice features.</p>
+                    <p className="text-xs text-neutral-400">Upgrading offers unrestricted access to all voice features.</p>
                   </>
                 ) : (
                   <>
-                    <p className="text-3xl font-bold text-slate-900 mb-1">∞</p>
-                    <p className="text-xs text-slate-400 mb-2">Browser voice is unlimited</p>
-                    <div className="w-full h-2 bg-slate-100 rounded-full mb-2" />
-                    <p className="text-xs text-slate-400">Upgrading offers unrestricted access to premium voices.</p>
+                    <p className="text-3xl font-bold text-neutral-900 mb-1">∞</p>
+                    <p className="text-xs text-neutral-400 mb-2">Browser voice is unlimited</p>
+                    <div className="w-full h-2 bg-neutral-100 rounded-full mb-2" />
+                    <p className="text-xs text-neutral-400">Upgrading offers unrestricted access to premium voices.</p>
                   </>
                 )}
               </div>
@@ -423,7 +423,7 @@ export function SettingsPage() {
               {/* Toggle rows */}
               <div className="space-y-4 mb-5">
                 <div className="flex items-center justify-between">
-                  <p className="text-sm text-slate-700">Chat Density: {settings.chatDensity}</p>
+                  <p className="text-sm text-neutral-700">Chat Density: {settings.chatDensity}</p>
                   <button
                     onClick={() => {
                       const options = ['compact', 'comfortable', 'spacious'] as const
@@ -431,7 +431,7 @@ export function SettingsPage() {
                       updateSettings({ chatDensity: options[(idx + 1) % options.length] })
                     }}
                     className={`w-10 h-6 rounded-full transition-all cursor-pointer flex items-center px-0.5
-                      ${settings.chatDensity !== 'compact' ? 'bg-green-500' : 'bg-slate-200'}`}
+                      ${settings.chatDensity !== 'compact' ? 'bg-primary-500' : 'bg-neutral-200'}`}
                   >
                     <div className={`w-5 h-5 rounded-full bg-white shadow-sm transition-transform ${settings.chatDensity !== 'compact' ? 'translate-x-4' : 'translate-x-0'}`} />
                   </button>
@@ -449,7 +449,7 @@ export function SettingsPage() {
           </div>
         </div>
 
-        <p className="text-center text-xs text-slate-400 mt-8">Settings are saved automatically</p>
+        <p className="text-center text-xs text-neutral-400 mt-8">Settings are saved automatically</p>
       </div>
     </div>
   )

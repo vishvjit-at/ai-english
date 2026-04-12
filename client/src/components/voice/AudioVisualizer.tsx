@@ -15,7 +15,7 @@ export function AudioVisualizer({ isActive, className }: AudioVisualizerProps) {
           key={i}
           className={cn(
             'w-[2.5px] rounded-full transition-all duration-300',
-            isActive ? 'bg-green-500' : 'bg-slate-200'
+            isActive ? 'bg-primary-500' : 'bg-neutral-200'
           )}
           style={{
             height: isActive ? `${height * 3.5}px` : '3px',

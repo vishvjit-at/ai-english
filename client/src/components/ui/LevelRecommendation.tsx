@@ -15,16 +15,16 @@ export function LevelRecommendation({ recommendation, compact }: LevelRecommenda
     recommendation.recommendedLevel !== recommendation.currentLevel
 
   const bgClass = isLevelUp
-    ? 'bg-gradient-to-br from-green-50 to-primary-50 border-green-200'
+    ? 'bg-gradient-to-br from-primary-50 to-primary-50 border-primary-200'
     : 'bg-gradient-to-br from-amber-50 to-accent-50 border-amber-200'
 
-  const iconClass = isLevelUp ? 'text-green-500 bg-green-100' : 'text-amber-500 bg-amber-100'
+  const iconClass = isLevelUp ? 'text-primary-500 bg-primary-100' : 'text-amber-500 bg-amber-100'
 
   if (compact) {
     return (
       <div className={`rounded-xl border px-4 py-3 ${bgClass}`}>
         <div className="flex items-center gap-3">
-          <TrendingUp className={`w-4 h-4 ${isLevelUp ? 'text-green-500' : 'text-amber-500'}`} />
+          <TrendingUp className={`w-4 h-4 ${isLevelUp ? 'text-primary-500' : 'text-amber-500'}`} />
           <p className="text-sm text-neutral-600 font-body flex-1">{recommendation.reason}</p>
           <Link
             to="/"

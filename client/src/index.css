@@ -211,7 +211,7 @@
 }
 
 /* ── Tailwind v4 @theme — map semantic vars to utility classes ── */
-@theme {
+@theme inline {
   --font-heading: 'Plus Jakarta Sans', system-ui, sans-serif;
   --font-body: 'DM Sans', system-ui, sans-serif;
 

@@ -15,7 +15,7 @@ export function SignupPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="w-8 h-8 border-2 border-green-200 border-t-green-500 rounded-full animate-spin" />
+        <div className="w-8 h-8 border-2 border-primary-200 border-t-primary-500 rounded-full animate-spin" />
       </div>
     )
   }
@@ -34,12 +34,12 @@ export function SignupPage() {
     setIsSubmitting(false)
   }
 
-  const inputClass = 'w-full border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 placeholder:text-slate-400 transition-colors'
+  const inputClass = 'w-full border border-neutral-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 placeholder:text-neutral-400 transition-colors'
 
   return (
     <div className="min-h-screen flex">
       {/* Left panel */}
-      <div className="hidden lg:flex w-5/12 bg-gradient-to-br from-green-900 to-green-700 p-12 flex-col text-white">
+      <div className="hidden lg:flex w-5/12 bg-gradient-to-br from-primary-900 to-primary-700 p-12 flex-col text-white">
         {/* Logo */}
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 bg-white/20 rounded-xl flex items-center justify-center">
@@ -53,20 +53,20 @@ export function SignupPage() {
           <h2 className="text-4xl font-bold leading-tight mb-4">
             Unlock your potential<br />in English
           </h2>
-          <p className="text-green-200 text-lg mb-12">
+          <p className="text-primary-200 text-lg mb-12">
             Practice conversations with an AI tutor that's always patient, always available.
           </p>
 
           {/* Testimonial card */}
           <div className="bg-white/10 backdrop-blur rounded-2xl p-6">
-            <p className="text-green-50 text-sm leading-relaxed mb-4">
+            <p className="text-primary-50 text-sm leading-relaxed mb-4">
               "Aria helped me feel confident speaking English at work. After just 2 weeks, I gave my first presentation in English!"
             </p>
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm font-bold">A</div>
+              <div className="w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center text-white text-sm font-bold">A</div>
               <div>
                 <p className="text-white text-sm font-semibold">Ananya S.</p>
-                <p className="text-green-300 text-xs">Software Engineer</p>
+                <p className="text-primary-300 text-xs">Software Engineer</p>
               </div>
             </div>
           </div>
@@ -76,17 +76,17 @@ export function SignupPage() {
       {/* Right panel */}
       <div className="flex-1 bg-white p-8 lg:p-12 flex flex-col justify-center">
         <div className="max-w-lg mx-auto w-full">
-          <h1 className="text-3xl font-bold text-slate-900 mb-2">Create Account</h1>
-          <p className="text-slate-500 mb-8">Start your journey to fluency today.</p>
+          <h1 className="text-3xl font-bold text-neutral-900 mb-2">Create Account</h1>
+          <p className="text-neutral-500 mb-8">Start your journey to fluency today.</p>
 
           {success ? (
             <div className="text-center py-8">
-              <div className="w-12 h-12 mx-auto mb-3 bg-green-100 rounded-full flex items-center justify-center">
-                <span className="text-green-500 text-xl">✓</span>
+              <div className="w-12 h-12 mx-auto mb-3 bg-primary-100 rounded-full flex items-center justify-center">
+                <span className="text-primary-500 text-xl">✓</span>
               </div>
-              <p className="text-slate-600 mb-2 font-semibold">Account created!</p>
-              <p className="text-sm text-slate-400 mb-4">Check your email to confirm, then sign in.</p>
-              <Link to="/login" className="text-green-600 font-semibold text-sm hover:underline">
+              <p className="text-neutral-600 mb-2 font-semibold">Account created!</p>
+              <p className="text-sm text-neutral-400 mb-4">Check your email to confirm, then sign in.</p>
+              <Link to="/login" className="text-primary-600 font-semibold text-sm hover:underline">
                 Go to Sign In
               </Link>
             </div>
@@ -95,7 +95,7 @@ export function SignupPage() {
               {/* Google OAuth */}
               <button
                 onClick={signInWithGoogle}
-                className="w-full flex items-center justify-center gap-3 border border-slate-200 rounded-xl py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer mb-6"
+                className="w-full flex items-center justify-center gap-3 border border-neutral-200 rounded-xl py-3 text-sm font-medium text-neutral-700 hover:bg-neutral-50 transition-colors cursor-pointer mb-6"
               >
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
                   <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" />
@@ -108,14 +108,14 @@ export function SignupPage() {
 
               {/* OR divider */}
               <div className="flex items-center gap-4 mb-6">
-                <div className="flex-1 h-px bg-slate-100" />
-                <span className="text-xs text-slate-400">OR EMAIL</span>
-                <div className="flex-1 h-px bg-slate-100" />
+                <div className="flex-1 h-px bg-neutral-100" />
+                <span className="text-xs text-neutral-400">OR EMAIL</span>
+                <div className="flex-1 h-px bg-neutral-100" />
               </div>
 
               <form onSubmit={handleSignup} className="flex flex-col gap-4">
                 <div className="relative">
-                  <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                  <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
                   <input
                     type="text"
                     placeholder="Full Name"
@@ -125,7 +125,7 @@ export function SignupPage() {
                   />
                 </div>
                 <div className="relative">
-                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
                   <input
                     type="email"
                     placeholder="Email"
@@ -135,7 +135,7 @@ export function SignupPage() {
                   />
                 </div>
                 <div className="relative">
-                  <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                  <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
                   <input
                     type="password"
                     placeholder="Password (min 6 chars)"
@@ -150,15 +150,15 @@ export function SignupPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting || !name || !email || !password}
-                  className="w-full bg-green-600 hover:bg-green-700 text-white rounded-xl py-3 font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer mt-2"
+                  className="w-full bg-primary-600 hover:bg-primary-700 text-white rounded-xl py-3 font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer mt-2"
                 >
                   {isSubmitting ? 'Creating account...' : 'Create Account'}
                 </button>
               </form>
 
-              <p className="text-center text-sm text-slate-500 mt-6">
+              <p className="text-center text-sm text-neutral-500 mt-6">
                 Already have an account?{' '}
-                <Link to="/login" className="text-green-600 font-semibold hover:underline">Sign in</Link>
+                <Link to="/login" className="text-primary-600 font-semibold hover:underline">Sign in</Link>
               </p>
             </>
           )}
@@ -166,7 +166,7 @@ export function SignupPage() {
       </div>
 
       {/* Footer */}
-      <div className="fixed bottom-0 left-0 right-0 flex justify-between text-xs text-slate-400 px-12 py-4 pointer-events-none">
+      <div className="fixed bottom-0 left-0 right-0 flex justify-between text-xs text-neutral-400 px-12 py-4 pointer-events-none">
         <span>© 2026 Aria AI</span>
         <span>Privacy · Terms</span>
       </div>

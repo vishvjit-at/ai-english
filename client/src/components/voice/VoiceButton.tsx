@@ -28,7 +28,7 @@ export function VoiceButton({ isListening, isThinking, isSpeaking, isSupported, 
           </>
         )}
         {isSpeaking && (
-          <span className="absolute -inset-2 rounded-full bg-green-400/20 animate-ping" />
+          <span className="absolute -inset-2 rounded-full bg-primary-400/20 animate-ping" />
         )}
 
         <button
@@ -39,16 +39,16 @@ export function VoiceButton({ isListening, isThinking, isSpeaking, isSupported, 
             isListening
               ? 'bg-red-500 hover:bg-red-600 shadow-lg shadow-red-500/30'
               : isSpeaking
-              ? 'bg-green-600 rounded-full shadow-lg shadow-green-600/30'
+              ? 'bg-primary-600 rounded-full shadow-lg shadow-primary-600/30'
               : isThinking
-              ? 'bg-slate-200 cursor-not-allowed'
+              ? 'bg-neutral-200 cursor-not-allowed'
               : isDisabled
-              ? 'bg-slate-200 cursor-not-allowed'
-              : 'bg-green-600 hover:bg-green-700 shadow-lg shadow-green-600/30 hover:scale-105 active:scale-95'
+              ? 'bg-neutral-200 cursor-not-allowed'
+              : 'bg-primary-600 hover:bg-primary-700 shadow-lg shadow-primary-600/30 hover:scale-105 active:scale-95'
           )}
         >
           {isThinking ? (
-            <Loader2 className="w-6 h-6 text-slate-400 animate-spin" />
+            <Loader2 className="w-6 h-6 text-neutral-400 animate-spin" />
           ) : isListening ? (
             <MicOff className="w-6 h-6 text-white relative z-10" />
           ) : (
@@ -57,7 +57,7 @@ export function VoiceButton({ isListening, isThinking, isSpeaking, isSupported, 
         </button>
       </div>
 
-      <p className="text-xs text-slate-500 mt-2 text-center">
+      <p className="text-xs text-neutral-500 mt-2 text-center">
         {isListening ? 'Listening... tap to stop'
           : isThinking ? 'Aria is thinking...'
           : isSpeaking ? 'Aria is speaking...'

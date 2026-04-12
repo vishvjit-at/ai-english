@@ -34,7 +34,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
       )}
 
       <aside className={`
-        fixed top-0 left-0 z-50 h-full w-64 bg-white border-r border-slate-100 flex flex-col
+        fixed top-0 left-0 z-50 h-full w-64 bg-white border-r border-neutral-100 flex flex-col
         transition-transform duration-300 ease-out
         lg:static lg:translate-x-0
         ${isOpen ? 'translate-x-0' : '-translate-x-full'}
@@ -43,15 +43,15 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         <div className="p-5 shrink-0">
           <div className="flex items-center justify-between mb-8">
             <Link to="/" className="flex items-center gap-2.5" onClick={onClose}>
-              <div className="w-8 h-8 bg-green-600 rounded-xl flex items-center justify-center">
+              <div className="w-8 h-8 bg-primary-600 rounded-xl flex items-center justify-center">
                 <Mic className="w-4 h-4 text-white" />
               </div>
               <div>
-                <p className="text-sm font-bold text-slate-900">SpeakUp</p>
-                <p className="text-[10px] text-slate-400 tracking-wider uppercase">Your English Partner</p>
+                <p className="text-sm font-bold text-neutral-900">SpeakUp</p>
+                <p className="text-[10px] text-neutral-400 tracking-wider uppercase">Your English Partner</p>
               </div>
             </Link>
-            <button onClick={onClose} className="lg:hidden w-8 h-8 flex items-center justify-center text-slate-400 hover:text-slate-600 cursor-pointer rounded-lg hover:bg-slate-50 transition-colors">
+            <button onClick={onClose} className="lg:hidden w-8 h-8 flex items-center justify-center text-neutral-400 hover:text-neutral-600 cursor-pointer rounded-lg hover:bg-neutral-50 transition-colors">
               <X className="w-4 h-4" />
             </button>
           </div>
@@ -61,11 +61,11 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
             <div className={`
               flex items-center gap-3 px-3 py-2 rounded-xl text-sm cursor-pointer transition-colors
               ${isActive('/practice/custom')
-                ? 'bg-green-50 text-green-700 font-semibold'
-                : 'text-slate-600 hover:bg-slate-50'
+                ? 'bg-primary-50 text-primary-700 font-semibold'
+                : 'text-neutral-600 hover:bg-neutral-50'
               }
             `}>
-              <Sparkles className={`w-4 h-4 ${isActive('/practice/custom') ? 'text-green-600' : 'text-slate-400'}`} />
+              <Sparkles className={`w-4 h-4 ${isActive('/practice/custom') ? 'text-primary-600' : 'text-neutral-400'}`} />
               Custom Scenario
             </div>
           </Link>
@@ -75,11 +75,11 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
             <div className={`
               flex items-center gap-3 px-3 py-2 rounded-xl text-sm cursor-pointer transition-colors mt-1
               ${isActive('/lessons') || location.pathname.startsWith('/lessons/')
-                ? 'bg-green-50 text-green-700 font-semibold'
-                : 'text-slate-600 hover:bg-slate-50'
+                ? 'bg-primary-50 text-primary-700 font-semibold'
+                : 'text-neutral-600 hover:bg-neutral-50'
               }
             `}>
-              <GraduationCap className={`w-4 h-4 ${isActive('/lessons') || location.pathname.startsWith('/lessons/') ? 'text-green-600' : 'text-slate-400'}`} />
+              <GraduationCap className={`w-4 h-4 ${isActive('/lessons') || location.pathname.startsWith('/lessons/') ? 'text-primary-600' : 'text-neutral-400'}`} />
               Guided Lessons
             </div>
           </Link>
@@ -89,8 +89,8 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         <nav className="flex-1 overflow-y-auto px-3">
           {scenarioData && (Object.keys(scenarioData) as PredefinedTopicKey[]).map((topic) => (
             <div key={topic} className="mb-4">
-              <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider px-3 mb-1 mt-4 flex items-center gap-1.5">
-                <span className="text-slate-400">{topicConfig[topic].icon}</span>
+              <p className="text-[10px] font-semibold text-neutral-400 uppercase tracking-wider px-3 mb-1 mt-4 flex items-center gap-1.5">
+                <span className="text-neutral-400">{topicConfig[topic].icon}</span>
                 {topicConfig[topic].label}
               </p>
 
@@ -102,14 +102,14 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                       <div className={`
                         flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer transition-colors text-sm
                         ${active
-                          ? 'bg-green-50 text-green-700 font-semibold'
-                          : 'text-slate-600 hover:bg-slate-50'
+                          ? 'bg-primary-50 text-primary-700 font-semibold'
+                          : 'text-neutral-600 hover:bg-neutral-50'
                         }
                       `}>
-                        <MessageCircle className={`w-3.5 h-3.5 shrink-0 ${active ? 'text-green-600' : 'text-slate-300'}`} />
+                        <MessageCircle className={`w-3.5 h-3.5 shrink-0 ${active ? 'text-primary-600' : 'text-neutral-300'}`} />
                         <p className="truncate flex-1">{scenario.name}</p>
                         <span className={`text-[9px] font-semibold capitalize px-1.5 py-0.5 rounded-full
-                          ${scenario.difficulty === 'beginner' ? 'bg-green-50 text-green-600' :
+                          ${scenario.difficulty === 'beginner' ? 'bg-primary-50 text-primary-600' :
                             scenario.difficulty === 'intermediate' ? 'bg-amber-50 text-amber-600' :
                             'bg-purple-50 text-purple-600'}
                         `}>
@@ -126,22 +126,22 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
           {!scenarioData && (
             <div className="px-3 flex flex-col gap-2 mt-4">
               {[1, 2, 3, 4, 5].map((i) => (
-                <div key={i} className="h-10 bg-slate-100 rounded-xl animate-pulse" />
+                <div key={i} className="h-10 bg-neutral-100 rounded-xl animate-pulse" />
               ))}
             </div>
           )}
 
           {/* Bottom nav links with divider */}
-          <div className="border-t border-slate-100 pt-4 mt-4 flex flex-col gap-0.5 pb-4">
+          <div className="border-t border-neutral-100 pt-4 mt-4 flex flex-col gap-0.5 pb-4">
             <Link to="/history" onClick={onClose}>
               <div className={`
                 flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer transition-colors text-sm
                 ${isActive('/history') || location.pathname.startsWith('/history/')
-                  ? 'bg-green-50 text-green-700 font-semibold'
-                  : 'text-slate-600 hover:bg-slate-50'
+                  ? 'bg-primary-50 text-primary-700 font-semibold'
+                  : 'text-neutral-600 hover:bg-neutral-50'
                 }
               `}>
-                <Clock className={`w-4 h-4 ${isActive('/history') || location.pathname.startsWith('/history/') ? 'text-green-600' : 'text-slate-400'}`} />
+                <Clock className={`w-4 h-4 ${isActive('/history') || location.pathname.startsWith('/history/') ? 'text-primary-600' : 'text-neutral-400'}`} />
                 History
               </div>
             </Link>
@@ -149,11 +149,11 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
               <div className={`
                 flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer transition-colors text-sm
                 ${isActive('/progress')
-                  ? 'bg-green-50 text-green-700 font-semibold'
-                  : 'text-slate-600 hover:bg-slate-50'
+                  ? 'bg-primary-50 text-primary-700 font-semibold'
+                  : 'text-neutral-600 hover:bg-neutral-50'
                 }
               `}>
-                <TrendingUp className={`w-4 h-4 ${isActive('/progress') ? 'text-green-600' : 'text-slate-400'}`} />
+                <TrendingUp className={`w-4 h-4 ${isActive('/progress') ? 'text-primary-600' : 'text-neutral-400'}`} />
                 Progress
               </div>
             </Link>
@@ -161,11 +161,11 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
               <div className={`
                 flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer transition-colors text-sm
                 ${isActive('/vocabulary')
-                  ? 'bg-green-50 text-green-700 font-semibold'
-                  : 'text-slate-600 hover:bg-slate-50'
+                  ? 'bg-primary-50 text-primary-700 font-semibold'
+                  : 'text-neutral-600 hover:bg-neutral-50'
                 }
               `}>
-                <BookOpen className={`w-4 h-4 ${isActive('/vocabulary') ? 'text-green-600' : 'text-slate-400'}`} />
+                <BookOpen className={`w-4 h-4 ${isActive('/vocabulary') ? 'text-primary-600' : 'text-neutral-400'}`} />
                 Vocabulary
               </div>
             </Link>
@@ -173,11 +173,11 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
               <div className={`
                 flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer transition-colors text-sm
                 ${isActive('/settings')
-                  ? 'bg-green-50 text-green-700 font-semibold'
-                  : 'text-slate-600 hover:bg-slate-50'
+                  ? 'bg-primary-50 text-primary-700 font-semibold'
+                  : 'text-neutral-600 hover:bg-neutral-50'
                 }
               `}>
-                <Settings className={`w-4 h-4 ${isActive('/settings') ? 'text-green-600' : 'text-slate-400'}`} />
+                <Settings className={`w-4 h-4 ${isActive('/settings') ? 'text-primary-600' : 'text-neutral-400'}`} />
                 Settings
               </div>
             </Link>
@@ -185,10 +185,10 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         </nav>
 
         {/* Bottom user section */}
-        <div className="border-t border-slate-100 p-4 shrink-0">
+        <div className="border-t border-neutral-100 p-4 shrink-0">
           {user ? (
             <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 bg-gradient-to-br from-green-400 to-green-600 rounded-full text-white text-sm font-bold flex items-center justify-center shrink-0">
+              <div className="w-9 h-9 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full text-white text-sm font-bold flex items-center justify-center shrink-0">
                 {user.user_metadata?.avatar_url ? (
                   <img src={user.user_metadata.avatar_url} alt="" className="w-9 h-9 rounded-full" />
                 ) : (
@@ -196,21 +196,21 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                 )}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-slate-900 truncate">
+                <p className="text-sm font-medium text-neutral-900 truncate">
                   {user.user_metadata?.full_name || user.email}
                 </p>
-                <p className="text-xs text-slate-400 truncate">{user.email}</p>
+                <p className="text-xs text-neutral-400 truncate">{user.email}</p>
               </div>
               <button
                 onClick={() => signOut()}
-                className="ml-auto p-1.5 text-slate-400 hover:text-red-500 transition-colors rounded-lg hover:bg-red-50 cursor-pointer shrink-0"
+                className="ml-auto p-1.5 text-neutral-400 hover:text-red-500 transition-colors rounded-lg hover:bg-red-50 cursor-pointer shrink-0"
                 title="Sign out"
               >
                 <LogOut className="w-4 h-4" />
               </button>
             </div>
           ) : (
-            <p className="text-xs text-slate-400 text-center">Free to use</p>
+            <p className="text-xs text-neutral-400 text-center">Free to use</p>
           )}
         </div>
       </aside>

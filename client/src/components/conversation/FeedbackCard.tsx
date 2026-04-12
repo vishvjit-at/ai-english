@@ -12,11 +12,11 @@ export function FeedbackCard({ feedback }: { feedback: FeedbackData }) {
           <span className="text-sm font-semibold text-amber-800">Grammar Feedback</span>
         </div>
         <div className="flex items-center gap-2 text-sm mb-1">
-          <span className="text-slate-400 line-through">{feedback.original}</span>
-          <ArrowRight className="w-3 h-3 text-slate-400 shrink-0" />
-          <span className="text-green-700 font-medium">{feedback.improved}</span>
+          <span className="text-neutral-400 line-through">{feedback.original}</span>
+          <ArrowRight className="w-3 h-3 text-neutral-400 shrink-0" />
+          <span className="text-primary-700 font-medium">{feedback.improved}</span>
         </div>
-        <p className="text-sm text-slate-600 mt-1">{feedback.tip}</p>
+        <p className="text-sm text-neutral-600 mt-1">{feedback.tip}</p>
       </div>
     </div>
   )
