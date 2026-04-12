@@ -326,6 +326,61 @@ body {
   -webkit-backdrop-filter: blur(16px);
 }
 
+/* ── Magnetic particle button ── */
+.mag-btn {
+  position: relative;
+  overflow: visible;
+  cursor: pointer;
+}
+.mag-field {
+  position: absolute;
+  inset: -120%;
+  opacity: 1;
+  pointer-events: none;
+  z-index: 0;
+}
+.mag-particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.75);
+}
+@keyframes particleFloat {
+  0%   { transform: translate(var(--px), var(--py)) scale(0);   opacity: 0; }
+  40%  { transform: translate(calc(var(--px) * -0.4), calc(var(--py) * -0.4)) scale(1); opacity: 1; }
+  100% { transform: translate(var(--px), var(--py)) scale(0);   opacity: 0; }
+}
+.no-animations .mag-field { display: none; }
+
+/* Neon pulse rings on hover */
+.mag-btn::before,
+.mag-btn::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border: 2px solid var(--sem-primary-400);
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+}
+.mag-btn:hover::before,
+.mag-btn:hover::after {
+  animation: neonPulseOut 1.6s ease-out infinite;
+}
+.mag-btn:hover::after {
+  animation-delay: 0.8s;
+}
+.mag-btn:hover {
+  box-shadow: 0 0 18px color-mix(in srgb, var(--sem-primary-400) 55%, transparent);
+}
+@keyframes neonPulseOut {
+  0%   { transform: scale(1);   opacity: 0.9; }
+  100% { transform: scale(1.55); opacity: 0;  }
+}
+.no-animations .mag-btn::before,
+.no-animations .mag-btn::after { animation: none !important; opacity: 0; }
+
 /* ── Hover animation utilities ── */
 
 /* Card lift — use on clickable cards */

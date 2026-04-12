@@ -1,7 +1,49 @@
+import { useEffect, useRef } from 'react'
 import { Mic, Sparkles, ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useSettings } from '@/hooks/useSettings'
-import type { CSSProperties } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
+
+// ─────────────────────────────────────────────
+// Magnetic particle button
+// ─────────────────────────────────────────────
+
+function MagneticButton({
+  children, style, particleColor = 'rgba(255,255,255,0.8)',
+}: {
+  children: ReactNode
+  style?: CSSProperties
+  particleColor?: string
+}) {
+  const fieldRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const field = fieldRef.current
+    if (!field) return
+    for (let i = 0; i < 55; i++) {
+      const p = document.createElement('div')
+      p.className = 'mag-particle'
+      p.style.setProperty('--px', `${Math.random() * 220 - 110}px`)
+      p.style.setProperty('--py', `${Math.random() * 220 - 110}px`)
+      p.style.animationName = 'particleFloat'
+      p.style.animationDuration = `${1.2 + Math.random() * 1.8}s`
+      p.style.animationTimingFunction = 'ease-in-out'
+      p.style.animationIterationCount = 'infinite'
+      p.style.animationDelay = `${Math.random() * 2}s`
+      p.style.left = `${Math.random() * 100}%`
+      p.style.top = `${Math.random() * 100}%`
+      p.style.background = particleColor
+      field.appendChild(p)
+    }
+  }, [particleColor])
+
+  return (
+    <button className="mag-btn inline-flex items-center gap-2 text-white text-sm font-semibold px-7 py-3 rounded-full" style={style}>
+      {children}
+      <div className="mag-field" ref={fieldRef} />
+    </button>
+  )
+}
 
 // ─────────────────────────────────────────────
 // Shared pieces
@@ -41,13 +83,10 @@ function BottomBar({ dark, btnBg }: BottomBarProps) {
       </p>
       <div className="flex items-center gap-3">
         <Link to="/practice/custom">
-          <button
-            className="inline-flex items-center gap-2 text-white text-sm font-semibold px-7 py-3 rounded-full hover-glow cursor-pointer"
-            style={{ background: btnBg }}
-          >
+          <MagneticButton style={{ background: btnBg }}>
             <Sparkles className="w-3.5 h-3.5" />
             Start Practicing
-          </button>
+          </MagneticButton>
         </Link>
         <Link to="/lessons">
           <button
@@ -153,11 +192,10 @@ function HomeAura() {
         </p>
         <div className="flex items-center gap-3">
           <Link to="/practice/custom">
-            <button className="inline-flex items-center gap-2 text-white text-sm font-semibold px-7 py-3 rounded-full hover-glow cursor-pointer"
-              style={{ background: '#6aaa82' }}>
+            <MagneticButton style={{ background: '#6aaa82' }}>
               <Sparkles className="w-3.5 h-3.5" />
               Start Practicing
-            </button>
+            </MagneticButton>
           </Link>
           <Link to="/lessons">
             <button className="group inline-flex items-center gap-2 text-sm font-semibold px-7 py-3 rounded-full cursor-pointer hover-slide"
