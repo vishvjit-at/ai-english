@@ -37,7 +37,7 @@ export function LessonsPage() {
 
   return (
     <div className="h-full overflow-y-auto" style={{ background: 'var(--sem-surface)' }}>
-      <div className="max-w-5xl mx-auto px-8 py-10">
+      <div className="max-w-5xl mx-auto px-4 sm:px-8 py-6 sm:py-10">
 
         {/* Page header */}
         <div className="mb-10">
@@ -80,7 +80,7 @@ export function LessonsPage() {
                     <button className="text-primary-600 text-sm font-semibold hover:underline cursor-pointer">View All →</button>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {grouped[type].map((lesson) => (
                       <Link
                         key={lesson.id}

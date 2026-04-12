@@ -139,10 +139,10 @@ function MagneticButton({
 // Shared pieces
 // ─────────────────────────────────────────────
 
-function Chip({ text, style, dark }: { text: string; style?: CSSProperties; dark?: boolean }) {
+function Chip({ text, style, dark, className = '' }: { text: string; style?: CSSProperties; dark?: boolean; className?: string }) {
   return (
     <div
-      className="absolute px-4 py-2.5 rounded-2xl text-sm font-medium whitespace-nowrap shadow-lg animate-float"
+      className={`absolute px-4 py-2.5 rounded-2xl text-sm font-medium whitespace-nowrap shadow-lg animate-float ${className}`}
       style={{
         background: dark ? 'rgba(255,255,255,0.07)' : 'rgba(255,255,255,0.88)',
         backdropFilter: 'blur(14px)',
@@ -166,10 +166,10 @@ interface BottomBarProps {
 function BottomBar({ dark, btnBg, particleColor }: BottomBarProps) {
   return (
     <div
-      className="shrink-0 flex items-center justify-between px-10 py-5"
+      className="shrink-0 flex flex-col sm:flex-row items-center gap-3 sm:justify-between px-5 py-4 sm:px-10 sm:py-5"
       style={{ borderTop: `1px solid ${dark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.07)'}` }}
     >
-      <p className="text-sm font-medium tracking-wide" style={{ color: dark ? '#475569' : '#9ca3af' }}>
+      <p className="hidden sm:block text-sm font-medium tracking-wide" style={{ color: dark ? '#475569' : '#9ca3af' }}>
         More fluency, more confidence, more you.
       </p>
       <div className="flex items-center gap-3">
@@ -181,7 +181,7 @@ function BottomBar({ dark, btnBg, particleColor }: BottomBarProps) {
         </Link>
         <Link to="/lessons">
           <button
-            className="group inline-flex items-center gap-2 text-sm font-semibold px-7 py-3 rounded-full cursor-pointer hover-slide"
+            className="group inline-flex items-center gap-2 text-sm font-semibold px-5 sm:px-7 py-3 rounded-full cursor-pointer hover-slide"
             style={{
               border: `1.5px solid ${dark ? 'rgba(255,255,255,0.18)' : 'rgba(0,0,0,0.13)'}`,
               color: dark ? '#e2e8f0' : '#374151',
@@ -215,19 +215,20 @@ function HomeAura() {
       <HomeUserMenu />
 
       {/* Top title */}
-      <div className="relative z-10 pt-8 px-10 shrink-0">
+      <div className="relative z-10 pt-6 sm:pt-8 px-5 sm:px-10 shrink-0">
         <h1 className="font-black tracking-tight leading-none"
-          style={{ fontSize: 'clamp(2.8rem, 5.5vw, 5rem)', fontFamily: 'var(--font-heading)', color: '#1e3a4a' }}>
+          style={{ fontSize: 'clamp(2.2rem, 5.5vw, 5rem)', fontFamily: 'var(--font-heading)', color: '#1e3a4a' }}>
           Speak Up
         </h1>
         <p className="text-xs tracking-[0.3em] mt-2 uppercase" style={{ color: '#5a8a9f' }}>Your English Partner</p>
+        <p className="md:hidden text-sm mt-1 font-semibold" style={{ color: '#1e3a4a' }}>Your AI English Coach</p>
       </div>
 
       {/* Orb */}
       <div className="flex-1 relative flex items-center justify-center min-h-0">
 
-        {/* Tagline */}
-        <div className="absolute right-8 top-1/2 -translate-y-1/2 text-right z-20 max-w-[220px]">
+        {/* Tagline — desktop only */}
+        <div className="hidden md:block absolute right-8 top-1/2 -translate-y-1/2 text-right z-20 max-w-[220px]">
           <p className="font-black leading-[1.1]"
             style={{ fontSize: 'clamp(1.8rem, 3.2vw, 3rem)', fontFamily: 'var(--font-heading)', color: '#1e3a4a' }}>
             Your AI<br />English<br />Coach
@@ -271,17 +272,17 @@ function HomeAura() {
             </div>
           </Link>
 
-          <Chip text='💬 "Tell me about yourself"'
+          <Chip text='💬 "Tell me about yourself"' className="hidden md:block"
             style={{ top: '-12%', right: '-55%', animationDelay: '0s' }} />
-          <Chip text='✨ Great pronunciation!'
+          <Chip text='✨ Great pronunciation!' className="hidden md:block"
             style={{ bottom: '-8%', left: '-58%', animationDelay: '1.3s' }} />
         </div>
       </div>
 
-      {/* Buttons match reference: muted sage + soft teal */}
-      <div className="shrink-0 flex items-center justify-between px-10 py-5"
+      {/* Bottom bar */}
+      <div className="shrink-0 flex flex-col sm:flex-row items-center gap-3 sm:justify-between px-5 py-4 sm:px-10 sm:py-5"
         style={{ borderTop: '1px solid rgba(0,0,0,0.07)' }}>
-        <p className="text-sm font-medium tracking-wide" style={{ color: '#5a8a9f' }}>
+        <p className="hidden sm:block text-sm font-medium tracking-wide" style={{ color: '#5a8a9f' }}>
           More fluency, more confidence, more you.
         </p>
         <div className="flex items-center gap-3">
@@ -292,7 +293,7 @@ function HomeAura() {
             </MagneticButton>
           </Link>
           <Link to="/lessons">
-            <button className="group inline-flex items-center gap-2 text-sm font-semibold px-7 py-3 rounded-full cursor-pointer hover-slide"
+            <button className="group inline-flex items-center gap-2 text-sm font-semibold px-5 sm:px-7 py-3 rounded-full cursor-pointer hover-slide"
               style={{ background: '#7dbdba', color: '#fff', border: 'none' }}>
               View Lessons
               <ArrowRight className="w-3.5 h-3.5 group-arrow" />
@@ -316,19 +317,20 @@ function HomeClarity() {
       <HomeUserMenu />
 
       {/* Top title */}
-      <div className="relative z-10 pt-8 px-10 shrink-0">
+      <div className="relative z-10 pt-6 sm:pt-8 px-5 sm:px-10 shrink-0">
         <h1 className="font-black text-neutral-800 tracking-tight leading-none"
-          style={{ fontSize: 'clamp(2.8rem, 5.5vw, 5rem)', fontFamily: 'var(--font-heading)' }}>
+          style={{ fontSize: 'clamp(2.2rem, 5.5vw, 5rem)', fontFamily: 'var(--font-heading)' }}>
           Speak Up
         </h1>
         <p className="text-xs tracking-[0.3em] text-neutral-400 mt-2 uppercase">Your English Partner</p>
+        <p className="md:hidden text-sm mt-1 font-semibold text-neutral-700">Your AI English Coach</p>
       </div>
 
       {/* Orb */}
       <div className="flex-1 relative flex items-center justify-center min-h-0">
 
-        {/* Tagline */}
-        <div className="absolute right-8 top-1/2 -translate-y-1/2 text-right z-20 max-w-[220px]">
+        {/* Tagline — desktop only */}
+        <div className="hidden md:block absolute right-8 top-1/2 -translate-y-1/2 text-right z-20 max-w-[220px]">
           <p className="font-black text-neutral-800 leading-[1.1]"
             style={{ fontSize: 'clamp(1.8rem, 3.2vw, 3rem)', fontFamily: 'var(--font-heading)' }}>
             Your AI<br />English<br />Coach
@@ -370,9 +372,9 @@ function HomeClarity() {
             </div>
           </Link>
 
-          <Chip text='💬 "Tell me about yourself"'
+          <Chip text='💬 "Tell me about yourself"' className="hidden md:block"
             style={{ top: '-12%', right: '-55%', animationDelay: '0s' }} />
-          <Chip text='✨ Great pronunciation!'
+          <Chip text='✨ Great pronunciation!' className="hidden md:block"
             style={{ bottom: '-8%', left: '-58%', animationDelay: '1.3s' }} />
         </div>
       </div>
@@ -394,19 +396,20 @@ function HomeNight() {
       <HomeUserMenu dark />
 
       {/* Top title */}
-      <div className="relative z-10 pt-8 px-10 shrink-0">
+      <div className="relative z-10 pt-6 sm:pt-8 px-5 sm:px-10 shrink-0">
         <h1 className="font-black tracking-tight leading-none"
-          style={{ fontSize: 'clamp(2.8rem, 5.5vw, 5rem)', fontFamily: 'var(--font-heading)', color: '#f1f5f9' }}>
+          style={{ fontSize: 'clamp(2.2rem, 5.5vw, 5rem)', fontFamily: 'var(--font-heading)', color: '#f1f5f9' }}>
           Speak Up
         </h1>
         <p className="text-xs tracking-[0.3em] mt-2 uppercase" style={{ color: '#334155' }}>Your English Partner</p>
+        <p className="md:hidden text-sm mt-1 font-semibold" style={{ color: '#94a3b8' }}>Your AI English Coach</p>
       </div>
 
       {/* Orb */}
       <div className="flex-1 relative flex items-center justify-center min-h-0">
 
-        {/* Tagline */}
-        <div className="absolute right-8 top-1/2 -translate-y-1/2 text-right z-20 max-w-[220px]">
+        {/* Tagline — desktop only */}
+        <div className="hidden md:block absolute right-8 top-1/2 -translate-y-1/2 text-right z-20 max-w-[220px]">
           <p className="font-black leading-[1.1]"
             style={{ fontSize: 'clamp(1.8rem, 3.2vw, 3rem)', fontFamily: 'var(--font-heading)', color: '#f1f5f9' }}>
             Your AI<br />English<br />Coach
@@ -455,9 +458,9 @@ function HomeNight() {
             </div>
           </Link>
 
-          <Chip text='💬 "Tell me about yourself"' dark
+          <Chip text='💬 "Tell me about yourself"' dark className="hidden md:block"
             style={{ top: '-12%', right: '-55%', animationDelay: '0s' }} />
-          <Chip text='✨ Great pronunciation!' dark
+          <Chip text='✨ Great pronunciation!' dark className="hidden md:block"
             style={{ bottom: '-8%', left: '-58%', animationDelay: '1.3s' }} />
         </div>
       </div>

@@ -38,7 +38,7 @@ export function LoginPage() {
       <div className="absolute top-0 left-0 w-96 h-96 bg-primary-400/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary-400/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 pointer-events-none" />
 
-      <div className="bg-white rounded-3xl border border-neutral-100 p-10 w-full max-w-md relative z-10 mx-4">
+      <div className="bg-white rounded-3xl border border-neutral-100 p-6 sm:p-10 w-full max-w-md relative z-10 mx-4">
         {/* Logo */}
         <div className="flex flex-col items-center mb-8">
           <div className="w-14 h-14 bg-primary-600 rounded-2xl flex items-center justify-center mb-4">

@@ -97,7 +97,7 @@ export function ConversationView({ config, userContext, starterMessage, lessonOb
   return (
     <div className="flex flex-col h-full bg-white">
       {/* Header */}
-      <div className="px-6 py-4 border-b border-neutral-100 flex items-center gap-4 bg-white shrink-0">
+      <div className="px-3 py-3 sm:px-6 sm:py-4 border-b border-neutral-100 flex items-center gap-3 sm:gap-4 bg-white shrink-0">
         {/* Left: Aria info */}
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-primary-600 rounded-full text-white font-bold flex items-center justify-center shrink-0">
@@ -137,7 +137,7 @@ export function ConversationView({ config, userContext, starterMessage, lessonOb
       </div>
 
       {/* Context bar */}
-      <div className="bg-primary-50 border-b border-primary-100 px-6 py-2 flex items-center justify-between shrink-0">
+      <div className="bg-primary-50 border-b border-primary-100 px-3 py-2 sm:px-6 flex items-center justify-between shrink-0">
         <div className="flex-1 min-w-0 mr-2">
           <p className="text-sm font-semibold text-primary-800">{config.scenarioName}</p>
           {lessonObjective && <p className="text-xs text-primary-600">{lessonObjective}</p>}
@@ -167,7 +167,7 @@ export function ConversationView({ config, userContext, starterMessage, lessonOb
       )}
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-6 py-6 space-y-1 bg-white">
+      <div className="flex-1 overflow-y-auto px-3 py-4 sm:px-6 sm:py-6 space-y-1 bg-white">
         {messages.map((msg, i) => (
           <MessageBubble key={msg.id} message={msg} index={i} />
         ))}
@@ -199,7 +199,7 @@ export function ConversationView({ config, userContext, starterMessage, lessonOb
       )}
 
       {/* Input area */}
-      <div className="border-t border-neutral-100 px-6 py-4 bg-white flex flex-col gap-3 items-center shrink-0">
+      <div className="border-t border-neutral-100 px-3 py-3 sm:px-6 sm:py-4 bg-white flex flex-col gap-3 items-center shrink-0">
         <VoiceButton isListening={isListening} isThinking={isThinking} isSpeaking={isSpeaking} isSupported={isSupported} onStart={startListening} onStop={stopListening} />
         <div className="flex gap-2 w-full">
           <textarea

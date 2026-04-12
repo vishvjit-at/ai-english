@@ -55,7 +55,7 @@ export function HistoryPage() {
 
   return (
     <div className="h-full overflow-y-auto" style={{ background: 'var(--sem-surface)' }}>
-      <div className="max-w-5xl mx-auto px-8 py-10">
+      <div className="max-w-5xl mx-auto px-4 sm:px-8 py-6 sm:py-10">
 
         {/* Page header */}
         <div className="mb-10">
@@ -68,7 +68,7 @@ export function HistoryPage() {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-4 gap-4 mb-10">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
           {[
             { icon: <MessageSquare className="w-5 h-5" />, value: sessions.length, label: 'Sessions', color: 'bg-blue-50 text-blue-500' },
             { icon: <TrendingUp className="w-5 h-5" />, value: totalMessages, label: 'Messages', color: 'bg-primary-50 text-primary-500' },
@@ -101,7 +101,7 @@ export function HistoryPage() {
         ) : (
           <>
             <p className="text-xs tracking-[0.25em] uppercase font-semibold text-neutral-400 mb-5">Recent Sessions</p>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {sessions.map((s) => (
                 <Link key={s.id} to={`/history/${s.id}`}
                   className="group bg-white rounded-2xl border border-neutral-100 p-6 hover-lift cursor-pointer block">

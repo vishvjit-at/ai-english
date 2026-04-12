@@ -34,7 +34,7 @@ export function ConversationSetup({ scenario, onStart, isLoading }: { scenario: 
   const inputClass = 'w-full border border-neutral-200 rounded-2xl px-4 py-3 text-sm text-neutral-700 focus:outline-none focus:ring-2 focus:border-primary-500 transition-all placeholder:text-neutral-400'
 
   return (
-    <div className="min-h-full flex items-center justify-center p-8" style={{ background: 'var(--sem-surface)' }}>
+    <div className="min-h-full flex items-center justify-center p-4 sm:p-8" style={{ background: 'var(--sem-surface)' }}>
       <div className="bg-white rounded-3xl border border-neutral-100 w-full max-w-2xl overflow-hidden">
         {/* Header */}
         <div className="p-8 rounded-t-3xl text-white" style={{ background: 'linear-gradient(135deg, var(--sem-primary-900), var(--sem-primary-600))' }}>
@@ -74,7 +74,7 @@ export function ConversationSetup({ scenario, onStart, isLoading }: { scenario: 
 
           {/* Topic-specific fields */}
           {scenario.topic === 'job_interview' && (
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
                 <label className="block text-xs font-bold text-neutral-500 uppercase tracking-widest mb-2">Role</label>
                 <input type="text" value={targetRole} onChange={(e) => setTargetRole(e.target.value)} placeholder="e.g. Software Engineer" className={inputClass} />
@@ -98,7 +98,7 @@ export function ConversationSetup({ scenario, onStart, isLoading }: { scenario: 
             </div>
           )}
           {scenario.topic === 'college' && (
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-bold text-neutral-500 uppercase tracking-widest mb-2">Subject</label>
                 <input type="text" value={subject} onChange={(e) => setSubject(e.target.value)} placeholder="e.g. Data Structures" className={inputClass} />

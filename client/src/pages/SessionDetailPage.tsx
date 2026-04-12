@@ -71,7 +71,7 @@ export function SessionDetailPage() {
 
   return (
     <div className="h-full overflow-y-auto" style={{ background: 'var(--sem-surface)' }}>
-      <div className="max-w-4xl mx-auto px-8 py-10">
+      <div className="max-w-4xl mx-auto px-4 sm:px-8 py-6 sm:py-10">
 
         {/* Back + delete row */}
         <div className="flex items-center justify-between mb-8">
@@ -100,7 +100,7 @@ export function SessionDetailPage() {
 
         {/* Summary section */}
         {summary ? (
-          <div className="grid grid-cols-3 gap-5 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
             {/* Score card */}
             <div className="bg-white rounded-2xl border border-neutral-100 p-6 flex flex-col items-center hover-lift">
               <div className="w-28 h-28 rounded-full border-4 border-primary-500 flex items-center justify-center mb-4">
@@ -227,19 +227,19 @@ export function SessionDetailPage() {
               return (
                 <div key={msg.id} className={`flex flex-col ${isUser ? 'items-end' : 'items-start'}`}>
                   {isUser ? (
-                    <div className="bg-primary-600 text-white rounded-2xl rounded-br-sm px-4 py-3 max-w-[75%] text-sm leading-relaxed">
+                    <div className="bg-primary-600 text-white rounded-2xl rounded-br-sm px-4 py-3 max-w-[90%] sm:max-w-[75%] text-sm leading-relaxed">
                       {msg.content}
                     </div>
                   ) : (
                     <div className="flex items-start gap-2.5">
                       <div className="w-7 h-7 bg-primary-600 rounded-full text-white text-xs flex items-center justify-center font-bold flex-shrink-0">A</div>
-                      <div className="bg-neutral-100 text-neutral-800 rounded-2xl rounded-bl-sm px-4 py-3 max-w-[75%] text-sm leading-relaxed">
+                      <div className="bg-neutral-100 text-neutral-800 rounded-2xl rounded-bl-sm px-4 py-3 max-w-[90%] sm:max-w-[75%] text-sm leading-relaxed">
                         {msg.content}
                       </div>
                     </div>
                   )}
                   {feedback?.show && (
-                    <div className="mt-2 max-w-[75%] bg-amber-50 border border-amber-200 rounded-2xl px-4 py-3">
+                    <div className="mt-2 max-w-[90%] sm:max-w-[75%] bg-amber-50 border border-amber-200 rounded-2xl px-4 py-3">
                       <div className="flex items-center gap-1.5 mb-1.5">
                         <Lightbulb className="w-3.5 h-3.5 text-amber-500" />
                         <span className="text-xs font-bold text-amber-800">Grammar Feedback</span>

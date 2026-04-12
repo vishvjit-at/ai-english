@@ -70,7 +70,7 @@ export function LessonPracticePage() {
 
   if (stage === 'setup' && lesson) {
     return (
-      <div className="h-full overflow-y-auto flex items-center justify-center p-8" style={{ background: 'var(--sem-surface)' }}>
+      <div className="h-full overflow-y-auto flex items-center justify-center p-4 sm:p-8" style={{ background: 'var(--sem-surface)' }}>
         <div className="w-full max-w-md">
           {/* Header */}
           <div className="text-center mb-8">

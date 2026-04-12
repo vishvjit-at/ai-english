@@ -73,7 +73,7 @@ export function SignupPage() {
       </div>
 
       {/* Right panel */}
-      <div className="flex-1 p-8 lg:p-12 flex flex-col justify-center bg-white">
+      <div className="flex-1 p-5 sm:p-8 lg:p-12 flex flex-col justify-center bg-white">
         <div className="max-w-lg mx-auto w-full">
           <p className="text-xs tracking-[0.3em] uppercase font-medium mb-2" style={{ color: 'var(--sem-neutral-400)', fontFamily: 'var(--font-heading)' }}>
             Join Today

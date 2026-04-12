@@ -37,7 +37,7 @@ export function ProgressPage() {
   if (!data || data.totalSessions === 0) {
     return (
       <div className="h-full overflow-y-auto" style={{ background: 'var(--sem-surface)' }}>
-        <div className="max-w-5xl mx-auto px-8 py-10">
+        <div className="max-w-5xl mx-auto px-4 sm:px-8 py-6 sm:py-10">
           <div className="mb-10">
             <p className="text-xs tracking-[0.3em] uppercase font-medium mb-2" style={{ color: 'var(--sem-neutral-400)', fontFamily: 'var(--font-heading)' }}>
               Your Journey
@@ -65,7 +65,7 @@ export function ProgressPage() {
 
   return (
     <div className="h-full overflow-y-auto" style={{ background: 'var(--sem-surface)' }}>
-      <div className="max-w-5xl mx-auto px-8 py-10">
+      <div className="max-w-5xl mx-auto px-4 sm:px-8 py-6 sm:py-10">
 
         {/* Page header */}
         <div className="mb-10">
@@ -85,7 +85,7 @@ export function ProgressPage() {
         )}
 
         {/* 4 stat cards */}
-        <div className="grid grid-cols-4 gap-4 mb-10">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
           {[
             { icon: <MessageSquare className="w-5 h-5" />, value: data.totalSessions, label: 'Sessions', color: 'bg-blue-50 text-blue-500' },
             { icon: <Clock className="w-5 h-5" />, value: `${data.totalMinutes}m`, label: 'Practiced', color: 'bg-primary-50 text-primary-500' },
@@ -101,10 +101,10 @@ export function ProgressPage() {
         </div>
 
         {/* Main content grid */}
-        <div className="grid grid-cols-3 gap-6 mb-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
           {/* Score trend */}
           {data.scoreHistory.length > 0 && (
-            <section className="col-span-2 bg-white rounded-2xl border border-neutral-100 p-6">
+            <section className="col-span-1 lg:col-span-2 bg-white rounded-2xl border border-neutral-100 p-6">
               <div className="flex items-center gap-2 mb-6">
                 <TrendingUp className="w-4 h-4 text-primary-600" />
                 <h2 className="font-bold text-neutral-900">Score Trend</h2>

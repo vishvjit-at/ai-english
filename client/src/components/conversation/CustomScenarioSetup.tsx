@@ -36,7 +36,7 @@ export function CustomScenarioSetup({ onStart, isLoading }: { onStart: (ctx: Use
   const inputClass = 'w-full border border-neutral-200 rounded-2xl px-4 py-3 text-sm text-neutral-700 focus:outline-none focus:ring-2 focus:border-primary-500 transition-all placeholder:text-neutral-400'
 
   return (
-    <div className="min-h-full p-8 max-w-2xl mx-auto" style={{ background: 'var(--sem-surface)' }}>
+    <div className="min-h-full p-4 sm:p-8 max-w-2xl mx-auto" style={{ background: 'var(--sem-surface)' }}>
       {/* Header */}
       <div className="mb-8">
         <p className="text-xs tracking-[0.3em] uppercase font-medium mb-2" style={{ color: 'var(--sem-neutral-400)', fontFamily: 'var(--font-heading)' }}>

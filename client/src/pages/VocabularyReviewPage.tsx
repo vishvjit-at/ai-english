@@ -22,7 +22,7 @@ export function VocabularyReviewPage() {
 
   return (
     <div className="h-full overflow-y-auto" style={{ background: 'var(--sem-surface)' }}>
-      <div className="max-w-2xl mx-auto px-8 py-10">
+      <div className="max-w-2xl mx-auto px-4 sm:px-8 py-6 sm:py-10">
 
         {/* Page header */}
         <div className="mb-10">
@@ -76,7 +76,7 @@ export function VocabularyReviewPage() {
         {(phase === 'reviewing' || phase === 'evaluated') && currentWord && (
           <div>
             {/* Word card */}
-            <div className="bg-white rounded-3xl border border-neutral-100 p-12 text-center mb-6">
+            <div className="bg-white rounded-3xl border border-neutral-100 p-6 sm:p-12 text-center mb-6">
               <p className="text-xs tracking-[0.25em] text-primary-600 font-semibold mb-4 uppercase">Current Focus</p>
               <p className="font-black text-neutral-900 mb-4 leading-none" style={{ fontSize: 'clamp(3rem, 8vw, 5rem)', fontFamily: 'var(--font-heading)' }}>
                 {currentWord.word}
@@ -143,7 +143,7 @@ export function VocabularyReviewPage() {
             )}
 
             {/* Memory Tip + Review History */}
-            <div className="grid grid-cols-2 gap-4 mt-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
               <div className="bg-white rounded-2xl border border-neutral-100 p-5 hover-lift">
                 <Brain className="w-5 h-5 text-primary-600 mb-3" />
                 <p className="font-bold text-neutral-900 text-sm mb-1.5">Memory Tip</p>
@@ -161,7 +161,7 @@ export function VocabularyReviewPage() {
         {/* Done / Results */}
         {phase === 'done' && (
           <div>
-            <div className="bg-white rounded-3xl border border-neutral-100 p-12 text-center mb-6">
+            <div className="bg-white rounded-3xl border border-neutral-100 p-6 sm:p-6 sm:p-12 text-center mb-6">
               <div className="w-20 h-20 mx-auto mb-5 rounded-3xl bg-primary-50 flex items-center justify-center">
                 <Sparkles className="w-10 h-10 text-primary-500" />
               </div>

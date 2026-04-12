@@ -153,7 +153,7 @@ export function SettingsPage() {
 
   return (
     <div className="h-full overflow-y-auto" style={{ background: 'var(--sem-surface)' }}>
-      <div className="max-w-4xl mx-auto px-8 py-10">
+      <div className="max-w-4xl mx-auto px-4 sm:px-8 py-6 sm:py-10">
         {/* Header */}
         <div className="mb-10">
           <p className="text-xs tracking-[0.3em] uppercase font-medium mb-2" style={{ color: 'var(--sem-neutral-400)', fontFamily: 'var(--font-heading)' }}>
@@ -164,9 +164,9 @@ export function SettingsPage() {
           </h1>
         </div>
 
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left: Appearance + Voice (col-span-2) */}
-          <div className="col-span-2">
+          <div className="col-span-1 lg:col-span-2">
             {/* Appearance section */}
             <div className="bg-white rounded-2xl border border-neutral-100 p-6 mb-6">
               <div className="flex items-center gap-2 text-sm font-semibold text-neutral-900 mb-4">
@@ -176,7 +176,7 @@ export function SettingsPage() {
               {/* Theme (home style = theme) */}
               <div className="mb-6">
                 <p className="text-xs text-neutral-500 uppercase tracking-wider mb-3">Theme</p>
-                <div className="flex gap-3">
+                <div className="flex flex-wrap gap-3">
                   {homeStyles.map((s) => (
                     <button
                       key={s.id}
@@ -258,7 +258,7 @@ export function SettingsPage() {
               {/* Provider Selection */}
               <div className="mb-5">
                 <p className="text-xs text-neutral-500 uppercase tracking-wider mb-3">Voice Provider</p>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 xs:grid-cols-2 gap-2">
                   {PROVIDER_OPTIONS.map((opt) => (
                     <button
                       key={opt.value}
