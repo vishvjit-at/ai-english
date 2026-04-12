@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Settings, Palette, Zap, Volume2, Play, AlertTriangle } from 'lucide-react'
-import { useSettings, themes, type VoiceProvider, type VoiceOption } from '@/hooks/useSettings'
+import { useSettings, themes, homeStyles, type VoiceProvider, type VoiceOption } from '@/hooks/useSettings'
 import { supabase } from '@/lib/supabase'
 
 async function getAuthHeaders(): Promise<Record<string, string>> {
@@ -173,6 +173,42 @@ export function SettingsPage() {
                       style={{ background: `linear-gradient(135deg, ${t.swatch}, ${t.swatch}dd)` }}
                       title={t.label}
                     />
+                  ))}
+                </div>
+              </div>
+
+              {/* Home Style */}
+              <div className="mb-6">
+                <p className="text-xs text-neutral-500 uppercase tracking-wider mb-3">Home Page Style</p>
+                <div className="flex gap-3">
+                  {homeStyles.map((s) => (
+                    <button
+                      key={s.id}
+                      onClick={() => updateSettings({ homeStyle: s.id })}
+                      className={`flex flex-col items-center gap-2 p-3 rounded-xl border-2 cursor-pointer transition-all hover:scale-105 ${
+                        settings.homeStyle === s.id
+                          ? 'border-primary-500 bg-primary-50'
+                          : 'border-neutral-200 hover:border-neutral-300'
+                      }`}
+                    >
+                      {/* Mini preview */}
+                      <div className="w-20 h-12 rounded-lg overflow-hidden relative flex items-center justify-center"
+                        style={{ background: s.bg }}>
+                        {/* rings */}
+                        <div className="absolute w-10 h-10 rounded-full border opacity-40"
+                          style={{ borderColor: s.accent }} />
+                        <div className="absolute w-7 h-7 rounded-full border opacity-60"
+                          style={{ borderColor: s.accent }} />
+                        <div className="w-5 h-5 rounded-full flex items-center justify-center"
+                          style={{ background: s.accent + '33', border: `1.5px solid ${s.accent}` }}>
+                          <div className="w-1.5 h-1.5 rounded-full" style={{ background: s.accent }} />
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-xs font-semibold text-neutral-800">{s.label}</p>
+                        <p className="text-[10px] text-neutral-400">{s.desc}</p>
+                      </div>
+                    </button>
                   ))}
                 </div>
               </div>

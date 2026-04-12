@@ -17,6 +17,23 @@ export const themes: ThemeInfo[] = [
   { id: 'midnight', label: 'Midnight', swatch: '#2dd4bf' },
 ]
 
+// ── Home Style ──
+export type HomeStyle = 'aura' | 'clarity' | 'night'
+
+export interface HomeStyleInfo {
+  id: HomeStyle
+  label: string
+  desc: string
+  bg: string
+  accent: string
+}
+
+export const homeStyles: HomeStyleInfo[] = [
+  { id: 'aura',    label: 'Aura',    desc: 'Colorful & immersive', bg: '#d6eeea', accent: '#34d399' },
+  { id: 'clarity', label: 'Clarity', desc: 'Clean & minimal',      bg: '#f0f6ff', accent: '#60a5fa' },
+  { id: 'night',   label: 'Night',   desc: 'Dark & focused',       bg: '#0b1120', accent: '#818cf8' },
+]
+
 // ── UI Design ──
 export type FontSize = 'small' | 'medium' | 'large'
 export type BorderRadius = 'rounded' | 'sharp' | 'pill'
@@ -42,7 +59,7 @@ export const chatDensityValues: Record<ChatDensity, string> = {
 export type VoiceProvider = 'browser' | 'elevenlabs'
 
 export interface VoiceOption {
-  id?: string // for google/elevenlabs voices
+  id?: string
   name: string
   lang: string
   type?: string
@@ -51,17 +68,19 @@ export interface VoiceOption {
 // ── Settings state ──
 export interface Settings {
   theme: ThemeName
+  homeStyle: HomeStyle
   fontSize: FontSize
   borderRadius: BorderRadius
   chatDensity: ChatDensity
   animations: boolean
   voiceProvider: VoiceProvider
-  voiceName: string // empty = auto-pick
-  voiceSpeed: number // 0.7 - 1.3
+  voiceName: string
+  voiceSpeed: number
 }
 
 const defaultSettings: Settings = {
   theme: 'calm-garden',
+  homeStyle: 'clarity',
   fontSize: 'medium',
   borderRadius: 'rounded',
   chatDensity: 'comfortable',
