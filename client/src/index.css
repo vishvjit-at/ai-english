@@ -387,6 +387,7 @@ body {
 .no-animations * {
   transition-duration: 0s !important;
 }
+.no-animations [style*="pulse-ring"],
 .no-animations .hover-lift:hover,
 .no-animations .hover-glow:not(:disabled):hover,
 .no-animations .hover-slide:hover,
