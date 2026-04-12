@@ -165,7 +165,7 @@ function HomeAura() {
           }} />
 
           {/* Orb — pearl white */}
-          <div className="relative rounded-full flex items-center justify-center animate-float"
+          <div className="mic-orb relative rounded-full flex items-center justify-center animate-float cursor-pointer"
             style={{
               width: S.orb, height: S.orb,
               background: 'linear-gradient(145deg, #ffffff, #eef4f8)',
@@ -261,7 +261,7 @@ function HomeClarity() {
             animation: 'pulse-ring 2s ease-in-out infinite 1s',
           }} />
 
-          <div className="relative rounded-full flex items-center justify-center shadow-2xl animate-float"
+          <div className="mic-orb relative rounded-full flex items-center justify-center shadow-2xl animate-float cursor-pointer"
             style={{
               width: S.orb, height: S.orb,
               background: 'linear-gradient(145deg, #eff6ff, #dbeafe)',
@@ -341,7 +341,7 @@ function HomeNight() {
             animation: 'pulse-ring 2s ease-in-out infinite 1s',
           }} />
 
-          <div className="relative rounded-full flex items-center justify-center animate-float"
+          <div className="mic-orb relative rounded-full flex items-center justify-center animate-float cursor-pointer"
             style={{
               width: S.orb, height: S.orb,
               background: 'linear-gradient(145deg, #1e1b4b, #2e1065)',
