@@ -15,7 +15,7 @@ export function AppLayout() {
         <div className="lg:hidden shrink-0 px-4 py-3 bg-white border-b border-neutral-100 flex items-center gap-3">
           <button
             onClick={() => setSidebarOpen(true)}
-            className="w-9 h-9 rounded-xl bg-neutral-100 flex items-center justify-center hover:bg-neutral-200 transition-colors cursor-pointer"
+            className="w-9 h-9 rounded-xl bg-neutral-100 flex items-center justify-center cursor-pointer btn-icon"
           >
             <Menu className="w-4 h-4 text-neutral-600" />
           </button>

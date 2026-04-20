@@ -78,7 +78,7 @@ export function SessionDetailPage() {
           <Link to="/history" className="flex items-center gap-1.5 text-sm text-neutral-500 hover:text-neutral-700 transition-colors font-medium">
             <ArrowLeft className="w-4 h-4" /> Back to History
           </Link>
-          <button onClick={handleDelete} className="text-neutral-300 hover:text-red-500 transition-colors cursor-pointer p-2 rounded-xl hover:bg-red-50" title="Delete session">
+          <button onClick={handleDelete} className="text-neutral-400 cursor-pointer p-2 rounded-xl btn-danger" title="Delete session">
             <Trash2 className="w-4 h-4" />
           </button>
         </div>
@@ -215,7 +215,7 @@ export function SessionDetailPage() {
               <MessageSquare className="w-4 h-4 text-primary-600" />
               <h2 className="font-bold text-neutral-900">Transcript</h2>
             </div>
-            <button className="flex items-center gap-2 border border-neutral-200 text-neutral-700 hover:bg-neutral-50 rounded-full px-4 py-2 text-sm transition-colors cursor-pointer">
+            <button className="flex items-center gap-2 border border-neutral-200 text-neutral-700 rounded-full px-4 py-2 text-sm cursor-pointer btn-ghost">
               <Download className="w-3.5 h-3.5" /> Export PDF
             </button>
           </div>

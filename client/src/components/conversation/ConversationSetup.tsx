@@ -61,10 +61,10 @@ export function ConversationSetup({ scenario, onStart, isLoading }: { scenario: 
             <div className="flex gap-2">
               {levels.map((opt) => (
                 <button key={opt.value} onClick={() => setLevel(opt.value)}
-                  className={`px-4 py-2.5 rounded-2xl border text-sm font-semibold transition-all cursor-pointer flex-1
+                  className={`px-4 py-2.5 rounded-2xl border text-sm font-semibold cursor-pointer flex-1 btn-ghost
                     ${level === opt.value
                       ? 'bg-primary-600 text-white border-primary-600'
-                      : 'border-neutral-200 text-neutral-600 hover:bg-neutral-50'
+                      : 'border-neutral-200 text-neutral-600'
                     }`}>
                   {opt.label}
                 </button>

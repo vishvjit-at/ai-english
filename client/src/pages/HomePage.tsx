@@ -19,7 +19,7 @@ function HomeUserMenu({ dark }: { dark?: boolean }) {
       <div className="absolute top-5 right-6 z-30">
         <Link
           to="/login"
-          className="px-5 py-2 rounded-full text-sm font-semibold cursor-pointer transition-all hover:scale-105"
+          className="px-5 py-2 rounded-full text-sm font-semibold cursor-pointer btn-oauth"
           style={{
             background: dark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.08)',
             border: dark ? '1.5px solid rgba(255,255,255,0.2)' : '1.5px solid rgba(0,0,0,0.12)',
@@ -39,7 +39,7 @@ function HomeUserMenu({ dark }: { dark?: boolean }) {
     <div className="absolute top-5 right-6 z-30">
       <button
         onClick={() => setOpen((v) => !v)}
-        className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center font-bold text-sm cursor-pointer transition-transform hover:scale-105"
+        className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center font-bold text-sm cursor-pointer btn-icon"
         style={{
           background: dark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.08)',
           border: dark ? '1.5px solid rgba(255,255,255,0.2)' : '1.5px solid rgba(0,0,0,0.12)',

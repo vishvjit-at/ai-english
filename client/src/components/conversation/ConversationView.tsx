@@ -130,7 +130,7 @@ export function ConversationView({ config, userContext, starterMessage, lessonOb
             {isSaving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <CheckCircle className="w-3.5 h-3.5" />}
             <span className="hidden sm:inline">{isSaving ? 'Saving...' : 'End & Save'}</span>
           </button>
-          <button onClick={handleReset} className="w-9 h-9 rounded-xl bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center transition-colors cursor-pointer" title="Restart">
+          <button onClick={handleReset} className="w-9 h-9 rounded-xl bg-neutral-100 flex items-center justify-center cursor-pointer btn-icon" title="Restart">
             <RotateCcw className="w-3.5 h-3.5 text-neutral-500" />
           </button>
         </div>

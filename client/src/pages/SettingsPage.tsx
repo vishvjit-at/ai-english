@@ -181,10 +181,10 @@ export function SettingsPage() {
                     <button
                       key={s.id}
                       onClick={() => updateSettings({ homeStyle: s.id, theme: STYLE_THEME[s.id] })}
-                      className={`flex flex-col items-center gap-2 p-3 rounded-xl border-2 cursor-pointer transition-all hover:scale-105 ${
+                      className={`flex flex-col items-center gap-2 p-3 rounded-xl border-2 cursor-pointer btn-ghost ${
                         settings.homeStyle === s.id
                           ? 'border-primary-500 bg-primary-50'
-                          : 'border-neutral-200 hover:border-neutral-300'
+                          : 'border-neutral-200'
                       }`}
                     >
                       <div className="w-20 h-12 rounded-lg overflow-hidden relative flex items-center justify-center"
@@ -217,8 +217,8 @@ export function SettingsPage() {
                     <button
                       key={opt.value}
                       onClick={() => updateSettings({ fontSize: opt.value })}
-                      className={`flex items-center justify-center w-12 h-10 rounded-xl border font-bold transition-all cursor-pointer ${opt.size}
-                        ${settings.fontSize === opt.value ? 'bg-primary-600 text-white border-primary-600' : 'bg-neutral-100 text-neutral-600 border-neutral-200 hover:bg-neutral-200'}`}
+                      className={`flex items-center justify-center w-12 h-10 rounded-xl border font-bold cursor-pointer btn-ghost ${opt.size}
+                        ${settings.fontSize === opt.value ? 'bg-primary-600 text-white border-primary-600' : 'bg-neutral-100 text-neutral-600 border-neutral-200'}`}
                     >
                       {opt.label}
                     </button>
@@ -238,8 +238,8 @@ export function SettingsPage() {
                     <button
                       key={opt.value}
                       onClick={() => updateSettings({ borderRadius: opt.value })}
-                      className={`flex flex-col items-center gap-2 px-4 py-2.5 rounded-xl border transition-all cursor-pointer
-                        ${settings.borderRadius === opt.value ? 'border-primary-500 bg-primary-50 text-primary-700' : 'border-neutral-200 text-neutral-600 hover:bg-neutral-50'}`}
+                      className={`flex flex-col items-center gap-2 px-4 py-2.5 rounded-xl border cursor-pointer btn-ghost
+                        ${settings.borderRadius === opt.value ? 'border-primary-500 bg-primary-50 text-primary-700' : 'border-neutral-200 text-neutral-600'}`}
                     >
                       <div className="w-10 h-6 bg-current opacity-20 border-2 border-current" style={{ borderRadius: opt.radius }} />
                       <span className="text-xs font-medium">{opt.label}</span>
@@ -375,7 +375,7 @@ export function SettingsPage() {
               {/* Voice Pitch row */}
               <div className="flex items-center justify-between mb-5">
                 <p className="text-sm text-neutral-700">Voice Pitch</p>
-                <button className="border border-neutral-200 text-neutral-700 hover:bg-neutral-50 rounded-xl px-4 py-2 text-sm transition-colors cursor-pointer">
+                <button className="border border-neutral-200 text-neutral-700 rounded-xl px-4 py-2 text-sm cursor-pointer btn-ghost">
                   Default
                 </button>
               </div>
@@ -384,10 +384,10 @@ export function SettingsPage() {
               <button
                 onClick={handlePreview}
                 disabled={isPreviewing || isLimitExceeded}
-                className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-xl font-semibold text-sm transition-colors cursor-pointer
+                className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-xl font-semibold text-sm cursor-pointer btn-ghost
                   ${isLimitExceeded
                     ? 'bg-neutral-100 text-neutral-400 cursor-not-allowed'
-                    : 'bg-primary-50 text-primary-600 hover:bg-primary-100'
+                    : 'bg-primary-50 text-primary-600'
                   }`}
               >
                 <Play className="w-4 h-4" />
@@ -469,7 +469,7 @@ export function SettingsPage() {
               {/* Reset Defaults */}
               <button
                 onClick={() => updateSettings({ homeStyle: 'clarity', theme: 'ocean-breeze', fontSize: 'medium', borderRadius: 'rounded', chatDensity: 'comfortable', animations: true })}
-                className="w-full border border-red-200 text-red-500 hover:bg-red-50 rounded-xl py-2.5 text-sm font-medium transition-colors cursor-pointer mt-4"
+                className="w-full border border-red-200 text-red-500 rounded-xl py-2.5 text-sm font-medium cursor-pointer mt-4 btn-danger"
               >
                 Reset Defaults
               </button>

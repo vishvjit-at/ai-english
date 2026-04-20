@@ -124,7 +124,7 @@ export function VocabularyReviewPage() {
                 <button
                   onClick={handleSubmit}
                   disabled={!sentence.trim() || evaluating}
-                  className="w-[50px] h-[50px] flex items-center justify-center bg-primary-600 hover:bg-primary-700 text-white rounded-2xl transition-colors disabled:bg-neutral-100 disabled:text-neutral-400 disabled:cursor-not-allowed cursor-pointer"
+                  className="w-[50px] h-[50px] flex items-center justify-center bg-primary-600 text-white rounded-2xl disabled:bg-neutral-100 disabled:text-neutral-400 disabled:cursor-not-allowed cursor-pointer btn-icon"
                 >
                   {evaluating ? (
                     <div className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />

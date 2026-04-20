@@ -58,7 +58,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                 <p className="text-[10px] text-neutral-400 tracking-wider uppercase">Your English Partner</p>
               </div>
             </Link>
-            <button onClick={onClose} className="lg:hidden w-8 h-8 flex items-center justify-center text-neutral-400 hover:text-neutral-600 cursor-pointer rounded-lg hover:bg-neutral-50 transition-colors">
+            <button onClick={onClose} className="lg:hidden w-8 h-8 flex items-center justify-center text-neutral-400 cursor-pointer rounded-lg btn-icon">
               <X className="w-4 h-4" />
             </button>
           </div>
@@ -165,7 +165,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
               </div>
               <button
                 onClick={() => signOut()}
-                className="ml-auto p-1.5 text-neutral-400 hover:text-red-500 transition-all duration-200 hover:scale-110 rounded-lg hover:bg-red-50 cursor-pointer shrink-0"
+                className="ml-auto p-1.5 text-neutral-400 rounded-lg cursor-pointer shrink-0 btn-danger"
                 title="Sign out"
               >
                 <LogOut className="w-4 h-4" />

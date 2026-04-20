@@ -78,10 +78,10 @@ export function CustomScenarioSetup({ onStart, isLoading }: { onStart: (ctx: Use
           <div className="flex gap-2">
             {levels.map((opt) => (
               <button key={opt.value} onClick={() => setLevel(opt.value)}
-                className={`px-4 py-2.5 rounded-2xl border text-sm font-semibold transition-all cursor-pointer flex-1
+                className={`px-4 py-2.5 rounded-2xl border text-sm font-semibold cursor-pointer flex-1 btn-ghost
                   ${level === opt.value
                     ? 'bg-primary-600 text-white border-primary-600'
-                    : 'border-neutral-200 text-neutral-600 hover:bg-neutral-50'
+                    : 'border-neutral-200 text-neutral-600'
                   }`}>
                 {opt.label}
               </button>
@@ -100,7 +100,7 @@ export function CustomScenarioSetup({ onStart, isLoading }: { onStart: (ctx: Use
       <div className="bg-white rounded-2xl border border-neutral-100 overflow-hidden mb-5">
         <button
           onClick={() => setShowExamples((v) => !v)}
-          className="flex items-center justify-between p-5 cursor-pointer w-full text-left hover:bg-neutral-50 transition-colors"
+          className="flex items-center justify-between p-5 cursor-pointer w-full text-left btn-ghost rounded-none"
         >
           <span className="text-sm font-bold text-neutral-700">Browse Ideas</span>
           {showExamples ? <ChevronUp className="w-4 h-4 text-neutral-400" /> : <ChevronDown className="w-4 h-4 text-neutral-400" />}
@@ -109,7 +109,7 @@ export function CustomScenarioSetup({ onStart, isLoading }: { onStart: (ctx: Use
           <div className="grid grid-cols-2 gap-2 p-5 pt-0">
             {examples.map((ex, i) => (
               <button key={i} onClick={() => { setCustomScenario(ex); setShowExamples(false) }}
-                className="text-left bg-neutral-50 rounded-2xl px-4 py-3 text-sm text-neutral-600 hover:bg-primary-50 hover:text-primary-700 cursor-pointer transition-colors">
+                className="text-left bg-neutral-50 rounded-2xl px-4 py-3 text-sm text-neutral-600 cursor-pointer btn-ghost">
                 {ex}
               </button>
             ))}
