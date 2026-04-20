@@ -41,7 +41,6 @@ export function MaskButton({
       className={`mask-btn-wrap${wrapperClassName ? ` ${wrapperClassName}` : ''}${disabled ? ' opacity-50 cursor-not-allowed pointer-events-none' : ''}`}
       style={{
         borderRadius: radius,
-        border: `1.5px solid ${fill}`,
         ...(fullWidth ? { display: 'block', width: '100%' } : {}),
       }}
     >
