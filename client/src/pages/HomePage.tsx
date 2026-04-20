@@ -318,19 +318,19 @@ function HomeClarity() {
 
       {/* Top title */}
       <div className="relative z-10 pt-6 sm:pt-8 px-5 sm:px-10 shrink-0">
-        <h1 className="font-black text-neutral-800 tracking-tight leading-none"
+        <h1 className="font-black text-neutral-800 tracking-tight leading-none animate-slide-in-down"
           style={{ fontSize: 'clamp(2.2rem, 5.5vw, 5rem)', fontFamily: 'var(--font-heading)' }}>
           Speak Up
         </h1>
-        <p className="text-xs tracking-[0.3em] text-neutral-400 mt-2 uppercase">Your English Partner</p>
-        <p className="md:hidden text-sm mt-1 font-semibold text-neutral-700">Your AI English Coach</p>
+        <p className="text-xs tracking-[0.3em] text-neutral-400 mt-2 uppercase animate-fade-in delay-200">Your English Partner</p>
+        <p className="md:hidden text-sm mt-1 font-semibold text-neutral-700 animate-fade-in delay-200">Your AI English Coach</p>
       </div>
 
       {/* Orb */}
       <div className="flex-1 relative flex items-center justify-center min-h-0">
 
         {/* Tagline — desktop only */}
-        <div className="hidden md:block absolute right-8 top-1/2 -translate-y-1/2 text-right z-20 max-w-[220px]">
+        <div className="hidden md:block absolute right-8 top-1/2 -translate-y-1/2 text-right z-20 max-w-[220px] animate-slide-in-right delay-300">
           <p className="font-black text-neutral-800 leading-[1.1]"
             style={{ fontSize: 'clamp(1.8rem, 3.2vw, 3rem)', fontFamily: 'var(--font-heading)' }}>
             Your AI<br />English<br />Coach
@@ -372,10 +372,10 @@ function HomeClarity() {
             </div>
           </Link>
 
-          <Chip text='💬 "Tell me about yourself"' className="hidden md:block"
-            style={{ top: '-12%', right: '-55%', animationDelay: '0s' }} />
-          <Chip text='✨ Great pronunciation!' className="hidden md:block"
-            style={{ bottom: '-8%', left: '-58%', animationDelay: '1.3s' }} />
+          <Chip text='💬 "Tell me about yourself"' className="hidden md:block animate-slide-in-up delay-400"
+            style={{ top: '-12%', right: '-55%', animationDelay: '0.4s' }} />
+          <Chip text='✨ Great pronunciation!' className="hidden md:block animate-slide-in-up delay-500"
+            style={{ bottom: '-8%', left: '-58%', animationDelay: '0.5s' }} />
         </div>
       </div>
 

@@ -38,9 +38,9 @@ export function LoginPage() {
       <div className="absolute top-0 left-0 w-96 h-96 bg-primary-400/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary-400/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 pointer-events-none" />
 
-      <div className="bg-white rounded-3xl border border-neutral-100 p-6 sm:p-10 w-full max-w-md relative z-10 mx-4">
+      <div className="bg-white rounded-3xl border border-neutral-100 p-6 sm:p-10 w-full max-w-md relative z-10 mx-4 shadow-2xl shadow-primary-100/50 animate-scale-in">
         {/* Logo */}
-        <div className="flex flex-col items-center mb-8">
+        <div className="flex flex-col items-center mb-8 animate-slide-in-down delay-100">
           <div className="w-14 h-14 bg-primary-600 rounded-2xl flex items-center justify-center mb-4">
             <Mic className="w-7 h-7 text-white" />
           </div>
@@ -55,7 +55,7 @@ export function LoginPage() {
         {/* Google OAuth */}
         <button
           onClick={signInWithGoogle}
-          className="w-full flex items-center justify-center gap-3 border border-neutral-200 rounded-2xl py-3.5 text-sm font-semibold text-neutral-700 hover:bg-neutral-50 transition-colors cursor-pointer hover-lift"
+          className="w-full flex items-center justify-center gap-3 border border-neutral-200 rounded-2xl py-3.5 text-sm font-semibold text-neutral-700 hover:bg-neutral-50 transition-colors cursor-pointer hover-lift hover-glow animate-slide-in-up delay-200"
         >
           <svg className="w-5 h-5" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" />
@@ -74,7 +74,7 @@ export function LoginPage() {
         </div>
 
         {/* Email form */}
-        <form onSubmit={handleEmailLogin} className="flex flex-col gap-4">
+        <form onSubmit={handleEmailLogin} className="flex flex-col gap-4 animate-slide-in-up delay-300">
           <div>
             <label className="block text-sm font-semibold text-neutral-700 mb-1.5">Email</label>
             <div className="relative">
@@ -84,16 +84,14 @@ export function LoginPage() {
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full border border-neutral-200 rounded-2xl px-4 py-3 pl-10 text-sm focus:outline-none focus:ring-2 focus:border-primary-500 placeholder:text-neutral-400 transition-colors"
+                autoComplete="email"
+                className="w-full border border-neutral-200 rounded-2xl px-4 py-3 pl-10 text-sm focus:outline-none focus:ring-2 focus:border-primary-500 placeholder:text-neutral-400 transition-all duration-200"
               />
             </div>
           </div>
           <div>
             <div className="flex items-center justify-between mb-1.5">
               <label className="text-sm font-semibold text-neutral-700">Password</label>
-              <Link to="/forgot-password" className="text-xs text-primary-600 hover:underline">
-                Forgot Password?
-              </Link>
             </div>
             <div className="relative">
               <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400 w-4 h-4" />
@@ -102,7 +100,8 @@ export function LoginPage() {
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full border border-neutral-200 rounded-2xl px-4 py-3 pl-10 pr-10 text-sm focus:outline-none focus:ring-2 focus:border-primary-500 placeholder:text-neutral-400 transition-colors"
+                autoComplete="current-password"
+                className="w-full border border-neutral-200 rounded-2xl px-4 py-3 pl-10 pr-10 text-sm focus:outline-none focus:ring-2 focus:border-primary-500 placeholder:text-neutral-400 transition-all duration-200"
               />
               <button
                 type="button"
@@ -121,13 +120,13 @@ export function LoginPage() {
             disabled={isSubmitting || !email || !password}
             fullWidth
             wrapperClassName="mt-2"
-            className="py-3.5 font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+            className="py-3.5 font-bold"
           >
             {isSubmitting ? 'Signing in…' : 'Sign In'}
           </MaskButton>
         </form>
 
-        <p className="text-center text-sm text-neutral-500 mt-6">
+        <p className="text-center text-sm text-neutral-500 mt-6 animate-fade-in delay-400">
           Don't have an account?{' '}
           <Link to="/signup" className="text-primary-600 font-bold hover:underline">Sign Up</Link>
         </p>

@@ -159,7 +159,7 @@ export function SessionDetailPage() {
             <MaskButton
               onClick={handleGenerateSummary}
               disabled={generatingSummary}
-              className="px-7 py-3 font-semibold text-sm disabled:opacity-50"
+              className="px-7 py-3 font-semibold text-sm"
             >
               {generatingSummary ? <><Loader2 className="w-4 h-4 animate-spin" /> Generating…</> : <><Sparkles className="w-4 h-4" /> Generate Summary</>}
             </MaskButton>

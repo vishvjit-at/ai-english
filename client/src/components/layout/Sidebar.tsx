@@ -42,12 +42,12 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
 
       <aside className={`
         fixed top-0 left-0 z-50 h-full w-64 bg-white border-r border-neutral-100 flex flex-col
-        transition-transform duration-300 ease-out
+        transition-transform duration-300 ease-out shadow-xl shadow-neutral-200/60
         lg:static lg:translate-x-0
         ${isOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
         {/* Logo */}
-        <div className="p-5 pb-3 shrink-0">
+        <div className="p-5 pb-3 shrink-0 border-b border-neutral-100/80">
           <div className="flex items-center justify-between mb-5">
             <Link to="/" className="flex items-center gap-2.5" onClick={onClose}>
               <div className="w-8 h-8 bg-primary-600 rounded-xl flex items-center justify-center">
@@ -150,7 +150,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         <div className="border-t border-neutral-100 p-4 shrink-0">
           {user ? (
             <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full text-white text-sm font-bold flex items-center justify-center shrink-0">
+              <div className="w-9 h-9 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full text-white text-sm font-bold flex items-center justify-center shrink-0 hover:ring-2 hover:ring-primary-400 hover:ring-offset-2 transition-all duration-200">
                 {user.user_metadata?.avatar_url ? (
                   <img src={user.user_metadata.avatar_url} alt="" className="w-9 h-9 rounded-full" />
                 ) : (
@@ -165,7 +165,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
               </div>
               <button
                 onClick={() => signOut()}
-                className="ml-auto p-1.5 text-neutral-400 hover:text-red-500 transition-all hover:scale-110 rounded-lg hover:bg-red-50 cursor-pointer shrink-0"
+                className="ml-auto p-1.5 text-neutral-400 hover:text-red-500 transition-all duration-200 hover:scale-110 rounded-lg hover:bg-red-50 cursor-pointer shrink-0"
                 title="Sign out"
               >
                 <LogOut className="w-4 h-4" />

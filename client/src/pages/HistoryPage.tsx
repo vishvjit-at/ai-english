@@ -58,7 +58,7 @@ export function HistoryPage() {
       <div className="max-w-5xl mx-auto px-4 sm:px-8 py-6 sm:py-10">
 
         {/* Page header */}
-        <div className="mb-10">
+        <div className="mb-10 animate-slide-in-up">
           <p className="text-xs tracking-[0.3em] uppercase font-medium mb-2" style={{ color: 'var(--sem-neutral-400)', fontFamily: 'var(--font-heading)' }}>
             Your Journey
           </p>
@@ -74,8 +74,8 @@ export function HistoryPage() {
             { icon: <TrendingUp className="w-5 h-5" />, value: totalMessages, label: 'Messages', color: 'bg-primary-50 text-primary-500' },
             { icon: <Star className="w-5 h-5" />, value: avgScore, label: 'Avg Score', color: 'bg-amber-50 text-amber-500' },
             { icon: <Timer className="w-5 h-5" />, value: `${totalMins}m`, label: 'Practice Time', color: 'bg-purple-50 text-purple-500' },
-          ].map((s) => (
-            <div key={s.label} className="bg-white rounded-2xl border border-neutral-100 p-5 hover-lift">
+          ].map((s, i) => (
+            <div key={s.label} className={`bg-white rounded-2xl border border-neutral-100 p-5 hover-lift glow-border animate-slide-in-up delay-${[0, 100, 200, 300][i] ?? 0}`}>
               <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 ${s.color}`}>{s.icon}</div>
               <p className="text-4xl font-black text-neutral-900 leading-none">{s.value}</p>
               <p className="text-xs text-neutral-400 uppercase tracking-wider mt-1.5">{s.label}</p>
@@ -109,7 +109,7 @@ export function HistoryPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {sessions.map((s) => (
                 <Link key={s.id} to={`/history/${s.id}`}
-                  className="group bg-white rounded-2xl border border-neutral-100 p-6 hover-lift cursor-pointer block">
+                  className="group bg-white rounded-2xl border border-neutral-100 p-6 hover-card cursor-pointer block">
                   <div className="flex items-start justify-between mb-3">
                     <span className={`text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wide ${TOPIC_COLORS[s.topic] || 'bg-neutral-100 text-neutral-500'}`}>
                       {TOPIC_LABELS[s.topic] || s.topic}
@@ -137,7 +137,7 @@ export function HistoryPage() {
               ))}
 
               {sessions.length % 2 !== 0 && (
-                <Link to="/" className="group border-2 border-dashed border-neutral-200 rounded-2xl p-8 flex flex-col items-center justify-center text-center text-neutral-400 hover:border-primary-300 hover:text-primary-500 transition-all cursor-pointer hover-lift">
+                <Link to="/" className="group border-2 border-dashed border-neutral-200 rounded-2xl p-8 flex flex-col items-center justify-center text-center text-neutral-400 hover:border-primary-300 hover:text-primary-500 transition-all duration-200 cursor-pointer hover-lift">
                   <Plus className="w-8 h-8 mb-2" />
                   <p className="text-sm font-semibold">New Session</p>
                 </Link>

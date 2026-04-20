@@ -111,8 +111,8 @@ export function ProgressPage() {
             { icon: <Clock className="w-5 h-5" />, value: `${data.totalMinutes}m`, label: 'Practiced', color: 'bg-primary-50 text-primary-500' },
             { icon: <Star className="w-5 h-5" />, value: data.averageScore ?? '--', label: 'Avg Score', color: 'bg-amber-50 text-amber-500' },
             { icon: <Flame className="w-5 h-5" />, value: data.currentStreak, label: 'Day Streak', color: 'bg-red-50 text-red-500' },
-          ].map((s) => (
-            <div key={s.label} className="bg-white rounded-2xl border border-neutral-100 p-5 hover-lift">
+          ].map((s, i) => (
+            <div key={s.label} className={`bg-white rounded-2xl border border-neutral-100 p-5 hover-lift glow-border animate-slide-in-up delay-${[0, 100, 200, 300][i] ?? 0}`}>
               <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 ${s.color}`}>{s.icon}</div>
               <p className="text-4xl font-black text-neutral-900 leading-none">{s.value}</p>
               <p className="text-xs text-neutral-400 uppercase tracking-wider mt-1.5">{s.label}</p>
@@ -124,7 +124,7 @@ export function ProgressPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
           {/* Score trend */}
           {data.scoreHistory.length > 0 && (
-            <section className="col-span-1 lg:col-span-2 bg-white rounded-2xl border border-neutral-100 p-6">
+            <section className="col-span-1 lg:col-span-2 bg-white rounded-2xl border border-neutral-100 p-6 animate-slide-in-up delay-200">
               <div className="flex items-center gap-2 mb-6">
                 <TrendingUp className="w-4 h-4 text-primary-600" />
                 <h2 className="font-bold text-neutral-900">Score Trend</h2>
@@ -136,7 +136,7 @@ export function ProgressPage() {
                       {entry.scenarioName}: {entry.score}/10
                     </div>
                     <div
-                      className="w-full bg-primary-500 rounded-t-md transition-all hover:bg-primary-600"
+                      className="w-full bg-primary-500 rounded-t-md transition-all duration-500 hover:bg-primary-600"
                       style={{ height: `${(entry.score / maxScore) * 100}%`, minHeight: '8px' }}
                     />
                   </div>
@@ -150,7 +150,7 @@ export function ProgressPage() {
           )}
 
           {/* Areas to Focus */}
-          <section className="bg-white rounded-2xl border border-neutral-100 p-6">
+          <section className="bg-white rounded-2xl border border-neutral-100 p-6 animate-slide-in-right delay-300">
             <div className="flex items-center gap-2 mb-5">
               <BookOpen className="w-4 h-4 text-primary-600" />
               <h2 className="font-bold text-neutral-900">Focus Areas</h2>
@@ -211,7 +211,7 @@ export function ProgressPage() {
         </section>
 
         {/* Smart Recommendation CTA */}
-        <section className="rounded-2xl p-8 text-white" style={{ background: 'linear-gradient(135deg, var(--sem-primary-900), var(--sem-primary-700))' }}>
+        <section className="rounded-2xl p-8 text-white animate-slide-in-up delay-400" style={{ background: 'linear-gradient(135deg, var(--sem-primary-900), var(--sem-primary-700))' }}>
           <p className="text-xs tracking-[0.25em] uppercase font-semibold mb-3" style={{ color: 'var(--sem-primary-300)' }}>Smart Recommendation</p>
           <h3 className="font-black text-2xl mb-2">Level up your practice</h3>
           <p className="text-sm mb-6" style={{ color: 'var(--sem-primary-200)' }}>

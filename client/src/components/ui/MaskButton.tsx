@@ -42,7 +42,7 @@ export function MaskButton({
 
   return (
     <div
-      className={`mask-btn-wrap${wrapperClassName ? ` ${wrapperClassName}` : ''}`}
+      className={`mask-btn-wrap${wrapperClassName ? ` ${wrapperClassName}` : ''}${disabled ? ' opacity-50 cursor-not-allowed pointer-events-none' : ''}`}
       style={{
         borderRadius: radius,
         border: `1.5px solid ${fill}`,

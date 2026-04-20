@@ -54,7 +54,7 @@ export function LessonPracticePage() {
   if (stage === 'loading') {
     return (
       <div className="h-full flex items-center justify-center">
-        <div className="w-8 h-8 border-3 border-primary-200 border-t-primary-600 rounded-full animate-spin" />
+        <div className="w-8 h-8 border-[3px] border-primary-200 border-t-primary-600 rounded-full animate-spin" />
       </div>
     )
   }
@@ -123,7 +123,7 @@ export function LessonPracticePage() {
               onClick={handleStart}
               disabled={!name.trim() || isStarting}
               fullWidth
-              className="py-3.5 font-bold text-sm disabled:opacity-50"
+              className="py-3.5 font-bold text-sm"
             >
               {isStarting ? (
                 <><span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> Starting…</>

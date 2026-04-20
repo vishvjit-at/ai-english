@@ -90,7 +90,7 @@ export function CustomScenarioSetup({ onStart, isLoading }: { onStart: (ctx: Use
         </div>
 
         <MaskButton onClick={handleStart} disabled={!canStart || isLoading} fullWidth
-          className="py-3.5 font-bold disabled:opacity-50 disabled:cursor-not-allowed">
+          className="py-3.5 font-bold">
           {isLoading ? <><span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> Building scenario…</>
             : <><Mic className="w-4 h-4" /> Start Practice <ArrowRight className="w-4 h-4" /></>}
         </MaskButton>

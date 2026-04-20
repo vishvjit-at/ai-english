@@ -40,7 +40,7 @@ export function LessonsPage() {
       <div className="max-w-5xl mx-auto px-4 sm:px-8 py-6 sm:py-10">
 
         {/* Page header */}
-        <div className="mb-10">
+        <div className="mb-10 animate-slide-in-up">
           <p className="text-xs tracking-[0.3em] uppercase font-medium mb-2" style={{ color: 'var(--sem-neutral-400)', fontFamily: 'var(--font-heading)' }}>
             Structured Learning
           </p>
@@ -59,7 +59,7 @@ export function LessonsPage() {
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {[0, 1].map((i) => (
-                    <div key={i} className="bg-white rounded-2xl border border-neutral-100 p-6 h-44 animate-pulse" />
+                    <div key={i} className="bg-white rounded-2xl border border-neutral-100 p-6 h-44 skeleton" />
                   ))}
                 </div>
               </section>
@@ -82,14 +82,11 @@ export function LessonsPage() {
               const cfg = TYPE_CONFIG[type]
               return (
                 <section key={type} className="mb-12">
-                  <div className="flex items-center justify-between mb-5">
-                    <div className="flex items-center gap-2.5">
-                      <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${cfg.color}`}>
-                        {cfg.icon}
-                      </div>
-                      <h2 className="text-lg font-bold text-neutral-900">{cfg.label}</h2>
+                  <div className="flex items-center gap-2.5 mb-5 animate-fade-in">
+                    <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${cfg.color}`}>
+                      {cfg.icon}
                     </div>
-                    <button className="text-primary-600 text-sm font-semibold hover:underline cursor-pointer">View All →</button>
+                    <h2 className="text-lg font-bold text-neutral-900">{cfg.label}</h2>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -97,7 +94,7 @@ export function LessonsPage() {
                       <Link
                         key={lesson.id}
                         to={`/lessons/${lesson.id}`}
-                        className="group bg-white rounded-2xl border border-neutral-100 p-6 hover-lift cursor-pointer block"
+                        className="group bg-white rounded-2xl border border-neutral-100 p-6 hover-card cursor-pointer block"
                       >
                         <div className="flex items-center justify-between mb-3">
                           <span className={`text-xs font-semibold capitalize px-2.5 py-1 rounded-full uppercase tracking-wide ${DIFFICULTY_COLORS[lesson.difficulty] || 'bg-neutral-100 text-neutral-500'}`}>
@@ -129,7 +126,7 @@ export function LessonsPage() {
             })}
 
             {/* CTA */}
-            <div className="rounded-2xl p-8 text-white flex items-center justify-between" style={{ background: 'linear-gradient(135deg, var(--sem-primary-900), var(--sem-primary-700))' }}>
+            <div className="rounded-2xl p-8 text-white flex items-center justify-between animate-slide-in-up delay-300" style={{ background: 'linear-gradient(135deg, var(--sem-primary-900), var(--sem-primary-700))' }}>
               <div>
                 <p className="text-xs tracking-[0.25em] uppercase font-semibold mb-3" style={{ color: 'var(--sem-primary-300)' }}>Personalised</p>
                 <h3 className="font-black text-2xl mb-2">Want a custom lesson?</h3>
