@@ -7,19 +7,17 @@ interface MaskButtonProps {
   onClick?: () => void
   disabled?: boolean
   type?: 'button' | 'submit'
-  /** Tailwind padding + font classes applied to the fill layer, e.g. "px-7 py-3.5 text-sm font-bold" */
+  /** Tailwind padding + font classes applied to the button, e.g. "px-7 py-3.5 text-sm font-bold" */
   className?: string
-  /** Background color of the fill (solid button state). Defaults to var(--sem-primary-600) */
+  /** Background color of the button. Defaults to var(--sem-primary-600) */
   fillColor?: string
-  /** Text color shown when fill is wiped away. Defaults to fillColor */
-  labelColor?: string
-  /** Text color on the fill button itself. Defaults to white */
+  /** Text color on the button. Defaults to white */
   fillTextColor?: string
   /** Border-radius of the button. Defaults to 'full' */
   rounded?: 'full' | '2xl' | 'xl' | 'lg'
   /** Stretch button to full width of its container */
   fullWidth?: boolean
-  /** Tailwind classes applied to the outer wrapper div (e.g. "mt-2 mb-4") */
+  /** Tailwind classes applied to the outer wrapper div */
   wrapperClassName?: string
 }
 
@@ -30,14 +28,12 @@ export function MaskButton({
   type = 'button',
   className = '',
   fillColor,
-  labelColor,
   fillTextColor = 'white',
   rounded = 'full',
   fullWidth = false,
   wrapperClassName = '',
 }: MaskButtonProps) {
   const fill = fillColor ?? 'var(--sem-primary-600)'
-  const label = labelColor ?? fill
   const radius = RADII[rounded]
 
   return (
@@ -49,12 +45,6 @@ export function MaskButton({
         ...(fullWidth ? { display: 'block', width: '100%' } : {}),
       }}
     >
-      <span
-        className="mask-btn-label"
-        style={{ color: label }}
-      >
-        {children}
-      </span>
       <button
         type={type}
         onClick={onClick}

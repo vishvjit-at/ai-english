@@ -217,7 +217,7 @@ export function ProgressPage() {
           <p className="text-sm mb-6" style={{ color: 'var(--sem-primary-200)' }}>
             Based on your {data.totalSessions} sessions, Aria recommends focusing on more advanced scenarios.
           </p>
-          <MaskButton fillColor="white" labelColor="white" fillTextColor="var(--sem-primary-900)" className="px-7 py-3 text-sm font-semibold">
+          <MaskButton fillColor="white" fillTextColor="var(--sem-primary-900)" className="px-7 py-3 text-sm font-semibold">
             Upgrade My Curriculum →
           </MaskButton>
         </section>

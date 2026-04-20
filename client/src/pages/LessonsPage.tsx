@@ -133,7 +133,7 @@ export function LessonsPage() {
                 <p className="text-sm mb-6" style={{ color: 'var(--sem-primary-200)' }}>
                   Aria can build a personalised curriculum based on your specific industry or interests.
                 </p>
-                <MaskButton fillColor="white" labelColor="white" fillTextColor="var(--sem-primary-900)" className="px-7 py-3 text-sm font-semibold">
+                <MaskButton fillColor="white" fillTextColor="var(--sem-primary-900)" className="px-7 py-3 text-sm font-semibold">
                   <Sparkles className="w-4 h-4" /> Request AI Curriculum
                 </MaskButton>
               </div>
