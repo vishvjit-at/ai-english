@@ -196,11 +196,11 @@ function NavUserMenu() {
             boxShadow: '0 8px 40px oklch(0.2 0.05 275 / 0.15)',
             overflow: 'hidden',
             minWidth: 180,
-            background: '#fff',
-            border: '1px solid oklch(0.9 0.01 275)',
+            background: 'var(--hp-card-bg-2)',
+            border: '1px solid var(--hp-border)',
           }}>
-            <div style={{ padding: '12px 16px', borderBottom: '1px solid oklch(0.93 0.005 275)' }}>
-              <p style={{ fontSize: 12, fontWeight: 600, color: 'oklch(0.45 0.02 275)', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--hp-border)' }}>
+              <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--hp-text-muted)', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                 {user.user_metadata?.full_name || user.email}
               </p>
             </div>
@@ -284,7 +284,7 @@ export function HomePage() {
   }, [])
 
   return (
-    <div style={{ fontFamily: "'DM Sans', sans-serif", color: 'oklch(0.18 0.02 275)', background: 'oklch(0.985 0.005 275)', overflowX: 'hidden', WebkitFontSmoothing: 'antialiased', position: 'relative', zIndex: 1 }}>
+    <div style={{ fontFamily: "'DM Sans', sans-serif", color: 'var(--hp-text)', background: 'var(--hp-bg)', overflowX: 'hidden', WebkitFontSmoothing: 'antialiased', position: 'relative', zIndex: 1 }}>
       <DotGrid />
       <style>{`
         .hp-nav {
@@ -292,14 +292,14 @@ export function HomePage() {
           padding: 0 clamp(24px, 5vw, 80px);
           height: 72px;
           display: flex; align-items: center; justify-content: space-between;
-          background: oklch(0.985 0.005 275 / 0.85);
+          background: var(--hp-nav-bg);
           backdrop-filter: blur(20px) saturate(1.4);
-          border-bottom: 1px solid oklch(0.85 0.02 275 / 0.5);
+          border-bottom: 1px solid var(--hp-border);
           transition: box-shadow 0.3s;
         }
         .hp-nav.hp-scrolled { box-shadow: 0 2px 24px oklch(0.2 0.05 275 / 0.08); }
         .hp-nav-link {
-          font-size: 15px; font-weight: 500; color: oklch(0.45 0.02 275);
+          font-size: 15px; font-weight: 500; color: var(--hp-text-muted);
           text-decoration: none; padding: 8px 16px; border-radius: 10px;
           transition: color 0.2s, background 0.2s;
         }
@@ -320,19 +320,19 @@ export function HomePage() {
         .hp-btn-primary:active { transform: translateY(0) scale(0.98); }
         .hp-btn-secondary {
           font-family: 'DM Sans', sans-serif; font-size: 17px; font-weight: 600;
-          color: oklch(0.18 0.02 275); background: oklch(0.95 0.005 275);
-          border: 1.5px solid oklch(0.85 0.02 275); padding: 15px 32px; border-radius: 16px;
+          color: var(--hp-text); background: var(--hp-btn-secondary-bg);
+          border: 1.5px solid var(--hp-border); padding: 15px 32px; border-radius: 16px;
           cursor: pointer; text-decoration: none; display: inline-block;
           transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
         }
         .hp-btn-secondary:hover {
-          background: oklch(0.92 0.01 275); border-color: oklch(0.75 0.04 275);
+          background: var(--hp-btn-secondary-hover); border-color: var(--hp-border-strong);
           transform: translateY(-2px); box-shadow: 0 4px 16px oklch(0.2 0.02 275 / 0.08);
         }
         .hp-btn-secondary:active { transform: translateY(0); }
         .hp-feature-card {
           padding: 36px; border-radius: 20px;
-          background: oklch(0.98 0.003 275); border: 1px solid oklch(0.9 0.01 275);
+          background: var(--hp-card-bg); border: 1px solid var(--hp-border);
           position: relative; overflow: hidden;
           transition: transform 0.35s cubic-bezier(0.4,0,0.2,1), box-shadow 0.35s, border-color 0.35s;
         }
@@ -342,7 +342,7 @@ export function HomePage() {
           transform: scaleX(0); transform-origin: left;
           transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
         }
-        .hp-feature-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px oklch(0.2 0.05 275 / 0.1); border-color: oklch(0.8 0.04 275); }
+        .hp-feature-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px oklch(0.2 0.05 275 / 0.1); border-color: var(--hp-border-strong); }
         .hp-feature-card:hover::after { transform: scaleX(1); }
         .hp-orb-ring-pulse::before {
           content: ''; position: absolute; inset: 40px; border-radius: 50%;
@@ -356,8 +356,8 @@ export function HomePage() {
         }
         .hp-chat-bubble { position: absolute; padding: 10px 16px; border-radius: 16px; font-size: 13px; font-weight: 500; white-space: nowrap; pointer-events: none; box-shadow: 0 4px 20px oklch(0.2 0.05 275 / 0.08); }
         .hp-chat-user { background: oklch(0.55 0.22 275); color: #fff; border-bottom-right-radius: 4px; animation: bubbleFloat 6s ease-in-out infinite; }
-        .hp-chat-ai { background: #fff; color: oklch(0.18 0.02 275); border: 1px solid oklch(0.9 0.01 275); border-bottom-left-radius: 4px; animation: bubbleFloat 6s ease-in-out -2s infinite; }
-        .hp-chat-ai2 { background: #fff; color: oklch(0.18 0.02 275); border: 1px solid oklch(0.9 0.01 275); border-bottom-left-radius: 4px; animation: bubbleFloat 6s ease-in-out -4s infinite; }
+        .hp-chat-ai { background: var(--hp-card-bg-2); color: var(--hp-text); border: 1px solid var(--hp-border); border-bottom-left-radius: 4px; animation: bubbleFloat 6s ease-in-out -2s infinite; }
+        .hp-chat-ai2 { background: var(--hp-card-bg-2); color: var(--hp-text); border: 1px solid var(--hp-border); border-bottom-left-radius: 4px; animation: bubbleFloat 6s ease-in-out -4s infinite; }
         @media (max-width: 640px) { .hp-nav-link { display: none; } }
         @media (max-width: 900px) { .hp-hero-inner { flex-direction: column !important; } .hp-orb-col { display: none !important; } }
       `}</style>
@@ -394,13 +394,13 @@ export function HomePage() {
             </div>
 
             {/* H1 */}
-            <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(42px, 6vw, 68px)', fontWeight: 700, lineHeight: 1.08, letterSpacing: -1.5, color: 'oklch(0.18 0.02 275)', marginBottom: 24, textWrap: 'balance', animation: 'fadeUp 0.6s ease-out 0.1s both' }}>
+            <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(42px, 6vw, 68px)', fontWeight: 700, lineHeight: 1.08, letterSpacing: -1.5, color: 'var(--hp-text)', marginBottom: 24, textWrap: 'balance', animation: 'fadeUp 0.6s ease-out 0.1s both' }}>
               Speak English with{' '}
               <em style={{ fontStyle: 'normal', background: 'linear-gradient(135deg, oklch(0.55 0.22 275), oklch(0.70 0.18 30))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>confidence</em>
             </h1>
 
             {/* Subtitle */}
-            <p style={{ fontSize: 'clamp(17px, 2vw, 20px)', lineHeight: 1.6, color: 'oklch(0.45 0.02 275)', maxWidth: 520, margin: '0 0 40px', textWrap: 'pretty', animation: 'fadeUp 0.6s ease-out 0.2s both' }}>
+            <p style={{ fontSize: 'clamp(17px, 2vw, 20px)', lineHeight: 1.6, color: 'var(--hp-text-muted)', maxWidth: 520, margin: '0 0 40px', textWrap: 'pretty', animation: 'fadeUp 0.6s ease-out 0.2s both' }}>
               Practice real conversations with an AI coach that listens, corrects gently, and builds your fluency — no judgment, just progress.
             </p>
 
@@ -427,13 +427,13 @@ export function HomePage() {
                   { l: 'S', c: 'oklch(0.60 0.18 340)' },
                   { l: 'K', c: 'oklch(0.58 0.16 100)' },
                 ].map((av, i) => (
-                  <div key={i} style={{ width: 36, height: 36, borderRadius: '50%', border: '2.5px solid oklch(0.985 0.005 275)', marginLeft: i === 0 ? 0 : -10, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 600, color: '#fff', background: av.c }}>
+                  <div key={i} style={{ width: 36, height: 36, borderRadius: '50%', border: '2.5px solid var(--hp-bg)', marginLeft: i === 0 ? 0 : -10, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 600, color: '#fff', background: av.c }}>
                     {av.l}
                   </div>
                 ))}
               </div>
-              <p style={{ fontSize: 14, color: 'oklch(0.45 0.02 275)', margin: 0 }}>
-                <strong style={{ color: 'oklch(0.18 0.02 275)', fontWeight: 600 }}>12,000+</strong> learners improving daily
+              <p style={{ fontSize: 14, color: 'var(--hp-text-muted)', margin: 0 }}>
+                <strong style={{ color: 'var(--hp-text)', fontWeight: 600 }}>12,000+</strong> learners improving daily
               </p>
             </div>
           </div>
@@ -469,7 +469,7 @@ export function HomePage() {
               <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 4v20M8 10v8M20 8v12M5 13v2M23 12v4" stroke="#6366f1" strokeWidth="2.5" strokeLinecap="round" /></svg>
             </div>
             <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, fontWeight: 600, marginBottom: 10, letterSpacing: -0.3 }}>Real-time Voice Conversations</h3>
-            <p style={{ fontSize: 15, lineHeight: 1.6, color: 'oklch(0.45 0.02 275)', margin: 0 }}>Speak naturally with an AI that understands Indian English accents and responds like a real conversation partner.</p>
+            <p style={{ fontSize: 15, lineHeight: 1.6, color: 'var(--hp-text-muted)', margin: 0 }}>Speak naturally with an AI that understands Indian English accents and responds like a real conversation partner.</p>
           </div>
 
           <div className="hp-feature-card hp-reveal">
@@ -477,7 +477,7 @@ export function HomePage() {
               <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M4 20l6-6 4 4 10-10" stroke="#f97316" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
             </div>
             <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, fontWeight: 600, marginBottom: 10, letterSpacing: -0.3 }}>Gentle Corrections</h3>
-            <p style={{ fontSize: 15, lineHeight: 1.6, color: 'oklch(0.45 0.02 275)', margin: 0 }}>Get helpful feedback on pronunciation and grammar without the anxiety of being judged. Build confidence at your own pace.</p>
+            <p style={{ fontSize: 15, lineHeight: 1.6, color: 'var(--hp-text-muted)', margin: 0 }}>Get helpful feedback on pronunciation and grammar without the anxiety of being judged. Build confidence at your own pace.</p>
           </div>
 
           <div className="hp-feature-card hp-reveal">
@@ -485,21 +485,21 @@ export function HomePage() {
               <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="4" y="6" width="20" height="16" rx="3" stroke="#0ea5e9" strokeWidth="2.2" /><path d="M10 14h8M10 18h5" stroke="#0ea5e9" strokeWidth="2" strokeLinecap="round" /></svg>
             </div>
             <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, fontWeight: 600, marginBottom: 10, letterSpacing: -0.3 }}>Interview &amp; Job-Ready Topics</h3>
-            <p style={{ fontSize: 15, lineHeight: 1.6, color: 'oklch(0.45 0.02 275)', margin: 0 }}>Practice scenarios that matter — job interviews, presentations, group discussions, and everyday professional conversations.</p>
+            <p style={{ fontSize: 15, lineHeight: 1.6, color: 'var(--hp-text-muted)', margin: 0 }}>Practice scenarios that matter — job interviews, presentations, group discussions, and everyday professional conversations.</p>
           </div>
 
         </div>
       </section>
 
       {/* HOW IT WORKS */}
-      <section id="how" style={{ padding: '80px clamp(24px, 5vw, 80px) 100px', background: 'oklch(0.97 0.008 275)', borderTop: '1px solid oklch(0.9 0.01 275)', borderBottom: '1px solid oklch(0.9 0.01 275)' }}>
+      <section id="how" style={{ padding: '80px clamp(24px, 5vw, 80px) 100px', background: 'var(--hp-bg-alt)', borderTop: '1px solid var(--hp-border)', borderBottom: '1px solid var(--hp-border)' }}>
         <div style={{ maxWidth: 900, margin: '0 auto' }}>
           <h2 className="hp-reveal" style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(32px, 4vw, 44px)', fontWeight: 700, letterSpacing: -1, textAlign: 'center', marginBottom: 64, textWrap: 'balance' }}>
             Three steps to fluent speaking
           </h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 0, position: 'relative' }}>
             {/* Vertical line */}
-            <div style={{ position: 'absolute', left: 27, top: 28, bottom: 28, width: 2, background: 'oklch(0.85 0.04 275)' }} />
+            <div style={{ position: 'absolute', left: 27, top: 28, bottom: 28, width: 2, background: 'var(--hp-border-strong)' }} />
             {[
               { n: '1', title: 'Pick a scenario', desc: 'Choose from everyday conversations, interview prep, or workplace topics designed for Indian professionals.' },
               { n: '2', title: 'Speak freely', desc: 'Have a natural voice conversation with your AI coach. No scripts — just real practice that builds real skills.' },
@@ -511,7 +511,7 @@ export function HomePage() {
                 </div>
                 <div style={{ paddingTop: 8 }}>
                   <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 600, marginBottom: 6, letterSpacing: -0.3 }}>{step.title}</h3>
-                  <p style={{ fontSize: 16, lineHeight: 1.6, color: 'oklch(0.45 0.02 275)', margin: 0 }}>{step.desc}</p>
+                  <p style={{ fontSize: 16, lineHeight: 1.6, color: 'var(--hp-text-muted)', margin: 0 }}>{step.desc}</p>
                 </div>
               </div>
             ))}
@@ -544,13 +544,13 @@ export function HomePage() {
       </section>
 
       {/* FOOTER */}
-      <footer style={{ padding: '48px clamp(24px, 5vw, 80px) 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: 14, color: 'oklch(0.45 0.02 275)', flexWrap: 'wrap', gap: 16, borderTop: '1px solid oklch(0.9 0.01 275)' }}>
+      <footer style={{ padding: '48px clamp(24px, 5vw, 80px) 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: 14, color: 'var(--hp-text-muted)', flexWrap: 'wrap', gap: 16, borderTop: '1px solid var(--hp-border)' }}>
         <span>&copy; 2026 SpeakUp. Built with care in India.</span>
         <div style={{ display: 'flex', gap: 20 }}>
           {['Privacy', 'Terms', 'Support'].map((l) => (
-            <a key={l} href="#" style={{ color: 'oklch(0.45 0.02 275)', textDecoration: 'none', transition: 'color 0.2s' }}
+            <a key={l} href="#" style={{ color: 'var(--hp-text-muted)', textDecoration: 'none', transition: 'color 0.2s' }}
               onMouseEnter={(e) => { e.currentTarget.style.color = 'oklch(0.55 0.22 275)' }}
-              onMouseLeave={(e) => { e.currentTarget.style.color = 'oklch(0.45 0.02 275)' }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--hp-text-muted)' }}
             >{l}</a>
           ))}
         </div>
