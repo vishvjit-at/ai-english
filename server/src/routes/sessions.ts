@@ -166,7 +166,10 @@ router.get('/sessions', async (req: Request, res: Response) => {
         orderBy: { startedAt: 'desc' },
         skip: offset,
         take: limit,
-        include: { summary: { select: { overallScore: true } } },
+        include: {
+          summary: { select: { overallScore: true } },
+          messages: { select: { feedback: true } },
+        },
       }),
       prisma.session.count({ where: { userId } }),
     ])
@@ -180,6 +183,11 @@ router.get('/sessions', async (req: Request, res: Response) => {
         startedAt: s.startedAt.toISOString(),
         durationSecs: s.durationSecs,
         messageCount: s.messageCount,
+        // A "correction" = an AI message that includes a feedback object the UI surfaces.
+        correctionCount: s.messages.filter((m) => {
+          const f = m.feedback as { show?: boolean } | null
+          return f != null && f.show !== false
+        }).length,
         overallScore: s.summary?.overallScore ?? null,
       })),
       total,

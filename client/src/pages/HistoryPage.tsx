@@ -1,151 +1,197 @@
 import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { Clock, MessageSquare, Star, Calendar, Plus, TrendingUp, Timer } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { ChevronDown, ChevronRight } from 'lucide-react'
 import { fetchSessions } from '@/lib/api'
-import { MaskButton } from '@/components/ui/MaskButton'
+import { useTheme } from '@/lib/speakup-theme'
 import type { SessionListItem } from '@/lib/types'
 
-const TOPIC_LABELS: Record<string, string> = {
-  job_interview: 'Job Interview',
-  daily_life: 'Daily Life',
-  college: 'College',
-  custom: 'Custom',
-}
-
-const TOPIC_COLORS: Record<string, string> = {
-  job_interview: 'bg-blue-50 text-blue-600',
-  daily_life: 'bg-primary-50 text-primary-600',
-  college: 'bg-purple-50 text-purple-600',
-  custom: 'bg-amber-50 text-amber-600',
-}
-
-function formatDuration(secs: number | null): string {
-  if (!secs) return '--'
-  if (secs < 60) return `${secs}s`
-  return `${Math.floor(secs / 60)}m`
-}
+type FilterTab = 'All' | 'Lesson' | 'Custom'
 
 function formatDate(iso: string): string {
-  const d = new Date(iso)
-  const days = Math.floor((Date.now() - d.getTime()) / 86400000)
-  if (days === 0) return 'Today'
-  if (days === 1) return 'Yesterday'
-  if (days < 7) return `${days} days ago`
-  return d.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' })
+  return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+}
+function formatDuration(secs: number | null): string {
+  if (!secs) return '—'
+  if (secs < 60) return `${secs}s`
+  return `${Math.floor(secs / 60)} min`
+}
+function isLessonSession(s: SessionListItem): boolean {
+  return s.topic !== 'custom' && !s.scenarioName.toLowerCase().includes('—')
 }
 
 export function HistoryPage() {
-  const navigate = useNavigate()
+  const T = useTheme()
+  const nav = useNavigate()
   const [sessions, setSessions] = useState<SessionListItem[]>([])
   const [loading, setLoading] = useState(true)
+  const [filter, setFilter] = useState<FilterTab>('All')
+  const [expandedId, setExpandedId] = useState<string | null>(null)
 
   useEffect(() => {
-    fetchSessions(50)
-      .then((d) => setSessions(d.sessions))
-      .catch(() => {})
-      .finally(() => setLoading(false))
+    fetchSessions(50).then((d) => setSessions(d.sessions)).catch(() => {}).finally(() => setLoading(false))
   }, [])
 
-  const totalMessages = sessions.reduce((s, x) => s + x.messageCount, 0)
-  const scored = sessions.filter((s) => s.overallScore != null)
-  const avgScore = scored.length > 0
-    ? (scored.reduce((s, x) => s + (x.overallScore || 0), 0) / scored.length).toFixed(1)
-    : '--'
-  const totalMins = sessions.reduce((s, x) => s + Math.floor((x.durationSecs || 0) / 60), 0)
+  const filtered = sessions.filter((s) => {
+    if (filter === 'All') return true
+    return (isLessonSession(s) ? 'Lesson' : 'Custom') === filter
+  })
 
   return (
-    <div className="h-full overflow-y-auto" style={{ background: 'var(--sem-surface)' }}>
-      <div className="max-w-5xl mx-auto px-4 sm:px-8 py-6 sm:py-10">
-
-        {/* Page header */}
-        <div className="mb-10 animate-slide-in-up">
-          <p className="text-xs tracking-[0.3em] uppercase font-medium mb-2" style={{ color: 'var(--sem-neutral-400)', fontFamily: 'var(--font-heading)' }}>
-            Your Journey
-          </p>
-          <h1 className="font-black tracking-tight leading-none" style={{ fontSize: 'clamp(2.2rem, 4vw, 3.4rem)', fontFamily: 'var(--font-heading)', color: 'var(--sem-neutral-900)' }}>
-            Conversation<br />History
+    <div style={{ background: T.bg, minHeight: 'calc(100vh - 64px)', padding: 'clamp(24px, 4vw, 40px) clamp(16px, 4vw, 60px)' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto', animation: 'fadeUp 0.4s ease both' }}>
+        <div style={{ marginBottom: 28 }}>
+          <div style={{ fontSize: 13, fontWeight: 600, color: T.indigo, fontFamily: T.bodyFont, marginBottom: 6 }}>
+            Session History
+          </div>
+          <h1 style={{ fontFamily: T.headingFont, fontWeight: 700, fontSize: 'clamp(26px, 3.4vw, 34px)', color: T.heading, letterSpacing: -0.5, margin: '0 0 6px' }}>
+            Review your practice
           </h1>
+          <p style={{ fontFamily: T.bodyFont, fontSize: 15, color: T.body, margin: 0, lineHeight: 1.5 }}>
+            Expand any session to see skill-level feedback.
+          </p>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
-          {[
-            { icon: <MessageSquare className="w-5 h-5" />, value: sessions.length, label: 'Sessions', color: 'bg-blue-50 text-blue-500' },
-            { icon: <TrendingUp className="w-5 h-5" />, value: totalMessages, label: 'Messages', color: 'bg-primary-50 text-primary-500' },
-            { icon: <Star className="w-5 h-5" />, value: avgScore, label: 'Avg Score', color: 'bg-amber-50 text-amber-500' },
-            { icon: <Timer className="w-5 h-5" />, value: `${totalMins}m`, label: 'Practice Time', color: 'bg-purple-50 text-purple-500' },
-          ].map((s, i) => (
-            <div key={s.label} className={`bg-white rounded-2xl border border-neutral-100 p-5 hover-lift glow-border animate-slide-in-up delay-${[0, 100, 200, 300][i] ?? 0}`}>
-              <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 ${s.color}`}>{s.icon}</div>
-              <p className="text-4xl font-black text-neutral-900 leading-none">{s.value}</p>
-              <p className="text-xs text-neutral-400 uppercase tracking-wider mt-1.5">{s.label}</p>
-            </div>
-          ))}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18, flexWrap: 'wrap', gap: 12 }}>
+          <div style={{ display: 'flex', gap: 4 }}>
+            {(['All', 'Lesson', 'Custom'] as FilterTab[]).map((t) => {
+              const active = filter === t
+              return (
+                <button key={t} onClick={() => setFilter(t)} style={{
+                  fontFamily: T.bodyFont, fontSize: 13, fontWeight: active ? 600 : 500,
+                  padding: '8px 16px', borderRadius: 10, cursor: 'pointer',
+                  border: active ? `1px solid ${T.border}` : '1px solid transparent',
+                  background: active ? T.surface : 'transparent',
+                  color: active ? T.heading : T.bodyLight,
+                  boxShadow: active ? '0 1px 2px rgba(0,0,0,0.04)' : 'none',
+                  transition: 'all 0.18s',
+                }}>{t}</button>
+              )
+            })}
+          </div>
+          <span style={{ fontFamily: T.bodyFont, fontSize: 13, color: T.bodyLight }}>
+            {filtered.length} session{filtered.length !== 1 ? 's' : ''}
+          </span>
         </div>
 
         {loading ? (
-          <>
-            <div className="h-4 w-40 bg-neutral-200 rounded animate-pulse mb-5" />
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {[...Array(4)].map((_, i) => (
-                <div key={i} className="bg-white rounded-2xl border border-neutral-100 p-6 h-40 animate-pulse" />
-              ))}
-            </div>
-          </>
-        ) : sessions.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-24 text-center">
-            <div className="w-20 h-20 rounded-3xl bg-primary-50 flex items-center justify-center mb-6">
-              <MessageSquare className="w-10 h-10 text-primary-400" />
-            </div>
-            <h2 className="font-black text-neutral-700 text-2xl mb-2" style={{ fontFamily: 'var(--font-heading)' }}>Your journey starts here</h2>
-            <p className="text-neutral-400 text-sm mb-8 max-w-xs">Start a conversation with Aria to see your history here.</p>
-            <MaskButton onClick={() => navigate('/')} className="px-7 py-3 text-sm font-semibold">
-              Start First Session
-            </MaskButton>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {[0,1,2,3].map((i) => (
+              <div key={i} className="skeleton" style={{ height: 70, borderRadius: T.radius, background: T.bgAlt }} />
+            ))}
+          </div>
+        ) : filtered.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: 60, color: T.body, fontFamily: T.bodyFont }}>
+            No sessions yet. Start a conversation to see history here.
           </div>
         ) : (
-          <>
-            <p className="text-xs tracking-[0.25em] uppercase font-semibold text-neutral-400 mb-5">Recent Sessions</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {sessions.map((s) => (
-                <Link key={s.id} to={`/history/${s.id}`}
-                  className="group bg-white rounded-2xl border border-neutral-100 p-6 hover-card cursor-pointer block">
-                  <div className="flex items-start justify-between mb-3">
-                    <span className={`text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wide ${TOPIC_COLORS[s.topic] || 'bg-neutral-100 text-neutral-500'}`}>
-                      {TOPIC_LABELS[s.topic] || s.topic}
-                    </span>
-                    {s.overallScore != null && (
-                      <div className="flex items-center gap-1">
-                        <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
-                        <span className="text-sm font-bold text-neutral-700">{s.overallScore}/10</span>
-                      </div>
-                    )}
-                  </div>
-
-                  <p className="font-bold text-neutral-900 mb-4 line-clamp-2 text-base leading-snug">{s.scenarioName}</p>
-
-                  <div className="flex gap-4 text-xs text-neutral-400">
-                    <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {formatDate(s.startedAt)}</span>
-                    <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {formatDuration(s.durationSecs)}</span>
-                    <span className="flex items-center gap-1"><MessageSquare className="w-3 h-3" /> {s.messageCount}</span>
-                  </div>
-
-                  <div className="flex items-center gap-1 mt-4 text-primary-600 text-sm font-semibold">
-                    View Transcript <span className="group-arrow">→</span>
-                  </div>
-                </Link>
-              ))}
-
-              {sessions.length % 2 !== 0 && (
-                <Link to="/" className="group border-2 border-dashed border-neutral-200 rounded-2xl p-8 flex flex-col items-center justify-center text-center text-neutral-400 hover:border-primary-300 hover:text-primary-500 transition-all duration-200 cursor-pointer hover-lift">
-                  <Plus className="w-8 h-8 mb-2" />
-                  <p className="text-sm font-semibold">New Session</p>
-                </Link>
-              )}
-            </div>
-          </>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {filtered.map((s) => (
+              <SessionRow key={s.id} session={s} expanded={expandedId === s.id}
+                onToggle={() => setExpandedId(expandedId === s.id ? null : s.id)}
+                onView={() => nav(`/history/${s.id}`)} />
+            ))}
+          </div>
         )}
       </div>
+    </div>
+  )
+}
+
+function SessionRow({ session, expanded, onToggle, onView }: {
+  session: SessionListItem; expanded: boolean; onToggle: () => void; onView: () => void;
+}) {
+  const T = useTheme()
+  const [h, setH] = useState(false)
+  const isLesson = isLessonSession(session)
+  const score = session.overallScore
+  const tone = score == null ? T.bodyLight : score >= 85 ? T.green : score >= 70 ? T.orange : T.red
+
+  return (
+    <div onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)}
+      style={{
+        background: T.surface, border: `1px solid ${h ? T.indigoMid : T.border}`,
+        borderRadius: T.radius,
+        boxShadow: h ? '0 6px 18px rgba(0,0,0,0.04)' : '0 1px 2px rgba(0,0,0,0.02)',
+        transition: 'all 0.2s',
+      }}>
+      <div onClick={onToggle} style={{
+        display: 'flex', alignItems: 'center', gap: 14, padding: '14px 18px',
+        cursor: 'pointer',
+      }}>
+        {/* Score chip */}
+        <div style={{
+          width: 44, height: 44, borderRadius: 10, flexShrink: 0,
+          background: `${tone}1a`, color: tone,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontFamily: T.headingFont, fontWeight: 700, fontSize: 16,
+        }}>
+          {score ?? '—'}
+        </div>
+
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontFamily: T.headingFont, fontWeight: 600, fontSize: 15, color: T.heading,
+            overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {session.scenarioName}
+          </div>
+          <div style={{ fontFamily: T.bodyFont, fontSize: 12, color: T.bodyLight, marginTop: 3, display: 'inline-flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+            <span>{formatDate(session.startedAt)}</span>
+            <span>·</span>
+            <span>{formatDuration(session.durationSecs)}</span>
+            <span>·</span>
+            <span style={{
+              display: 'inline-block', fontSize: 10, fontWeight: 600, fontFamily: T.bodyFont,
+              padding: '2px 8px', borderRadius: 6, letterSpacing: 0.2,
+              color: isLesson ? T.indigo : T.orange,
+              background: isLesson ? T.indigoLight : `${T.orange}1a`,
+            }}>{isLesson ? 'Lesson' : 'Custom'}</span>
+          </div>
+        </div>
+
+        <div style={{ textAlign: 'right', flexShrink: 0 }}>
+          <div style={{ fontFamily: T.headingFont, fontWeight: 700, fontSize: 18, color: T.heading, lineHeight: 1 }}>
+            {session.correctionCount ?? 0}
+          </div>
+          <div style={{ fontFamily: T.bodyFont, fontSize: 11, color: T.bodyLight, marginTop: 3 }}>corrections</div>
+        </div>
+
+        <div style={{ color: T.bodyLight, transition: 'transform 0.2s', transform: expanded ? 'rotate(90deg)' : 'none' }}>
+          <ChevronRight size={16} />
+        </div>
+      </div>
+
+      {expanded && (
+        <div style={{
+          padding: '0 18px 16px', borderTop: `1px solid ${T.borderLight}`,
+          fontFamily: T.bodyFont, fontSize: 13, color: T.body, lineHeight: 1.5,
+        }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 10, paddingTop: 12, marginBottom: 14 }}>
+            <Skill T={T} label="Score" value={score != null ? `${score}/100` : 'Pending'} />
+            <Skill T={T} label="Duration" value={formatDuration(session.durationSecs)} />
+            <Skill T={T} label="Corrections" value={String(session.correctionCount ?? 0)} />
+            <Skill T={T} label="Type" value={isLesson ? 'Lesson' : 'Custom'} />
+          </div>
+          <button onClick={(e) => { e.stopPropagation(); onView() }} style={{
+            fontFamily: T.bodyFont, fontSize: 12, fontWeight: 600,
+            border: `1px solid ${T.border}`, padding: '7px 14px', borderRadius: 8,
+            cursor: 'pointer', background: T.surface, color: T.heading,
+            display: 'inline-flex', alignItems: 'center', gap: 4,
+            transition: 'all 0.2s',
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = T.bgAlt)}
+          onMouseLeave={(e) => (e.currentTarget.style.background = T.surface)}>
+            View transcript <ChevronDown size={12} style={{ transform: 'rotate(-90deg)' }} />
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function Skill({ T, label, value }: { T: ReturnType<typeof useTheme>; label: string; value: string }) {
+  return (
+    <div>
+      <div style={{ fontSize: 11, color: T.bodyLight, fontWeight: 600, letterSpacing: 0.3, textTransform: 'uppercase' }}>{label}</div>
+      <div style={{ fontSize: 14, color: T.heading, fontWeight: 600, marginTop: 2 }}>{value}</div>
     </div>
   )
 }

@@ -33,12 +33,63 @@ export function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden" style={{ background: 'var(--sem-surface)' }}>
-      {/* Decorative blobs */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-primary-400/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary-400/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 pointer-events-none" />
+    <div className="min-h-screen flex relative overflow-hidden" style={{ background: 'var(--sem-surface)' }}>
 
-      <div className="bg-white rounded-3xl border border-neutral-100 p-6 sm:p-10 w-full max-w-md relative z-10 mx-4 shadow-2xl shadow-primary-100/50 animate-scale-in">
+      {/* Left branding panel — desktop only */}
+      <div className="hidden lg:flex flex-col justify-between w-[45%] shrink-0 p-12 relative overflow-hidden"
+        style={{ background: 'linear-gradient(135deg, oklch(0.55 0.22 275), oklch(0.45 0.20 310))' }}>
+        {/* Background orb rings */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full border border-white/10" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[360px] h-[360px] rounded-full border border-white/10" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[220px] h-[220px] rounded-full border border-white/15" />
+          <div className="absolute bottom-0 right-0 w-80 h-80 rounded-full blur-3xl" style={{ background: 'oklch(0.50 0.20 310 / 0.4)' }} />
+        </div>
+
+        {/* Logo */}
+        <div className="relative z-10 flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-white/20">
+            <Mic className="w-5 h-5 text-white" />
+          </div>
+          <span className="text-white font-bold text-xl tracking-tight" style={{ fontFamily: 'var(--font-heading)' }}>SpeakUp</span>
+        </div>
+
+        {/* Center content */}
+        <div className="relative z-10">
+          <h2 className="text-white font-bold leading-tight mb-4" style={{ fontSize: 'clamp(28px, 3vw, 40px)', fontFamily: 'var(--font-heading)' }}>
+            Your confidence<br />starts with one<br />conversation.
+          </h2>
+          <p className="text-white/70 text-base leading-relaxed mb-10">
+            Practice with an AI coach that never judges — just helps you get better, every day.
+          </p>
+          {/* Feature list */}
+          <div className="flex flex-col gap-4">
+            {[
+              { icon: '🎙️', text: 'Real-time voice conversations' },
+              { icon: '✅', text: 'Gentle grammar corrections' },
+              { icon: '📈', text: 'Track your fluency progress' },
+            ].map((f) => (
+              <div key={f.text} className="flex items-center gap-3">
+                <span className="text-lg">{f.icon}</span>
+                <span className="text-white/85 text-sm font-medium">{f.text}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Bottom quote */}
+        <div className="relative z-10 border-t border-white/15 pt-6">
+          <p className="text-white/60 text-sm italic">"I gave my first presentation in English after just 2 weeks of practice."</p>
+          <p className="text-white/50 text-xs mt-1">— Priya, Software Engineer</p>
+        </div>
+      </div>
+
+      {/* Right: form panel */}
+      <div className="flex-1 flex items-center justify-center relative overflow-hidden px-4 py-12">
+        <div className="absolute top-0 right-0 w-80 h-80 bg-primary-400/8 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-primary-400/8 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 pointer-events-none" />
+
+      <div className="bg-white rounded-3xl border border-neutral-100 p-6 sm:p-10 w-full max-w-md relative z-10 shadow-2xl shadow-primary-100/50 animate-scale-in">
         {/* Logo */}
         <div className="flex flex-col items-center mb-8 animate-slide-in-down delay-100">
           <div className="w-14 h-14 bg-primary-600 rounded-2xl flex items-center justify-center mb-4">
@@ -135,6 +186,7 @@ export function LoginPage() {
           <span className="w-2 h-2 bg-primary-400 rounded-full" />
           <span className="text-xs text-neutral-400 tracking-wider">SYSTEMS OPERATIONAL</span>
         </div>
+      </div>
       </div>
     </div>
   )

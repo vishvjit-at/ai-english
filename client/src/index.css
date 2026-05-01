@@ -789,3 +789,107 @@ html {
     transform: none;
   }
 }
+
+/* ── Homepage redesign: new keyframes ── */
+@keyframes orbPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.08); opacity: 0.5; }
+}
+@keyframes ringExpand {
+  0% { transform: scale(0.8); opacity: 0.6; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+@keyframes orbWave {
+  0%, 100% { transform: scaleY(0.4); opacity: 0.6; }
+  50% { transform: scaleY(1); opacity: 1; }
+}
+@keyframes bubbleFloat {
+  0%, 100% { transform: translateY(0); opacity: 0.85; }
+  50% { transform: translateY(-12px); opacity: 1; }
+}
+@keyframes waveBar {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.4); }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulseDot {
+  0%, 100% { box-shadow: 0 0 0 0 oklch(0.65 0.18 145 / 0.5); }
+  50% { box-shadow: 0 0 0 6px oklch(0.65 0.18 145 / 0); }
+}
+
+/* Scroll reveal */
+.hp-reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+.hp-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Dark mode — applied via html[data-dark] ── */
+html[data-dark] {
+  --sem-surface:      #0f1117;
+  --sem-surface-dark: #161b27;
+  --sem-neutral-50:   #0f1117;
+  --sem-neutral-100:  #1a1f2e;
+  --sem-neutral-200:  #2a2f3e;
+  --sem-neutral-300:  #3a3f50;
+  --sem-neutral-400:  #6b7589;
+  --sem-neutral-500:  #8892a4;
+  --sem-neutral-600:  #a0aab8;
+  --sem-neutral-700:  #c8d0dc;
+  --sem-neutral-800:  #e0e6f0;
+  --sem-neutral-900:  #f0f4f8;
+  --sem-glass-bg: rgba(15, 17, 23, 0.85);
+}
+
+html[data-dark] body {
+  background: #0f1117;
+  color: #a0aab8;
+}
+
+html[data-dark] .bg-white {
+  background-color: #1a1f2e !important;
+}
+
+html[data-dark] aside.bg-white {
+  background-color: #1a1f2e !important;
+  border-color: #2a2f3e !important;
+}
+
+html[data-dark] .border-neutral-100 {
+  border-color: #2a2f3e !important;
+}
+
+html[data-dark] .glass-card {
+  background: rgba(26, 31, 46, 0.85);
+  border-color: rgba(42, 47, 62, 0.6);
+}
+
+html[data-dark] input,
+html[data-dark] textarea,
+html[data-dark] select {
+  background-color: #1a1f2e;
+  border-color: #2a2f3e;
+  color: #f0f4f8;
+}
+
+html[data-dark] input::placeholder,
+html[data-dark] textarea::placeholder {
+  color: #6b7589;
+}
+
+html[data-dark] .skeleton {
+  background: linear-gradient(
+    90deg,
+    #1a1f2e 25%,
+    #222840 50%,
+    #1a1f2e 75%
+  );
+  background-size: 200% 100%;
+}

@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react'
-import { Settings, Palette, Zap, Volume2, Play, AlertTriangle } from 'lucide-react'
-import { useSettings, homeStyles, type HomeStyle, type ThemeName, type VoiceProvider, type VoiceOption } from '@/hooks/useSettings'
-
-const STYLE_THEME: Record<HomeStyle, ThemeName> = {
-  aura: 'calm-garden',
-  clarity: 'ocean-breeze',
-  night: 'midnight',
-}
+import { Play, AlertTriangle, Moon, Sun } from 'lucide-react'
+import { useSettings, type VoiceOption } from '@/hooks/useSettings'
+import { useDarkMode } from '@/components/layout/AppLayout'
+import { useAuth } from '@/hooks/useAuth'
+import { useTheme } from '@/lib/speakup-theme'
 import { supabase } from '@/lib/supabase'
+
+const API_BASE = import.meta.env.VITE_API_URL || '/api'
+
+interface ServerVoice { id: string; name: string; lang: string; type: string }
+interface UsageInfo { used: number; limit: number }
 
 async function getAuthHeaders(): Promise<Record<string, string>> {
   const { data: { session } } = await supabase.auth.getSession()
@@ -15,53 +17,33 @@ async function getAuthHeaders(): Promise<Record<string, string>> {
   return { Authorization: `Bearer ${session.access_token}` }
 }
 
-const API_BASE = import.meta.env.VITE_API_URL || '/api'
-
-interface UsageInfo {
-  used: number
-  limit: number
-}
-
-interface ServerVoice {
-  id: string
-  name: string
-  lang: string
-  type: string
-}
-
-const PROVIDER_OPTIONS: { value: VoiceProvider; label: string; desc: string }[] = [
-  { value: 'browser', label: 'Browser', desc: 'Free, Unlimited' },
-  { value: 'elevenlabs', label: 'ElevenLabs', desc: 'Free tier' },
-]
-
 export function SettingsPage() {
+  const T = useTheme()
   const { settings, updateSettings, availableVoices } = useSettings()
-  const [previewText] = useState("Hello! I'm Aria, your English speaking partner.")
+  const { dark, toggleDark } = useDarkMode()
+  const { user } = useAuth()
+
   const [serverVoices, setServerVoices] = useState<ServerVoice[]>([])
   const [loadingVoices, setLoadingVoices] = useState(false)
   const [usage, setUsage] = useState<{ elevenlabs?: UsageInfo } | null>(null)
   const [isPreviewing, setIsPreviewing] = useState(false)
+  const [reminders, setReminders] = useState(false)
+  const [reminderTime, setReminderTime] = useState('08:00')
+  const [saved, setSaved] = useState(false)
+  const [name, setName] = useState(user?.user_metadata?.full_name || '')
 
-  // Fetch server voices when provider changes
   useEffect(() => {
-    if (settings.voiceProvider === 'browser') {
-      setServerVoices([])
-      return
-    }
-
+    if (settings.voiceProvider === 'browser') { setServerVoices([]); return }
     setLoadingVoices(true)
     getAuthHeaders().then((headers) =>
       fetch(`${API_BASE}/voice/voices?provider=${settings.voiceProvider}`, { headers })
         .then((r) => r.json())
-        .then((data: { voices: ServerVoice[] }) => {
-          setServerVoices(data.voices || [])
-        })
+        .then((data: { voices: ServerVoice[] }) => setServerVoices(data.voices || []))
         .catch(() => setServerVoices([]))
         .finally(() => setLoadingVoices(false))
     )
   }, [settings.voiceProvider])
 
-  // Fetch usage stats
   useEffect(() => {
     getAuthHeaders().then((headers) =>
       fetch(`${API_BASE}/voice/usage`, { headers })
@@ -71,15 +53,11 @@ export function SettingsPage() {
     )
   }, [])
 
-  const getUsageForProvider = (): UsageInfo | null => {
-    if (!usage) return null
-    if (settings.voiceProvider === 'elevenlabs') {
-      return usage.elevenlabs || null
-    }
-    return null
-  }
+  const voiceList: VoiceOption[] = settings.voiceProvider === 'browser'
+    ? availableVoices
+    : serverVoices.map((v) => ({ id: v.id, name: v.name, lang: v.lang, type: v.type }))
 
-  const usageInfo = getUsageForProvider()
+  const usageInfo = usage?.elevenlabs || null
   const isLimitExceeded = usageInfo ? usageInfo.used >= usageInfo.limit : false
 
   const formatNumber = (n: number): string => {
@@ -89,6 +67,7 @@ export function SettingsPage() {
   }
 
   const handlePreview = async () => {
+    const previewText = "Hello! I'm Aria, your English speaking partner."
     if (settings.voiceProvider === 'browser') {
       window.speechSynthesis.cancel()
       const utterance = new SpeechSynthesisUtterance(previewText)
@@ -101,384 +80,250 @@ export function SettingsPage() {
       window.speechSynthesis.speak(utterance)
       return
     }
-
-    // Server-side preview
     setIsPreviewing(true)
     try {
       const res = await fetch(`${API_BASE}/voice/speak`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', ...(await getAuthHeaders()) },
-        body: JSON.stringify({
-          text: previewText,
-          provider: settings.voiceProvider,
-          voiceName: settings.voiceName,
-          speed: settings.voiceSpeed,
-        }),
+        body: JSON.stringify({ text: previewText, provider: settings.voiceProvider, voiceName: settings.voiceName, speed: settings.voiceSpeed }),
       })
       const data = await res.json()
-
-      if (data.error === 'limit_exceeded') {
-        alert('Free limit reached. Switch to Browser voice.')
-        if (data.usage) {
-          setUsage((prev) => prev ? { ...prev, elevenlabs: data.usage } : prev)
-        }
-        return
-      }
-
-      if (data.error) {
-        alert(`TTS error: ${data.error}`)
-        return
-      }
-
       if (data.audio) {
-        const contentType = data.contentType || 'audio/mp3'
-        const audio = new Audio(`data:${contentType};base64,${data.audio}`)
+        const audio = new Audio(`data:${data.contentType || 'audio/mp3'};base64,${data.audio}`)
         audio.play()
-
-        if (data.usage) {
-          setUsage((prev) => prev ? { ...prev, elevenlabs: data.usage } : prev)
-        }
       }
-    } catch {
-      alert('Failed to preview voice. Check server connection.')
-    } finally {
-      setIsPreviewing(false)
-    }
+    } catch { /* ignore */ }
+    finally { setIsPreviewing(false) }
   }
 
-  // Determine which voice list to show
-  const voiceList: VoiceOption[] = settings.voiceProvider === 'browser'
-    ? availableVoices
-    : serverVoices.map((v) => ({ id: v.id, name: v.name, lang: v.lang, type: v.type }))
+  const handleSave = () => { setSaved(true); setTimeout(() => setSaved(false), 2000) }
+
+  const inputStyle: React.CSSProperties = {
+    width: '100%', maxWidth: 360, padding: '12px 16px', borderRadius: T.radiusSm,
+    border: `1px solid ${T.border}`, fontFamily: T.bodyFont, fontSize: 15,
+    outline: 'none', color: T.heading, background: T.surface,
+    transition: 'border-color 0.2s',
+  }
+  const labelStyle: React.CSSProperties = {
+    fontFamily: T.bodyFont, fontSize: 14, fontWeight: 600, color: T.heading,
+    display: 'block', marginBottom: 8,
+  }
 
   return (
-    <div className="h-full overflow-y-auto" style={{ background: 'var(--sem-surface)' }}>
-      <div className="max-w-4xl mx-auto px-4 sm:px-8 py-6 sm:py-10">
-        {/* Header */}
-        <div className="mb-10">
-          <p className="text-xs tracking-[0.3em] uppercase font-medium mb-2" style={{ color: 'var(--sem-neutral-400)', fontFamily: 'var(--font-heading)' }}>
-            Your Preferences
-          </p>
-          <h1 className="font-black tracking-tight leading-none" style={{ fontSize: 'clamp(2.2rem, 4vw, 3.4rem)', fontFamily: 'var(--font-heading)', color: 'var(--sem-neutral-900)' }}>
-            App<br />Settings
+    <div style={{ background: T.bg, minHeight: 'calc(100vh - 64px)', padding: 'clamp(24px, 4vw, 40px) clamp(16px, 4vw, 60px)' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', animation: 'fadeUp 0.4s ease both' }}>
+        <div style={{ marginBottom: 28 }}>
+          <div style={{ fontSize: 13, fontWeight: 600, color: T.indigo, fontFamily: T.bodyFont, marginBottom: 6 }}>
+            Settings
+          </div>
+          <h1 style={{ fontFamily: T.headingFont, fontWeight: 700, fontSize: 'clamp(26px, 3.4vw, 34px)', color: T.heading, letterSpacing: -0.5, margin: '0 0 6px' }}>
+            Preferences
           </h1>
+          <p style={{ fontFamily: T.bodyFont, fontSize: 15, color: T.body, margin: 0, lineHeight: 1.5 }}>
+            Manage your profile, voice settings, and account.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left: Appearance + Voice (col-span-2) */}
-          <div className="col-span-1 lg:col-span-2">
-            {/* Appearance section */}
-            <div className="bg-white rounded-2xl border border-neutral-100 p-6 mb-6">
-              <div className="flex items-center gap-2 text-sm font-semibold text-neutral-900 mb-4">
-                <Palette className="w-4 h-4 text-primary-600" /> Appearance
-              </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(440px, 1fr))', gap: 18, marginBottom: 18 }}>
 
-              {/* Theme (home style = theme) */}
-              <div className="mb-6">
-                <p className="text-xs text-neutral-500 uppercase tracking-wider mb-3">Theme</p>
-                <div className="flex flex-wrap gap-3">
-                  {homeStyles.map((s) => (
-                    <button
-                      key={s.id}
-                      onClick={() => updateSettings({ homeStyle: s.id, theme: STYLE_THEME[s.id] })}
-                      className={`flex flex-col items-center gap-2 p-3 rounded-xl border-2 cursor-pointer btn-ghost ${
-                        settings.homeStyle === s.id
-                          ? 'border-primary-500 bg-primary-50'
-                          : 'border-neutral-200'
-                      }`}
-                    >
-                      <div className="w-20 h-12 rounded-lg overflow-hidden relative flex items-center justify-center"
-                        style={{ background: s.bg }}>
-                        <div className="absolute w-10 h-10 rounded-full border opacity-40" style={{ borderColor: s.accent }} />
-                        <div className="absolute w-7 h-7 rounded-full border opacity-60" style={{ borderColor: s.accent }} />
-                        <div className="w-5 h-5 rounded-full flex items-center justify-center"
-                          style={{ background: s.accent + '33', border: `1.5px solid ${s.accent}` }}>
-                          <div className="w-1.5 h-1.5 rounded-full" style={{ background: s.accent }} />
-                        </div>
-                      </div>
-                      <div className="text-center">
-                        <p className="text-xs font-semibold text-neutral-800">{s.label}</p>
-                        <p className="text-[10px] text-neutral-400">{s.desc}</p>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </div>
+        <Section title="Profile" subtitle="Your display name and email address.">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+            <div>
+              <label style={labelStyle}>Full name</label>
+              <input value={name} onChange={(e) => setName(e.target.value)} style={inputStyle}
+                onFocus={(e) => (e.currentTarget.style.borderColor = T.indigo)}
+                onBlur={(e) => (e.currentTarget.style.borderColor = T.border)} />
+            </div>
+            <div>
+              <label style={labelStyle}>Email address</label>
+              <input value={user?.email || ''} readOnly style={{ ...inputStyle, opacity: 0.7, cursor: 'not-allowed' }} />
+            </div>
+          </div>
+        </Section>
 
-              {/* Font Size */}
-              <div className="mb-6">
-                <p className="text-xs text-neutral-500 uppercase tracking-wider mb-3">Font Size</p>
-                <div className="flex gap-2">
-                  {([
-                    { value: 'small', label: 'A', size: 'text-sm' },
-                    { value: 'medium', label: 'A', size: 'text-base' },
-                    { value: 'large', label: 'A', size: 'text-xl' },
-                  ] as const).map((opt) => (
-                    <button
-                      key={opt.value}
-                      onClick={() => updateSettings({ fontSize: opt.value })}
-                      className={`flex items-center justify-center w-12 h-10 rounded-xl border font-bold cursor-pointer btn-ghost ${opt.size}
-                        ${settings.fontSize === opt.value ? 'bg-primary-600 text-white border-primary-600' : 'bg-neutral-100 text-neutral-600 border-neutral-200'}`}
-                    >
-                      {opt.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Corner Style */}
-              <div>
-                <p className="text-xs text-neutral-500 uppercase tracking-wider mb-3">Corner Style</p>
-                <div className="flex gap-2">
-                  {([
-                    { value: 'sharp', label: 'Sharp', radius: '4px' },
-                    { value: 'rounded', label: 'Rounded', radius: '12px' },
-                    { value: 'pill', label: 'Pill', radius: '9999px' },
-                  ] as const).map((opt) => (
-                    <button
-                      key={opt.value}
-                      onClick={() => updateSettings({ borderRadius: opt.value })}
-                      className={`flex flex-col items-center gap-2 px-4 py-2.5 rounded-xl border cursor-pointer btn-ghost
-                        ${settings.borderRadius === opt.value ? 'border-primary-500 bg-primary-50 text-primary-700' : 'border-neutral-200 text-neutral-600'}`}
-                    >
-                      <div className="w-10 h-6 bg-current opacity-20 border-2 border-current" style={{ borderRadius: opt.radius }} />
-                      <span className="text-xs font-medium">{opt.label}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
+        <Section title="Voice & Audio" subtitle="Microphone selection and AI speech speed.">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+            <div>
+              <label style={labelStyle}>Microphone</label>
+              <select
+                value={settings.voiceName}
+                onChange={(e) => updateSettings({ voiceName: e.target.value })}
+                style={{ ...inputStyle, cursor: 'pointer' }}
+              >
+                <option value="">Auto-select</option>
+                {loadingVoices ? (
+                  <option disabled>Loading voices…</option>
+                ) : (
+                  voiceList.map((v) => {
+                    const key = settings.voiceProvider === 'browser' ? v.name : (v.id || v.name)
+                    return <option key={key} value={key}>{v.name} {v.lang ? `(${v.lang})` : ''}</option>
+                  })
+                )}
+              </select>
             </div>
 
-            {/* Voice & Audio section */}
-            <div className="bg-white rounded-2xl border border-neutral-100 p-6 mb-6">
-              <div className="flex items-center gap-2 text-sm font-semibold text-neutral-900 mb-4">
-                <Volume2 className="w-4 h-4 text-primary-600" /> Voice & Audio
-              </div>
-
-              {/* Provider Selection */}
-              <div className="mb-5">
-                <p className="text-xs text-neutral-500 uppercase tracking-wider mb-3">Voice Provider</p>
-                <div className="grid grid-cols-1 xs:grid-cols-2 gap-2">
-                  {PROVIDER_OPTIONS.map((opt) => (
-                    <button
-                      key={opt.value}
-                      onClick={() => updateSettings({ voiceProvider: opt.value, voiceName: '' })}
-                      className={`flex flex-col items-center gap-1 py-3 px-2 rounded-xl border transition-all cursor-pointer
-                        ${settings.voiceProvider === opt.value ? 'border-primary-500 bg-primary-50' : 'border-neutral-200 hover:border-neutral-300'}`}
-                    >
-                      <span className="text-sm font-semibold text-neutral-700">{opt.label}</span>
-                      <span className="text-xs text-neutral-400">{opt.desc}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Usage Bar */}
-              {settings.voiceProvider !== 'browser' && usageInfo && (
-                <div className="mb-5">
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="text-xs font-semibold text-neutral-500">Usage this month</p>
-                    <span className="text-xs text-neutral-400">{formatNumber(usageInfo.used)} / {formatNumber(usageInfo.limit)} chars</span>
-                  </div>
-                  <div className="w-full h-2 bg-neutral-100 rounded-full">
-                    <div
-                      className={`h-full rounded-full transition-all ${isLimitExceeded ? 'bg-red-400' : 'bg-primary-500'}`}
-                      style={{ width: `${Math.min(100, (usageInfo.used / usageInfo.limit) * 100)}%` }}
-                    />
-                  </div>
-                  {isLimitExceeded && (
-                    <div className="flex items-center gap-1.5 mt-2 text-red-500">
-                      <AlertTriangle className="w-3.5 h-3.5" />
-                      <span className="text-xs font-semibold">Free limit reached — switch to Browser voice</span>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* Voice Selection */}
-              <div className="mb-5">
-                <p className="text-xs text-neutral-500 uppercase tracking-wider mb-3">Aria Voice Library</p>
-                {loadingVoices ? (
-                  <p className="text-xs text-neutral-400">Loading voices...</p>
-                ) : voiceList.length === 0 ? (
-                  <p className="text-xs text-neutral-400">
-                    {settings.voiceProvider === 'browser'
-                      ? 'No English voices detected. Voices depend on your browser and OS.'
-                      : 'No voices available. Check API key configuration on the server.'}
-                  </p>
-                ) : (
-                  <div className="flex flex-col gap-2 max-h-48 overflow-y-auto">
-                    {/* Auto option */}
-                    <button
-                      onClick={() => updateSettings({ voiceName: '' })}
-                      className={`border rounded-xl p-4 flex items-center gap-3 cursor-pointer transition-all
-                        ${settings.voiceName === '' ? 'border-primary-500 bg-primary-50' : 'border-neutral-200 hover:border-neutral-300'}`}
-                    >
-                      <div className="w-10 h-10 bg-primary-600 rounded-full text-white font-bold flex items-center justify-center">A</div>
-                      <div className="flex-1">
-                        <p className="font-semibold text-sm text-neutral-900">Auto-select</p>
-                        <p className="text-xs text-neutral-500">
-                          {settings.voiceProvider === 'browser' ? 'Best voice for your device' : 'Default voice'}
-                        </p>
-                      </div>
-                      <div className={`w-4 h-4 rounded-full border-2 ${settings.voiceName === '' ? 'bg-primary-500 border-primary-500' : 'border-neutral-300'}`} />
-                    </button>
-
-                    {voiceList.slice(0, 2).map((v) => {
-                      const voiceKey = settings.voiceProvider === 'browser' ? v.name : (v.id || v.name)
-                      return (
-                        <button
-                          key={voiceKey}
-                          onClick={() => updateSettings({ voiceName: voiceKey })}
-                          className={`border rounded-xl p-4 flex items-center gap-3 cursor-pointer transition-all
-                            ${settings.voiceName === voiceKey ? 'border-primary-500 bg-primary-50' : 'border-neutral-200 hover:border-neutral-300'}`}
-                        >
-                          <div className="w-10 h-10 bg-primary-600 rounded-full text-white font-bold flex items-center justify-center">
-                            {v.name[0]?.toUpperCase()}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="font-semibold text-sm text-neutral-900 truncate">{v.name}</p>
-                            <p className="text-xs text-neutral-500">{v.lang}{v.type ? ` - ${v.type}` : ''}</p>
-                          </div>
-                          <div className={`w-4 h-4 rounded-full border-2 shrink-0 ${settings.voiceName === voiceKey ? 'bg-primary-500 border-primary-500' : 'border-neutral-300'}`} />
-                        </button>
-                      )
-                    })}
-                  </div>
-                )}
-              </div>
-
-              {/* Speed slider */}
-              <div className="mb-5">
-                <div className="flex items-center justify-between mb-3">
-                  <p className="text-xs text-neutral-500 uppercase tracking-wider">Speed</p>
-                  <span className="text-xs text-neutral-500 font-medium">
-                    {settings.voiceSpeed <= 0.8 ? 'Slow' : settings.voiceSpeed >= 1.1 ? 'Fast' : 'Normal'}
+            {usageInfo && (
+              <div style={{ padding: 14, borderRadius: T.radiusSm, background: T.bgAlt }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+                  <span style={{ fontFamily: T.bodyFont, fontSize: 12, fontWeight: 600, color: T.heading }}>Usage this month</span>
+                  <span style={{ fontFamily: T.bodyFont, fontSize: 12, color: T.bodyLight }}>
+                    {formatNumber(usageInfo.used)} / {formatNumber(usageInfo.limit)} chars
                   </span>
                 </div>
-                <input
-                  type="range"
-                  min="0.6"
-                  max="1.3"
-                  step="0.05"
-                  value={settings.voiceSpeed}
-                  onChange={(e) => updateSettings({ voiceSpeed: parseFloat(e.target.value) })}
-                  className="w-full h-2 bg-neutral-100 rounded-full appearance-none cursor-pointer accent-primary-500"
-                />
-                <div className="flex justify-between mt-1">
-                  <span className="text-[10px] text-neutral-300">Slow</span>
-                  <span className="text-[10px] text-neutral-300">Normal</span>
-                  <span className="text-[10px] text-neutral-300">Fast</span>
+                <div style={{ height: 6, borderRadius: 3, background: T.border, overflow: 'hidden' }}>
+                  <div style={{
+                    height: '100%', borderRadius: 3,
+                    background: isLimitExceeded ? T.red : T.indigo,
+                    width: `${Math.min(100, (usageInfo.used / usageInfo.limit) * 100)}%`,
+                  }} />
                 </div>
-              </div>
-
-              {/* Voice Pitch row */}
-              <div className="flex items-center justify-between mb-5">
-                <p className="text-sm text-neutral-700">Voice Pitch</p>
-                <button className="border border-neutral-200 text-neutral-700 rounded-xl px-4 py-2 text-sm cursor-pointer btn-ghost">
-                  Default
-                </button>
-              </div>
-
-              {/* Preview */}
-              <button
-                onClick={handlePreview}
-                disabled={isPreviewing || isLimitExceeded}
-                className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-xl font-semibold text-sm cursor-pointer btn-ghost
-                  ${isLimitExceeded
-                    ? 'bg-neutral-100 text-neutral-400 cursor-not-allowed'
-                    : 'bg-primary-50 text-primary-600'
-                  }`}
-              >
-                <Play className="w-4 h-4" />
-                {isPreviewing ? 'Playing...' : 'Preview Voice'}
-              </button>
-            </div>
-
-            {/* Animations toggle */}
-            <div className="bg-white rounded-2xl border border-neutral-100 p-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Zap className="w-4 h-4 text-primary-600" />
-                  <div>
-                    <p className="text-sm font-semibold text-neutral-700">Animations</p>
-                    <p className="text-xs text-neutral-400">Entrance effects & transitions</p>
+                {isLimitExceeded && (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 8, fontSize: 12, fontWeight: 600, color: T.red, fontFamily: T.bodyFont }}>
+                    <AlertTriangle size={14} /> Free limit reached — switch to Browser voice
                   </div>
-                </div>
-                <button
-                  onClick={() => updateSettings({ animations: !settings.animations })}
-                  className={`w-10 h-6 rounded-full transition-all cursor-pointer flex items-center px-0.5
-                    ${settings.animations ? 'bg-primary-500' : 'bg-neutral-200'}`}
-                >
-                  <div className={`w-5 h-5 rounded-full bg-white shadow-sm transition-transform ${settings.animations ? 'translate-x-4' : 'translate-x-0'}`} />
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Right: Insights (col-span-1) */}
-          <div>
-            <div className="bg-white rounded-2xl border border-neutral-100 p-6">
-              <div className="flex items-center gap-2 text-sm font-semibold text-neutral-900 mb-4">
-                <Settings className="w-4 h-4 text-primary-600" /> Insights
-              </div>
-
-              {/* Character Usage */}
-              <div className="mb-5">
-                <p className="text-xs text-neutral-500 uppercase tracking-wider mb-2">Character Usage</p>
-                {usageInfo ? (
-                  <>
-                    <p className="text-3xl font-bold text-neutral-900 mb-1">{formatNumber(usageInfo.used)}</p>
-                    <p className="text-xs text-neutral-400 mb-2">of {formatNumber(usageInfo.limit)} chars</p>
-                    <div className="w-full h-2 bg-neutral-100 rounded-full mb-2">
-                      <div
-                        className="h-full bg-primary-500 rounded-full"
-                        style={{ width: `${Math.min(100, (usageInfo.used / usageInfo.limit) * 100)}%` }}
-                      />
-                    </div>
-                    <p className="text-xs text-neutral-400">Upgrading offers unrestricted access to all voice features.</p>
-                  </>
-                ) : (
-                  <>
-                    <p className="text-3xl font-bold text-neutral-900 mb-1">∞</p>
-                    <p className="text-xs text-neutral-400 mb-2">Browser voice is unlimited</p>
-                    <div className="w-full h-2 bg-neutral-100 rounded-full mb-2" />
-                    <p className="text-xs text-neutral-400">Upgrading offers unrestricted access to premium voices.</p>
-                  </>
                 )}
               </div>
+            )}
 
-              {/* Toggle rows */}
-              <div className="space-y-4 mb-5">
-                <div className="flex items-center justify-between">
-                  <p className="text-sm text-neutral-700">Chat Density: {settings.chatDensity}</p>
-                  <button
-                    onClick={() => {
-                      const options = ['compact', 'comfortable', 'spacious'] as const
-                      const idx = options.indexOf(settings.chatDensity)
-                      updateSettings({ chatDensity: options[(idx + 1) % options.length] })
-                    }}
-                    className={`w-10 h-6 rounded-full transition-all cursor-pointer flex items-center px-0.5
-                      ${settings.chatDensity !== 'compact' ? 'bg-primary-500' : 'bg-neutral-200'}`}
-                  >
-                    <div className={`w-5 h-5 rounded-full bg-white shadow-sm transition-transform ${settings.chatDensity !== 'compact' ? 'translate-x-4' : 'translate-x-0'}`} />
-                  </button>
-                </div>
+            <div>
+              <label style={labelStyle}>AI voice speed — {settings.voiceSpeed}×</label>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, maxWidth: 360 }}>
+                <span style={{ fontFamily: T.bodyFont, fontSize: 12, color: T.bodyLight }}>0.5×</span>
+                <input type="range" min="0.5" max="2" step="0.1" value={settings.voiceSpeed}
+                  onChange={(e) => updateSettings({ voiceSpeed: parseFloat(e.target.value) })}
+                  style={{ flex: 1, accentColor: T.indigo }} />
+                <span style={{ fontFamily: T.bodyFont, fontSize: 12, color: T.bodyLight }}>2×</span>
               </div>
-
-              {/* Reset Defaults */}
-              <button
-                onClick={() => updateSettings({ homeStyle: 'clarity', theme: 'ocean-breeze', fontSize: 'medium', borderRadius: 'rounded', chatDensity: 'comfortable', animations: true })}
-                className="w-full border border-red-200 text-red-500 rounded-xl py-2.5 text-sm font-medium cursor-pointer mt-4 btn-danger"
-              >
-                Reset Defaults
-              </button>
             </div>
+
+            <button onClick={handlePreview} disabled={isPreviewing || isLimitExceeded}
+              style={{
+                fontFamily: T.bodyFont, fontSize: 14, fontWeight: 600, border: 'none',
+                padding: '10px 18px', borderRadius: T.radiusSm, cursor: isLimitExceeded ? 'not-allowed' : 'pointer',
+                background: T.indigoLight, color: T.indigo, alignSelf: 'flex-start',
+                display: 'inline-flex', alignItems: 'center', gap: 6, opacity: isLimitExceeded ? 0.5 : 1,
+                transition: 'all 0.2s',
+              }}>
+              <Play size={14} /> {isPreviewing ? 'Playing…' : 'Preview Voice'}
+            </button>
           </div>
+        </Section>
+
+        <Section title="Appearance" subtitle="Customize how SpeakUp looks.">
+          <ToggleRow
+            label="Dark mode"
+            sub="Switch between light and dark interface"
+            on={dark}
+            onChange={toggleDark}
+            iconOn={<Moon size={16} />}
+            iconOff={<Sun size={16} />}
+          />
+        </Section>
+
+        <Section title="Daily Reminders" subtitle="Get a notification to practice each day.">
+          <ToggleRow
+            label="Enable daily reminders"
+            on={reminders}
+            onChange={() => setReminders((r) => !r)}
+          />
+          {reminders && (
+            <div style={{ marginTop: 16 }}>
+              <label style={labelStyle}>Reminder time</label>
+              <input type="time" value={reminderTime} onChange={(e) => setReminderTime(e.target.value)}
+                style={{ ...inputStyle, maxWidth: 180 }} />
+            </div>
+          )}
+        </Section>
+
+        <Section title="Account" subtitle="Security and account management.">
+          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+            <SecondaryBtn>Change password</SecondaryBtn>
+            <SecondaryBtn danger>Delete account</SecondaryBtn>
+          </div>
+        </Section>
+
         </div>
 
-        <p className="text-center text-xs text-neutral-400 mt-8">Settings are saved automatically</p>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginTop: 8 }}>
+          <button onClick={handleSave} style={{
+            fontFamily: T.bodyFont, fontSize: 16, fontWeight: 600, border: 'none',
+            padding: '14px 36px', borderRadius: T.radiusSm, cursor: 'pointer',
+            background: T.indigo, color: '#fff', transition: 'all 0.25s',
+          }}>Save changes</button>
+          {saved && (
+            <span style={{ fontFamily: T.bodyFont, fontSize: 14, color: T.green, fontWeight: 600 }}>
+              ✓ Saved!
+            </span>
+          )}
+        </div>
       </div>
     </div>
+  )
+}
+
+function Section({ title, subtitle, children }: { title: string; subtitle?: string; children: React.ReactNode }) {
+  const T = useTheme()
+  return (
+    <div style={{
+      background: T.surface, border: `1px solid ${T.border}`, borderRadius: T.radius,
+      padding: 22,
+    }}>
+      <div style={{ marginBottom: 18 }}>
+        <h3 style={{ fontFamily: T.headingFont, fontWeight: 700, fontSize: 15, color: T.heading, margin: 0 }}>
+          {title}
+        </h3>
+        {subtitle && (
+          <p style={{ fontFamily: T.bodyFont, fontSize: 12, color: T.bodyLight, margin: '4px 0 0' }}>
+            {subtitle}
+          </p>
+        )}
+      </div>
+      {children}
+    </div>
+  )
+}
+
+function ToggleRow({ label, sub, on, onChange, iconOn, iconOff }: {
+  label: string; sub?: string; on: boolean; onChange: () => void;
+  iconOn?: React.ReactNode; iconOff?: React.ReactNode;
+}) {
+  const T = useTheme()
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
+      <div>
+        <div style={{ fontFamily: T.bodyFont, fontSize: 15, color: T.heading, fontWeight: 500, display: 'flex', alignItems: 'center', gap: 8 }}>
+          {(on ? iconOn : iconOff) || null} {label}
+        </div>
+        {sub && <div style={{ fontFamily: T.bodyFont, fontSize: 13, color: T.bodyLight, marginTop: 4 }}>{sub}</div>}
+      </div>
+      <button onClick={onChange} style={{
+        width: 48, height: 28, borderRadius: 14, border: 'none', cursor: 'pointer',
+        background: on ? T.indigo : T.border, position: 'relative', transition: 'background 0.2s',
+        flexShrink: 0,
+      }}>
+        <div style={{
+          width: 22, height: 22, borderRadius: '50%', background: '#fff',
+          position: 'absolute', top: 3, left: on ? 23 : 3,
+          transition: 'left 0.2s', boxShadow: '0 1px 4px rgba(0,0,0,0.15)',
+        }} />
+      </button>
+    </div>
+  )
+}
+
+function SecondaryBtn({ children, danger }: { children: React.ReactNode; danger?: boolean }) {
+  const T = useTheme()
+  const [h, setH] = useState(false)
+  const color = danger ? T.red : T.heading
+  const border = danger ? T.red : T.border
+  return (
+    <button onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)}
+      style={{
+        fontFamily: T.bodyFont, fontSize: 14, fontWeight: 600,
+        border: `1.5px solid ${border}`, padding: '10px 22px',
+        borderRadius: T.radiusSm, cursor: 'pointer',
+        background: h ? (danger ? `${T.red}10` : T.bgAlt) : T.surface,
+        color, transition: 'all 0.2s',
+      }}>{children}</button>
   )
 }

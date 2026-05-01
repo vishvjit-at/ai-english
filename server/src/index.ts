@@ -6,6 +6,7 @@ import authRoutes from './routes/auth.js'
 import conversationRoutes from './routes/conversation.js'
 import voiceRoutes from './routes/voice.js'
 import sessionRoutes from './routes/sessions.js'
+import quizRoutes from './routes/quiz.js'
 import { runMigrations } from './lib/migrate.js'
 
 const app = express()
@@ -31,6 +32,7 @@ app.use('/api', authRoutes)
 app.use('/api', conversationRoutes)
 app.use('/api', voiceRoutes)
 app.use('/api', sessionRoutes)
+app.use('/api', quizRoutes)
 
 // Run migrations then start server
 runMigrations()

@@ -154,3 +154,50 @@ export async function evaluateVocabulary(
 ): Promise<{ evaluation: VocabEvaluation; vocabulary: VocabularyItem }> {
   return post(`/vocabulary/${id}/evaluate`, { word, sentence })
 }
+
+// ── Quiz ──
+
+export interface QuizModuleInfo {
+  id: string
+  label: string
+  icon: string
+  description: string
+  seen: number
+}
+export interface QuizQuestionPublic {
+  id: string
+  module: string
+  prompt: string
+  options: string[]
+}
+export interface QuizResultRow {
+  questionId: string
+  prompt: string
+  options: string[]
+  chosenIdx: number
+  correctIdx: number
+  correct: boolean
+  explanation: string | null
+}
+export interface QuizAttemptHistory {
+  id: string
+  module: string
+  mode: 'module' | 'daily'
+  score: number
+  total: number
+  finishedAt: string
+  moduleLabel: string
+}
+
+export async function fetchQuizModules(): Promise<{ modules: QuizModuleInfo[]; dailyDoneToday: boolean }> {
+  return get('/quiz/modules')
+}
+export async function startQuiz(moduleId: string): Promise<{ attemptId: string; module: string; questions: QuizQuestionPublic[] }> {
+  return post('/quiz/start', { module: moduleId })
+}
+export async function submitQuiz(attemptId: string, answers: { questionId: string; chosenIdx: number }[]): Promise<{ attemptId: string; score: number; total: number; results: QuizResultRow[] }> {
+  return post('/quiz/submit', { attemptId, answers })
+}
+export async function fetchQuizHistory(): Promise<{ attempts: QuizAttemptHistory[] }> {
+  return get('/quiz/history')
+}

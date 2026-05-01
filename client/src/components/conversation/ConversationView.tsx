@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Send, RotateCcw, Volume2, CheckCircle, Loader2 } from 'lucide-react'
+import { Send, RotateCcw, CheckCircle, Loader2, ArrowLeft } from 'lucide-react'
 import { VoiceButton } from '@/components/voice/VoiceButton'
 import { AudioVisualizer } from '@/components/voice/AudioVisualizer'
 import { MessageBubble } from './MessageBubble'
@@ -8,6 +8,7 @@ import { HintBubble } from './HintBubble'
 import { useConversation } from '@/hooks/useConversation'
 import { useIdleHint } from '@/hooks/useIdleHint'
 import { useWebSpeechSTT, useWebSpeechTTS } from '@/hooks/useWebSpeech'
+import { useTheme } from '@/lib/speakup-theme'
 import type { UserContext } from '@/lib/types'
 
 interface ConversationViewProps {
@@ -23,8 +24,16 @@ interface ConversationViewProps {
   lessonObjective?: string
 }
 
-export function ConversationView({ config, userContext, starterMessage, lessonObjective }: ConversationViewProps) {
+function formatElapsed(secs: number): string {
+  const m = Math.floor(secs / 60)
+  const s = secs % 60
+  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+}
+
+export function ConversationView({ config, userContext, starterMessage }: ConversationViewProps) {
+  const T = useTheme()
   const [textInput, setTextInput] = useState('')
+  const [elapsed, setElapsed] = useState(0)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const hasInitialized = useRef(false)
   const navigate = useNavigate()
@@ -45,6 +54,11 @@ export function ConversationView({ config, userContext, starterMessage, lessonOb
   })
 
   useEffect(() => {
+    const id = setInterval(() => setElapsed((s) => s + 1), 1000)
+    return () => clearInterval(id)
+  }, [])
+
+  useEffect(() => {
     if (hasInitialized.current) return
     hasInitialized.current = true
     initWithStarterMessage(starterMessage)
@@ -56,11 +70,8 @@ export function ConversationView({ config, userContext, starterMessage, lessonOb
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
-  // Auto-end lesson when complete
   useEffect(() => {
-    if (lessonComplete && !isSaving) {
-      handleEndConversation()
-    }
+    if (lessonComplete && !isSaving) handleEndConversation()
   }, [lessonComplete])
 
   const handleTextSend = async () => {
@@ -70,20 +81,16 @@ export function ConversationView({ config, userContext, starterMessage, lessonOb
     const r = await sendMessage(text)
     if (r) speak(r.response)
   }
-
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleTextSend() }
   }
-
   const handleReset = () => {
     stopSpeaking(); reset()
     initWithStarterMessage(starterMessage)
     setTimeout(() => speak(starterMessage), 300)
   }
-
   const handleEndConversation = async () => {
-    stopSpeaking()
-    stopListening()
+    stopSpeaking(); stopListening()
     try {
       const { sessionId } = await endConversation()
       navigate(`/history/${sessionId}`)
@@ -92,132 +99,163 @@ export function ConversationView({ config, userContext, starterMessage, lessonOb
     }
   }
 
-  const isLesson = !!config.lessonId
+  const correctionCount = messages.filter((m) => m.feedback?.show).length
+  const status = isSaving ? 'Saving…' : isSpeaking ? 'Speaking…' : isListening ? 'Listening…' : 'Session in progress'
 
   return (
-    <div className="flex flex-col h-full bg-white">
-      {/* Header */}
-      <div className="px-3 py-3 sm:px-6 sm:py-4 border-b border-neutral-100 flex items-center gap-3 sm:gap-4 bg-white shrink-0">
-        {/* Left: Aria info */}
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-primary-600 rounded-full text-white font-bold flex items-center justify-center shrink-0">
-            A
-          </div>
-          <div>
-            <p className="font-semibold text-neutral-900 text-sm">Aria</p>
-            <p className="text-xs text-neutral-400 flex items-center gap-1">
-              {isSaving ? 'Saving...'
-                : isSpeaking ? <><Volume2 className="w-3 h-3 text-primary-500" /> Speaking...</>
-                : isListening ? <><span className="w-1.5 h-1.5 bg-red-400 rounded-full animate-pulse" /> Listening...</>
-                : 'Ready to chat'}
-            </p>
-          </div>
-        </div>
-
-        {/* Center: AudioVisualizer */}
-        <div className="flex-1 flex justify-center">
-          {isSpeaking && <AudioVisualizer isActive={true} />}
-        </div>
-
-        {/* Right: actions */}
-        <div className="flex items-center gap-2">
-          <button
-            onClick={handleEndConversation}
-            disabled={isSaving || messages.length < 2}
-            className="h-9 px-4 rounded-xl bg-primary-600 text-white text-sm font-semibold flex items-center gap-1.5 hover-glow disabled:bg-neutral-100 disabled:text-neutral-400 disabled:cursor-not-allowed cursor-pointer"
-            title="End & Save"
-          >
-            {isSaving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <CheckCircle className="w-3.5 h-3.5" />}
-            <span className="hidden sm:inline">{isSaving ? 'Saving...' : 'End & Save'}</span>
+    <div style={{
+      display: 'flex', flexDirection: 'column',
+      height: 'calc(100vh - 64px)',
+      background: T.bg,
+    }}>
+      {/* Top bar */}
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '14px clamp(16px, 4vw, 32px)', borderBottom: `1px solid ${T.border}`,
+        background: T.surface, flexShrink: 0, gap: 16, flexWrap: 'wrap',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0 }}>
+          <button onClick={() => navigate(-1)} style={{
+            background: 'none', border: 'none', cursor: 'pointer',
+            color: T.body, padding: 6, display: 'flex', alignItems: 'center', justifyContent: 'center',
+            borderRadius: 8, transition: 'background 0.2s',
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = T.bgAlt)}
+          onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}>
+            <ArrowLeft size={20} />
           </button>
-          <button onClick={handleReset} className="w-9 h-9 rounded-xl bg-neutral-100 flex items-center justify-center cursor-pointer btn-icon" title="Restart">
-            <RotateCcw className="w-3.5 h-3.5 text-neutral-500" />
-          </button>
+          <div style={{ minWidth: 0 }}>
+            <div style={{ fontFamily: T.headingFont, fontWeight: 700, fontSize: 17, color: T.heading,
+              overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 360 }}>
+              {config.scenarioName}
+            </div>
+            <div style={{ fontFamily: T.bodyFont, fontSize: 13, color: T.bodyLight, display: 'flex', alignItems: 'center', gap: 6 }}>
+              {isSpeaking && <AudioVisualizer isActive={true} />}
+              <span>{status}</span>
+            </div>
+          </div>
         </div>
-      </div>
-
-      {/* Context bar */}
-      <div className="bg-primary-50 border-b border-primary-100 px-3 py-2 sm:px-6 flex items-center justify-between shrink-0">
-        <div className="flex-1 min-w-0 mr-2">
-          <p className="text-sm font-semibold text-primary-800">{config.scenarioName}</p>
-          {lessonObjective && <p className="text-xs text-primary-600">{lessonObjective}</p>}
-          {!isLesson && userContext.customScenario && <p className="text-xs text-primary-600 truncate">{userContext.customScenario}</p>}
-          {!isLesson && userContext.targetRole && <p className="text-xs text-primary-600">{userContext.targetRole}{userContext.targetCompany ? ` at ${userContext.targetCompany}` : ''}</p>}
-        </div>
-        <div className="flex items-center gap-2">
-          {isLesson && config.maxExchanges && (
-            <span className="text-xs font-semibold text-primary-700 bg-primary-100 px-2 py-0.5 rounded-full">
-              {exchangeCount}/{config.maxExchanges}
-            </span>
-          )}
-          <span className="text-xs font-semibold text-primary-600 uppercase bg-primary-50 px-2 py-0.5 rounded-full border border-primary-200">
-            {userContext.level}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+          <span style={{ fontFamily: T.bodyFont, fontSize: 14, color: T.body }}>
+            ⏱ {formatElapsed(elapsed)}
           </span>
+          <span style={{ fontFamily: T.bodyFont, fontSize: 14, color: T.orange, fontWeight: 600 }}>
+            ✏️ {correctionCount} correction{correctionCount !== 1 ? 's' : ''}
+          </span>
+          {config.lessonId && config.maxExchanges && (
+            <span style={{
+              fontSize: 12, fontWeight: 600, padding: '4px 12px',
+              borderRadius: 100, background: T.indigoLight, color: T.indigo,
+            }}>{exchangeCount}/{config.maxExchanges}</span>
+          )}
+          <button onClick={handleReset} title="Restart" style={{
+            width: 36, height: 36, borderRadius: 10, border: `1px solid ${T.border}`,
+            background: T.surface, color: T.body, cursor: 'pointer',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            transition: 'all 0.2s',
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = T.bgAlt)}
+          onMouseLeave={(e) => (e.currentTarget.style.background = T.surface)}>
+            <RotateCcw size={14} />
+          </button>
+          <button onClick={handleEndConversation} disabled={isSaving || messages.length < 2}
+            style={{
+              fontFamily: T.bodyFont, fontSize: 13, fontWeight: 600,
+              border: `1.5px solid ${T.border}`, padding: '8px 18px',
+              borderRadius: 10, cursor: isSaving || messages.length < 2 ? 'not-allowed' : 'pointer',
+              background: T.surface, color: T.heading,
+              opacity: isSaving || messages.length < 2 ? 0.5 : 1,
+              display: 'inline-flex', alignItems: 'center', gap: 6,
+              transition: 'all 0.2s',
+            }}>
+            {isSaving ? <Loader2 size={14} className="animate-spin" /> : <CheckCircle size={14} />}
+            End Session
+          </button>
         </div>
       </div>
 
-      {/* Lesson progress bar */}
-      {isLesson && config.maxExchanges && (
-        <div className="h-1 bg-neutral-100 shrink-0">
-          <div
-            className="h-full bg-primary-500 transition-all"
-            style={{ width: `${Math.min(100, (exchangeCount / config.maxExchanges) * 100)}%` }}
-          />
+      {/* Lesson progress */}
+      {config.lessonId && config.maxExchanges && (
+        <div style={{ height: 3, background: T.border, flexShrink: 0 }}>
+          <div style={{
+            height: '100%', background: T.indigo,
+            width: `${Math.min(100, (exchangeCount / config.maxExchanges) * 100)}%`,
+            transition: 'width 0.3s ease',
+          }} />
         </div>
       )}
 
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-3 py-4 sm:px-6 sm:py-6 space-y-1 bg-white">
+      {/* Chat */}
+      <div style={{
+        flex: 1, overflowY: 'auto', padding: 'clamp(20px, 4vw, 32px)',
+        display: 'flex', flexDirection: 'column', gap: 16,
+        background: T.bgAlt,
+      }}>
         {messages.map((msg, i) => (
           <MessageBubble key={msg.id} message={msg} index={i} />
         ))}
         {isThinking && (
-          <div className="flex items-start gap-2.5 animate-fade-in">
-            <div className="w-7 h-7 bg-primary-600 rounded-full text-white text-xs flex items-center justify-center flex-shrink-0 font-bold">A</div>
-            <div className="bg-neutral-100 rounded-2xl rounded-bl-sm px-4 py-2.5">
-              <div className="flex gap-1.5">
-                <span className="w-2 h-2 bg-neutral-400 rounded-full animate-bounce" style={{ animationDelay: '-0.3s' }} />
-                <span className="w-2 h-2 bg-neutral-400 rounded-full animate-bounce" style={{ animationDelay: '-0.15s' }} />
-                <span className="w-2 h-2 bg-neutral-400 rounded-full animate-bounce" />
-              </div>
+          <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+            <div style={{
+              padding: '14px 22px', borderRadius: 18, borderBottomLeftRadius: 6,
+              background: T.surface, border: `1px solid ${T.border}`,
+              fontFamily: T.bodyFont, fontSize: 16, color: T.bodyLight, display: 'inline-flex', gap: 4,
+            }}>
+              <span style={{ animation: 'pulseDot 1s infinite' }}>●</span>
+              <span style={{ animation: 'pulseDot 1s 0.2s infinite' }}>●</span>
+              <span style={{ animation: 'pulseDot 1s 0.4s infinite' }}>●</span>
             </div>
           </div>
         )}
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-xl">{error}</div>
+          <div style={{
+            background: `${T.red}15`, border: `1px solid ${T.red}`, color: T.red,
+            fontSize: 14, padding: '12px 16px', borderRadius: 12, fontFamily: T.bodyFont,
+          }}>{error}</div>
         )}
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Hint */}
       {hint && (
-        <HintBubble
-          hint={hint}
-          onDismiss={dismissHint}
-          onUseHint={(text) => { setTextInput(text); dismissHint() }}
-        />
+        <HintBubble hint={hint} onDismiss={dismissHint}
+          onUseHint={(text) => { setTextInput(text); dismissHint() }} />
       )}
 
-      {/* Input area */}
-      <div className="border-t border-neutral-100 px-3 py-3 sm:px-6 sm:py-4 bg-white flex flex-col gap-3 items-center shrink-0">
-        <VoiceButton isListening={isListening} isThinking={isThinking} isSpeaking={isSpeaking} isSupported={isSupported} onStart={startListening} onStop={stopListening} />
-        <div className="flex gap-2 w-full">
-          <textarea
-            placeholder="Or type your message..."
-            value={textInput}
-            onChange={(e) => setTextInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            rows={1}
-            className="flex-1 resize-none text-sm min-h-[42px] max-h-[100px] bg-white border border-neutral-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all placeholder:text-neutral-400"
-          />
-          <button
-            onClick={handleTextSend}
-            disabled={!textInput.trim() || isThinking}
-            className="self-end w-[42px] h-[42px] flex items-center justify-center bg-primary-600 text-white rounded-xl hover-glow disabled:bg-neutral-100 disabled:text-neutral-400 disabled:cursor-not-allowed cursor-pointer"
-          >
-            <Send className="w-4 h-4" />
-          </button>
-        </div>
+      {/* Input bar */}
+      <div style={{
+        display: 'flex', alignItems: 'center', gap: 12,
+        padding: '16px clamp(16px, 4vw, 32px)',
+        borderTop: `1px solid ${T.border}`, background: T.surface, flexShrink: 0,
+      }}>
+        <VoiceButton
+          isListening={isListening} isThinking={isThinking} isSpeaking={isSpeaking}
+          isSupported={isSupported} onStart={startListening} onStop={stopListening}
+        />
+        <input
+          value={textInput}
+          onChange={(e) => setTextInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder={isListening ? 'Listening…' : 'Type or tap the mic to speak…'}
+          style={{
+            flex: 1, padding: '14px 18px', borderRadius: 14,
+            border: `1px solid ${T.border}`, fontFamily: T.bodyFont, fontSize: 15,
+            outline: 'none', color: T.heading, background: T.bgAlt,
+            transition: 'border-color 0.2s',
+          }}
+          onFocus={(e) => (e.currentTarget.style.borderColor = T.indigo)}
+          onBlur={(e) => (e.currentTarget.style.borderColor = T.border)}
+        />
+        <button onClick={handleTextSend}
+          disabled={!textInput.trim() || isThinking}
+          style={{
+            width: 48, height: 48, borderRadius: 12, border: 'none',
+            background: T.indigo, color: '#fff', cursor: 'pointer',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            opacity: !textInput.trim() || isThinking ? 0.5 : 1,
+            transition: 'all 0.2s',
+          }}>
+          <Send size={18} />
+        </button>
       </div>
     </div>
   )

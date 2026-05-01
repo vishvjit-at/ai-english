@@ -1,36 +1,45 @@
-import { useState } from 'react'
-import { Outlet } from 'react-router-dom'
-import { Menu, Mic } from 'lucide-react'
-import { Sidebar } from './Sidebar'
+import { createContext, useContext, useState, useEffect } from 'react'
+import { Outlet, useLocation } from 'react-router-dom'
+import { AppNavbar } from './AppNavbar'
+
+interface DarkModeCtx {
+  dark: boolean
+  toggleDark: () => void
+}
+
+export const DarkModeContext = createContext<DarkModeCtx>({ dark: false, toggleDark: () => {} })
+export const useDarkMode = () => useContext(DarkModeContext)
 
 export function AppLayout() {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const location = useLocation()
+  const [dark, setDark] = useState(() => localStorage.getItem('dark') === '1')
+
+  useEffect(() => {
+    if (dark) document.documentElement.dataset.dark = '1'
+    else delete document.documentElement.dataset.dark
+    localStorage.setItem('dark', dark ? '1' : '0')
+  }, [dark])
+
+  const toggleDark = () => setDark((d) => !d)
+
+  // Active conversation runtimes get a slimmed nav (no link bar).
+  // /practice/custom is the setup screen, NOT a conversation, so keep full nav.
+  const path = location.pathname
+  const fullBleed =
+    (/^\/practice\/[^/]+$/.test(path) && path !== '/practice/custom') ||
+    /^\/lessons\/[^/]+$/.test(path)
 
   return (
-    <div className="flex h-screen bg-neutral-50 overflow-hidden">
-      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-
-      <div className="flex-1 flex flex-col min-w-0">
-        {/* Mobile header */}
-        <div className="lg:hidden shrink-0 px-4 py-3 bg-white border-b border-neutral-100 flex items-center gap-3">
-          <button
-            onClick={() => setSidebarOpen(true)}
-            className="w-9 h-9 rounded-xl bg-neutral-100 flex items-center justify-center cursor-pointer btn-icon"
-          >
-            <Menu className="w-4 h-4 text-neutral-600" />
-          </button>
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-primary-600 rounded-lg flex items-center justify-center">
-              <Mic className="w-3.5 h-3.5 text-white" />
-            </div>
-            <p className="font-bold text-neutral-800 text-sm">SpeakUp</p>
-          </div>
-        </div>
-
-        <main className="flex-1 overflow-y-auto">
+    <DarkModeContext.Provider value={{ dark, toggleDark }}>
+      <div style={{ minHeight: '100vh', background: 'var(--sem-surface)' }}>
+        <AppNavbar minimal={fullBleed} />
+        <main style={{
+          paddingTop: 64,
+          minHeight: '100vh',
+        }}>
           <Outlet />
         </main>
       </div>
-    </div>
+    </DarkModeContext.Provider>
   )
 }

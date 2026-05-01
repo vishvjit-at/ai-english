@@ -17,6 +17,8 @@ model User {
 
   sessions   Session[]
   vocabulary VocabularyItem[]
+  quizAttempts QuizAttempt[]
+  seenQuestions UserSeenQuestion[]
 
   @@map("users")
 }
@@ -90,4 +92,64 @@ model VocabularyItem {
   @@index([userId])
   @@index([word])
   @@map("vocabulary")
+}
+
+model QuizQuestion {
+  id          String   @id @default(uuid())
+  module      String
+  prompt      String
+  options     String[]
+  correctIdx  Int
+  explanation String?
+  difficulty  String   @default("intermediate")
+  createdAt   DateTime @default(now())
+
+  responses QuizResponse[]
+  seenBy    UserSeenQuestion[]
+
+  @@index([module])
+  @@map("quiz_questions")
+}
+
+model QuizAttempt {
+  id         String    @id @default(uuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  module     String
+  mode       String    @default("module")
+  score      Int       @default(0)
+  total      Int       @default(10)
+  startedAt  DateTime  @default(now())
+  finishedAt DateTime?
+
+  responses QuizResponse[]
+
+  @@index([userId])
+  @@map("quiz_attempts")
+}
+
+model QuizResponse {
+  id         String       @id @default(uuid())
+  attemptId  String
+  attempt    QuizAttempt  @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  questionId String
+  question   QuizQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  chosenIdx  Int
+  correct    Boolean
+  answeredAt DateTime     @default(now())
+
+  @@index([attemptId])
+  @@map("quiz_responses")
+}
+
+model UserSeenQuestion {
+  userId     String
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  questionId String
+  question   QuizQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  seenAt     DateTime     @default(now())
+
+  @@id([userId, questionId])
+  @@index([userId])
+  @@map("user_seen_questions")
 }

@@ -9,3 +9,5 @@ server/src/generated
 .claude
 .agents
 .windsurf
+.playwright-mcp
+/page-designs

@@ -17,6 +17,9 @@ const ProgressPage       = lazy(() => import('@/pages/ProgressPage').then(m => (
 const VocabularyReviewPage = lazy(() => import('@/pages/VocabularyReviewPage').then(m => ({ default: m.VocabularyReviewPage })))
 const LessonsPage        = lazy(() => import('@/pages/LessonsPage').then(m => ({ default: m.LessonsPage })))
 const LessonPracticePage = lazy(() => import('@/pages/LessonPracticePage').then(m => ({ default: m.LessonPracticePage })))
+const QuizHomePage       = lazy(() => import('@/pages/QuizHomePage').then(m => ({ default: m.QuizHomePage })))
+const QuizRunPage        = lazy(() => import('@/pages/QuizRunPage').then(m => ({ default: m.QuizRunPage })))
+const QuizHistoryPage    = lazy(() => import('@/pages/QuizHistoryPage').then(m => ({ default: m.QuizHistoryPage })))
 
 function PageSpinner() {
   return (
@@ -51,6 +54,9 @@ function App() {
                 <Route path="/history/:id"            element={<SessionDetailPage />} />
                 <Route path="/progress"               element={<ProgressPage />} />
                 <Route path="/settings"               element={<SettingsPage />} />
+                <Route path="/quiz"                   element={<QuizHomePage />} />
+                <Route path="/quiz/history"           element={<QuizHistoryPage />} />
+                <Route path="/quiz/run/:module"       element={<QuizRunPage />} />
               </Route>
             </Routes>
           </Suspense>

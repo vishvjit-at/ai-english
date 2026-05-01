@@ -56,6 +56,7 @@ export interface SessionListItem {
   startedAt: string
   durationSecs: number | null
   messageCount: number
+  correctionCount?: number
   overallScore: number | null
 }
 
