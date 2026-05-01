@@ -169,6 +169,8 @@ export interface QuizQuestionPublic {
   module: string
   prompt: string
   options: string[]
+  correctIdx: number
+  explanation: string | null
 }
 export interface QuizResultRow {
   questionId: string

@@ -23,7 +23,7 @@ async function generateAIQuestions(moduleId: string, count: number, seenPrompts:
     ? `\n\nThe user has ALREADY been shown the following questions. DO NOT repeat any of them, and avoid generating semantically equivalent questions (same answer, same trap, just reworded). Generate genuinely new questions that test different angles of the topic.\n\nSEEN_QUESTIONS:\n${seenPrompts.map((p, i) => `${i + 1}. ${p}`).join('\n')}`
     : ''
 
-  const system = `You generate high-quality multiple-choice questions for English learners. Always reply with strict JSON only — no prose, no markdown fences. Each question must have exactly 4 options and a single correct answer.`
+  const system = `You generate high-quality, didactic multiple-choice questions for English learners. Always reply with strict JSON only — no prose, no markdown fences. Each question must have exactly 4 options and a single correct answer. Explanations must teach the rule, not just state the answer.`
 
   const user = `Generate ${count} multiple-choice questions on the topic below.
 
@@ -37,7 +37,11 @@ REQUIREMENTS:
 - Wrong options should be tempting but clearly incorrect once you know the rule.
 - Vary difficulty across the set (mostly intermediate, a couple harder).
 - Keep prompts under 200 characters.
-- Provide a one-sentence explanation for why the answer is correct.${dedupeBlock}
+- The "explanation" field is the most important part — it must TEACH:
+  1. State the underlying grammar rule or word-meaning briefly (1 sentence).
+  2. Explain why the correct option fits the sentence/context.
+  3. Briefly note why at least one tempting wrong option is wrong (so the learner doesn't repeat the mistake).
+  4. Use plain language a B1–B2 learner can follow. Aim for 2–4 sentences total, around 40–80 words.${dedupeBlock}
 
 OUTPUT_FORMAT — JSON of this exact shape:
 {
@@ -46,7 +50,7 @@ OUTPUT_FORMAT — JSON of this exact shape:
       "prompt": "string",
       "options": ["a", "b", "c", "d"],
       "correctIdx": 0,
-      "explanation": "string"
+      "explanation": "string — multi-sentence teaching explanation per the rules above"
     }
   ]
 }`
@@ -99,7 +103,7 @@ export async function fetchQuizQuestions(
   userId: string,
   modeOrModule: string,
   count = 10,
-): Promise<{ id: string; module: string; prompt: string; options: string[] }[]> {
+): Promise<{ id: string; module: string; prompt: string; options: string[]; correctIdx: number; explanation: string | null }[]> {
   const isDaily = modeOrModule === 'daily'
 
   const seen = await prisma.userSeenQuestion.findMany({
@@ -159,6 +163,8 @@ export async function fetchQuizQuestions(
     module: q.module,
     prompt: q.prompt,
     options: q.options,
+    correctIdx: q.correctIdx,
+    explanation: q.explanation,
   }))
 }
 

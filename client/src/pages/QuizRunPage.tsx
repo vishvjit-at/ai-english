@@ -42,9 +42,11 @@ export function QuizRunPage() {
 
   const current = questions[idx]
   const allAnswered = questions.length > 0 && questions.every((q) => chosen[q.id] != null)
+  const isAnswered = current ? chosen[current.id] != null : false
 
   const choose = (questionId: string, chosenIdx: number) => {
-    setChosen((prev) => ({ ...prev, [questionId]: chosenIdx }))
+    // Lock the answer once chosen so the reveal stays accurate.
+    setChosen((prev) => (prev[questionId] != null ? prev : { ...prev, [questionId]: chosenIdx }))
   }
   const next = () => setIdx((i) => Math.min(questions.length - 1, i + 1))
   const prev = () => setIdx((i) => Math.max(0, i - 1))
@@ -96,12 +98,26 @@ export function QuizRunPage() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                 {current.options.map((opt, i) => {
                   const active = chosen[current.id] === i
+                  const reveal = isAnswered
+                    ? i === current.correctIdx ? 'correct'
+                      : active ? 'wrong'
+                      : 'idle'
+                    : 'idle'
                   return (
-                    <OptionBtn key={i} text={opt} index={i} active={active}
+                    <OptionBtn key={i} text={opt} index={i} active={active} reveal={reveal}
+                      disabled={isAnswered}
                       onClick={() => choose(current.id, i)} />
                   )
                 })}
               </div>
+
+              {isAnswered && current.explanation && (
+                <ExplanationCard
+                  correct={chosen[current.id] === current.correctIdx}
+                  correctAnswer={current.options[current.correctIdx]}
+                  explanation={current.explanation}
+                />
+              )}
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
@@ -149,31 +165,82 @@ function ProgressHeader({ idx, total, answered }: { idx: number; total: number; 
   )
 }
 
-function OptionBtn({ text, index, active, onClick }: { text: string; index: number; active: boolean; onClick: () => void }) {
+function OptionBtn({ text, index, active, reveal, disabled, onClick }: {
+  text: string; index: number; active: boolean;
+  reveal: 'idle' | 'correct' | 'wrong'; disabled: boolean; onClick: () => void;
+}) {
   const T = useTheme()
   const [h, setH] = useState(false)
   const letters = ['A', 'B', 'C', 'D']
+
+  let border = active ? `2px solid ${T.indigo}` : `1px solid ${T.border}`
+  let background = active ? T.indigoLight : (h ? T.bgAlt : T.surface)
+  let badgeBg = active ? T.indigo : T.bgAlt
+  let badgeColor = active ? '#fff' : T.body
+
+  if (reveal === 'correct') {
+    border = `2px solid ${T.green}`
+    background = `${T.green}18`
+    badgeBg = T.green
+    badgeColor = '#fff'
+  } else if (reveal === 'wrong') {
+    border = `2px solid ${T.red}`
+    background = `${T.red}15`
+    badgeBg = T.red
+    badgeColor = '#fff'
+  }
+
   return (
-    <button onClick={onClick}
-      onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)}
+    <button onClick={onClick} disabled={disabled}
+      onMouseEnter={() => !disabled && setH(true)} onMouseLeave={() => setH(false)}
       style={{
         textAlign: 'left', padding: '14px 18px',
-        borderRadius: 12, cursor: 'pointer',
-        border: active ? `2px solid ${T.indigo}` : `1px solid ${T.border}`,
-        background: active ? T.indigoLight : (h ? T.bgAlt : T.surface),
+        borderRadius: 12, cursor: disabled ? 'default' : 'pointer',
+        border, background,
         color: T.heading, fontFamily: T.bodyFont, fontSize: 15,
         display: 'flex', alignItems: 'center', gap: 14,
         transition: 'all 0.18s', width: '100%',
       }}>
       <span style={{
         width: 30, height: 30, borderRadius: 8,
-        background: active ? T.indigo : T.bgAlt,
-        color: active ? '#fff' : T.body,
+        background: badgeBg, color: badgeColor,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         fontWeight: 700, fontSize: 13, flexShrink: 0, fontFamily: T.headingFont,
       }}>{letters[index]}</span>
       <span style={{ flex: 1 }}>{text}</span>
+      {reveal === 'correct' && <Check size={18} color={T.green} />}
+      {reveal === 'wrong' && <X size={18} color={T.red} />}
     </button>
+  )
+}
+
+function ExplanationCard({ correct, correctAnswer, explanation }: {
+  correct: boolean; correctAnswer: string; explanation: string;
+}) {
+  const T = useTheme()
+  const accent = correct ? T.green : T.red
+  return (
+    <div style={{
+      marginTop: 18, padding: 18, borderRadius: 12,
+      background: `${accent}10`, border: `1px solid ${accent}40`,
+      borderLeft: `4px solid ${accent}`,
+    }}>
+      <div style={{
+        display: 'inline-flex', alignItems: 'center', gap: 6,
+        fontSize: 12, fontWeight: 700, letterSpacing: 0.5, textTransform: 'uppercase',
+        color: accent, fontFamily: T.bodyFont, marginBottom: 8,
+      }}>
+        {correct ? <><Check size={14} /> Correct</> : <><X size={14} /> Not quite</>}
+      </div>
+      {!correct && (
+        <div style={{ fontFamily: T.bodyFont, fontSize: 14, color: T.heading, marginBottom: 8 }}>
+          <strong>Correct answer:</strong> {correctAnswer}
+        </div>
+      )}
+      <div style={{ fontFamily: T.bodyFont, fontSize: 14, color: T.body, lineHeight: 1.6 }}>
+        {explanation}
+      </div>
+    </div>
   )
 }
 

@@ -69,7 +69,7 @@ router.post('/quiz/start', async (req: Request, res: Response) => {
     res.json({
       attemptId: attempt.id,
       module: moduleId,
-      questions, // {id, module, prompt, options} — correctIdx withheld
+      questions, // {id, module, prompt, options, correctIdx, explanation} — instant-feedback mode
     })
   } catch (err) {
     console.error('POST /quiz/start:', err)

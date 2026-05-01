@@ -141,10 +141,37 @@ export function SettingsPage() {
           </div>
         </Section>
 
-        <Section title="Voice & Audio" subtitle="Microphone selection and AI speech speed.">
+        <Section title="Voice & Audio" subtitle="AI voice provider, voice, and speech speed.">
           <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
             <div>
-              <label style={labelStyle}>Microphone</label>
+              <label style={labelStyle}>Voice provider</label>
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                {([
+                  { id: 'browser', label: 'Browser', sub: 'Free, built-in' },
+                  { id: 'elevenlabs', label: 'ElevenLabs', sub: 'Higher quality' },
+                ] as const).map((opt) => {
+                  const active = settings.voiceProvider === opt.id
+                  return (
+                    <button key={opt.id}
+                      onClick={() => updateSettings({ voiceProvider: opt.id, voiceName: '' })}
+                      style={{
+                        flex: '1 1 160px', textAlign: 'left',
+                        padding: '12px 16px', borderRadius: T.radiusSm,
+                        border: active ? `2px solid ${T.indigo}` : `1px solid ${T.border}`,
+                        background: active ? T.indigoLight : T.surface,
+                        cursor: 'pointer', fontFamily: T.bodyFont,
+                        transition: 'all 0.18s',
+                      }}>
+                      <div style={{ fontSize: 14, fontWeight: 700, color: T.heading }}>{opt.label}</div>
+                      <div style={{ fontSize: 12, color: T.bodyLight, marginTop: 2 }}>{opt.sub}</div>
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+
+            <div>
+              <label style={labelStyle}>AI voice</label>
               <select
                 value={settings.voiceName}
                 onChange={(e) => updateSettings({ voiceName: e.target.value })}
