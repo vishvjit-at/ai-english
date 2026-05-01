@@ -201,3 +201,10 @@ export async function submitQuiz(attemptId: string, answers: { questionId: strin
 export async function fetchQuizHistory(): Promise<{ attempts: QuizAttemptHistory[] }> {
   return get('/quiz/history')
 }
+
+export async function fetchUserPreferences(): Promise<{ preferences: Record<string, unknown> | null }> {
+  return get('/user/preferences')
+}
+export async function patchUserPreferences(partial: Record<string, unknown>): Promise<{ preferences: Record<string, unknown> }> {
+  return patch('/user/preferences', partial)
+}

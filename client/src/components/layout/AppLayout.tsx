@@ -1,6 +1,7 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { AppNavbar } from './AppNavbar'
+import { useSettings } from '@/hooks/useSettings'
 
 interface DarkModeCtx {
   dark: boolean
@@ -12,15 +13,9 @@ export const useDarkMode = () => useContext(DarkModeContext)
 
 export function AppLayout() {
   const location = useLocation()
-  const [dark, setDark] = useState(() => localStorage.getItem('dark') === '1')
-
-  useEffect(() => {
-    if (dark) document.documentElement.dataset.dark = '1'
-    else delete document.documentElement.dataset.dark
-    localStorage.setItem('dark', dark ? '1' : '0')
-  }, [dark])
-
-  const toggleDark = () => setDark((d) => !d)
+  const { settings, updateSettings } = useSettings()
+  const dark = settings.darkMode
+  const toggleDark = () => updateSettings({ darkMode: !dark })
 
   // Active conversation runtimes get a slimmed nav (no link bar).
   // /practice/custom is the setup screen, NOT a conversation, so keep full nav.

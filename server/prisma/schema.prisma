@@ -8,12 +8,13 @@ datasource db {
 }
 
 model User {
-  id        String   @id
-  email     String   @unique
-  name      String?
-  avatarUrl String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id
+  email       String   @unique
+  name        String?
+  avatarUrl   String?
+  preferences Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   sessions   Session[]
   vocabulary VocabularyItem[]

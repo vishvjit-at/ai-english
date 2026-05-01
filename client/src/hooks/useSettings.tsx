@@ -1,4 +1,6 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react'
+import { fetchUserPreferences, patchUserPreferences } from '@/lib/api'
+import { useAuth } from '@/hooks/useAuth'
 
 // ── Theme — driven by homeStyle, not user-selected independently ──
 export type ThemeName = 'calm-garden' | 'ocean-breeze' | 'midnight'
@@ -62,6 +64,7 @@ export interface Settings {
   voiceProvider: VoiceProvider
   voiceName: string
   voiceSpeed: number
+  darkMode: boolean
 }
 
 const defaultSettings: Settings = {
@@ -74,6 +77,7 @@ const defaultSettings: Settings = {
   voiceProvider: 'browser',
   voiceName: '',
   voiceSpeed: 0.92,
+  darkMode: false,
 }
 
 interface SettingsContextValue {
@@ -96,8 +100,12 @@ function loadSettings(): Settings {
 }
 
 export function SettingsProvider({ children }: { children: ReactNode }) {
+  const { user } = useAuth()
   const [settings, setSettings] = useState<Settings>(loadSettings)
   const [availableVoices, setAvailableVoices] = useState<VoiceOption[]>([])
+  // Tracks whether server-side preferences have been hydrated for the current user,
+  // so we don't echo server data straight back via a PATCH.
+  const hydratedForUser = useRef<string | null>(null)
 
   // Load browser voices
   useEffect(() => {
@@ -132,12 +140,48 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     }
   }, [settings.fontSize, settings.borderRadius, settings.chatDensity, settings.animations])
 
+  // Apply dark mode attribute
+  useEffect(() => {
+    if (settings.darkMode) document.documentElement.dataset.dark = '1'
+    else delete document.documentElement.dataset.dark
+  }, [settings.darkMode])
+
+  // On sign-in, hydrate from server. If server has nothing, push current local state.
+  useEffect(() => {
+    if (!user) {
+      hydratedForUser.current = null
+      return
+    }
+    if (hydratedForUser.current === user.id) return
+    let cancelled = false
+    fetchUserPreferences().then(({ preferences }) => {
+      if (cancelled) return
+      hydratedForUser.current = user.id
+      if (preferences && typeof preferences === 'object') {
+        setSettings((prev) => {
+          const merged = { ...prev, ...(preferences as Partial<Settings>) }
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(merged))
+          return merged
+        })
+      } else {
+        // First time — seed server with whatever we have locally.
+        patchUserPreferences(loadSettings() as unknown as Record<string, unknown>).catch(() => {})
+      }
+    }).catch(() => {})
+    return () => { cancelled = true }
+  }, [user])
+
   const updateSettings = (partial: Partial<Settings>) => {
     setSettings((prev) => {
       const next = { ...prev, ...partial }
       localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
       return next
     })
+    if (user && hydratedForUser.current === user.id) {
+      patchUserPreferences(partial as Record<string, unknown>).catch((err) =>
+        console.error('Failed to save preferences:', err)
+      )
+    }
   }
 
   return (
