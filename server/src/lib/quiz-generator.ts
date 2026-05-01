@@ -2,7 +2,7 @@ import { groq } from './groq.js'
 import { prisma } from './prisma.js'
 import { MODULE_BY_ID, QUIZ_MODULES } from './quiz-modules.js'
 
-const MODEL = 'llama-3.3-70b-versatile'
+const MODEL = 'llama-3.1-8b-instant'
 
 interface RawAIQuestion {
   prompt: string

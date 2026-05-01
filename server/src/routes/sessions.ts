@@ -84,7 +84,7 @@ router.post('/sessions/:id/summary', async (req: Request, res: Response) => {
     )
 
     const completion = await groq.chat.completions.create({
-      model: 'llama-3.3-70b-versatile',
+      model: 'llama-3.1-8b-instant',
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.5,
       max_tokens: 600,
@@ -446,7 +446,7 @@ router.post('/vocabulary/:id/evaluate', async (req: Request, res: Response) => {
     const prompt = buildVocabEvaluationPrompt(word, sentence)
 
     const completion = await groq.chat.completions.create({
-      model: 'llama-3.3-70b-versatile',
+      model: 'llama-3.1-8b-instant',
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.3,
       max_tokens: 200,
